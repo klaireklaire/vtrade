@@ -3,85 +3,76 @@ import React from "react";
 function Categories() {
   return (
     <div>
-      <body>
-        <div class="container px-4 flex-grow w-full py-4 sm:py-16 mx-auto px-0">
-          <div class="mx-auto w-full md:w-4/5 px-4">
-            <div class="container my-1">
-              <div class="flex justify-between items-center mb-4">
-                <h2 class="text-3xl font-medium">
-                  What would you like to find?
-                </h2>
-                <div>
-                  <button class="cursor-pointer text-xl mx-1 text-indigo-600 font-bold"></button>
-                  <button class="cursor-pointer text-xl mx-1 text-indigo-600 font-bold"></button>
-                </div>
-              </div>
-              <div
-                id="scrollContainer"
-                class="flex flex-no-wrap overflow-x-scroll scrolling-touch items-start"
-              >
-                <div class="flex justify-between items-center mr-4 border rounded-lg">
-                  <a href="#" class="space-y-4">
-                    <div class="px-10 py-3">
-                      <div class="text-lg leading-6 font-medium space-y-1">
-                        <h3 class="font-bold text-gray-800 text-3xl mb-2">
-                          Housing
-                        </h3>
-                      </div>
-                    </div>
-                  </a>
-                </div>
-                <div class="flex justify-between items-center mr-4 border rounded-lg">
-                  <a href="#" class="space-y-4">
-                    <div class="px-10 py-3">
-                      <div class="text-lg leading-6 font-medium space-y-1">
-                        <h3 class="font-bold text-gray-800 text-3xl mb-2">
-                          Clothes
-                        </h3>
-                      </div>
-                    </div>
-                  </a>
-                </div>
-                <div class="flex justify-between items-center mr-4 border rounded-lg">
-                  <a href="#" class="space-y-4">
-                    <div class="px-10 py-3">
-                      <div class="text-lg leading-6 font-medium space-y-1">
-                        <h3 class="font-bold text-gray-800 text-3xl mb-2">
-                          Services
-                        </h3>
-                      </div>
-                    </div>
-                  </a>
-                </div>
-                <div class="flex justify-between items-center mr-4 border rounded-lg">
-                  <a href="#" class="space-y-4">
-                    <div class="px-10 py-3">
-                      <div class="text-lg leading-6 font-medium space-y-1">
-                        <h3 class="font-bold text-gray-800 text-3xl mb-2">
-                          Activities
-                        </h3>
-                      </div>
-                    </div>
-                  </a>
-                </div>
-                <div class="flex justify-between items-center mr-4 border rounded-lg">
-                  <a href="#" class="space-y-4">
-                    <div class="px-10 py-3">
-                      <div class="text-lg leading-6 font-medium space-y-1">
-                        <h3 class="font-bold text-gray-800 text-3xl mb-2">
-                          Other
-                        </h3>
-                      </div>
-                    </div>
-                  </a>
-                </div>
+      <div class="flex flex-col bg-white m-auto p-auto">
+<h1
+        class="flex py-5 lg:px-[6rem] md:px-10 px-5 md:mx-20 font-bold text-xl text-slate-800 font-mulish"
+      >
+        What would you like to find?
+      </h1>
+
+      {/* Category Card Scroll */}
+      <div
+        class="flex overflow-x-scroll pb-10 hide-scroll-bar"
+      >
+        <div
+          class="flex flex-nowrap lg:ml-40 md:ml-20 ml-10 "
+        >
+          {/* Category Card */}
+          <a href="#" class="inline-block px-3">
+            <div
+              class="w-[17rem] h-[8rem] border-2 border-slate-800 max-w-xs overflow-hidden rounded-lg bg-white hover:bg-slate-100 duration-300 transition-colors flex items-center justify-center"
+            >
+              <div class="text-lg text-slate-800 font-mulish font-bold">
+              Housing
               </div>
             </div>
-          </div>
+          </a>
+
+          <a href="#" class="inline-block px-3">
+            <div
+              class="w-[17rem] h-[8rem] border-2 border-slate-800 max-w-xs overflow-hidden rounded-lg bg-white hover:bg-slate-100 duration-300 transition-colors flex items-center justify-center"
+            >
+              <div class="text-lg text-slate-800 font-mulish font-bold">
+              Goods
+              </div>
+            </div>
+          </a>
+
+          <a href="#" class="inline-block px-3">
+            <div
+              class="w-[17rem] h-[8rem] border-2 border-slate-800 max-w-xs overflow-hidden rounded-lg bg-white hover:bg-slate-100 duration-300 transition-colors flex items-center justify-center"
+            >
+              <div class="text-lg text-slate-800 font-mulish font-bold">
+              Jobs
+              </div>
+            </div>
+          </a>
+
+          <a href="#" class="inline-block px-3">
+            <div
+              class="w-[17rem] h-[8rem] border-2 border-slate-800 max-w-xs overflow-hidden rounded-lg bg-white hover:bg-slate-100 duration-300 transition-colors flex items-center justify-center"
+            >
+              <div class="text-lg text-slate-800 font-mulish font-bold">
+              Personals
+              </div>
+            </div>
+          </a>
+
+          <a href="#" class="inline-block px-3">
+            <div
+              class="w-[17rem] h-[8rem] border-2 border-slate-800 max-w-xs overflow-hidden rounded-lg bg-white hover:bg-slate-100 duration-300 transition-colors flex items-center justify-center"
+            >
+              <div class="text-lg text-slate-800 font-mulish font-bold">
+              Service
+              </div>
+            </div>
+          </a>
+
         </div>
-      </body>
+      </div>
+</div>
     </div>
-  );
+  )
 }
 
 export default Categories;
