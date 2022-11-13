@@ -20,7 +20,7 @@ function Categories() {
           {/* Category Card */}
           <a href="#" class="inline-block px-3">
             <div
-              class="w-[17rem] h-[8rem] border-2 border-slate-800 max-w-xs overflow-hidden rounded-lg bg-white hover:bg-slate-100 duration-300 transition-colors flex items-center justify-center"
+              class="w-[17rem] h-[8rem] border-2 border-slate-800 max-w-xs overflow-hidden rounded-3xl bg-white hover:bg-slate-100 duration-300 transition-colors flex items-center justify-center"
             >
               <div class="text-lg text-slate-800 font-mulish font-bold">
               Housing
@@ -30,7 +30,7 @@ function Categories() {
 
           <a href="#" class="inline-block px-3">
             <div
-              class="w-[17rem] h-[8rem] border-2 border-slate-800 max-w-xs overflow-hidden rounded-lg bg-white hover:bg-slate-100 duration-300 transition-colors flex items-center justify-center"
+              class="w-[17rem] h-[8rem] border-2 border-slate-800 max-w-xs overflow-hidden rounded-3xl bg-white hover:bg-slate-100 duration-300 transition-colors flex items-center justify-center"
             >
               <div class="text-lg text-slate-800 font-mulish font-bold">
               Goods
@@ -40,7 +40,7 @@ function Categories() {
 
           <a href="#" class="inline-block px-3">
             <div
-              class="w-[17rem] h-[8rem] border-2 border-slate-800 max-w-xs overflow-hidden rounded-lg bg-white hover:bg-slate-100 duration-300 transition-colors flex items-center justify-center"
+              class="w-[17rem] h-[8rem] border-2 border-slate-800 max-w-xs overflow-hidden rounded-3xl bg-white hover:bg-slate-100 duration-300 transition-colors flex items-center justify-center"
             >
               <div class="text-lg text-slate-800 font-mulish font-bold">
               Jobs
@@ -50,7 +50,7 @@ function Categories() {
 
           <a href="#" class="inline-block px-3">
             <div
-              class="w-[17rem] h-[8rem] border-2 border-slate-800 max-w-xs overflow-hidden rounded-lg bg-white hover:bg-slate-100 duration-300 transition-colors flex items-center justify-center"
+              class="w-[17rem] h-[8rem] border-2 border-slate-800 max-w-xs overflow-hidden rounded-3xl bg-white hover:bg-slate-100 duration-300 transition-colors flex items-center justify-center"
             >
               <div class="text-lg text-slate-800 font-mulish font-bold">
               Personals
@@ -60,7 +60,7 @@ function Categories() {
 
           <a href="#" class="inline-block px-3">
             <div
-              class="w-[17rem] h-[8rem] border-2 border-slate-800 max-w-xs overflow-hidden rounded-lg bg-white hover:bg-slate-100 duration-300 transition-colors flex items-center justify-center"
+              class="w-[17rem] h-[8rem] border-2 border-slate-800 max-w-xs overflow-hidden rounded-3xl bg-white hover:bg-slate-100 duration-300 transition-colors flex items-center justify-center"
             >
               <div class="text-lg text-slate-800 font-mulish font-bold">
               Service
