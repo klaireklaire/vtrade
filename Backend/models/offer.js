@@ -5,7 +5,7 @@ const Token = require("../utils/tokens");
 
 class Offer {
     static async postOffer(offer){
-        const requiredFields = ["email", "title", "price", "description"];
+        const requiredFields = ["email", "title", "price"];
 
         requiredFields.forEach((field) => {
           if (!offer.hasOwnProperty(field)) {
@@ -20,32 +20,37 @@ class Offer {
             throw new BadRequestError("Invalid price")
         }
 
-        if(offer.email.indexOf("@vassar.edu" <= 0)){
-          throw new BadRequestError("Email has to be a vassar email")
+        
+
+        if(offer.email.indexOf("@vassar.edu") <= 0){
+          throw new BadRequestError("Email has to be a valid Vassar email")
         }
 
-        if(offer.description.length <= 0){
-            throw new BadRequestError("Provide a description of your item")
-        }
-
-
+        
+       
         const result = await db.query(
             `
                     INSERT INTO offering(
                           email,
                           title,
                           price,  
-                          description
+                          description,
+                          condition,
+                          contact,
+                          mark
                           
                           )
-                     VALUES ($1,$2,$3,$4)
-                     RETURNING email,title,price,description;
+                     VALUES ($1,$2,$3,$4,$5,$6,$7)
+                     RETURNING email,title,price,description,condition,contact,mark;
                     `,
             [
               offer.email,
               offer.title,
               offer.price,
               offer.description,
+              offer.condition,
+              offer.contact,
+              offer.mark
             ]
           );
       

@@ -10,7 +10,7 @@ router.post("/post",async (req, res, next) => {
       const offer = req.body
      
       const offering = await Offer.postOffer(offer);
-      return res.status(200).json({ offer: offering });
+      return res.status(200).json({ offering });
     } catch (error) {
       next(error);
     }
