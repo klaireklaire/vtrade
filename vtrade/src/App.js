@@ -1,20 +1,32 @@
 import "./App.css";
 import Categories from "./Components/Categories";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import Navbar from "./Components/Navbar";
+import postOffer from "./Components/PostOffer";
+import postDetails from "./Components/PostDetails";
+import postWant from "./Components/PostWant";
+import Login from "./Components/Login";
+import Register from "./Components/Register";
+import ForgotPasswordConfirm from "./Components/ForgotPassword/ForgotPasswordConfirm";
+import ForgotPasswordEmail from "./Components/ForgotPassword/ForgotPasswordEmail";
+import NotFound from "./Components/NotFound";
+
 
 function App() {
   return (
     <div>
-      <h1 className="text-slate-800 font-lato font-bold">LOGO</h1>
-      <h2 className="text-slate-800 font-mulish font-bold">Header</h2>
-      <div>Navbar Placeholder</div>
-      <div>
-        <Categories />
-      </div>
-      <div>Highlights Placeholder</div>
-      <div>
-        <div>Recent Posts Placeholder</div>
-        <div>Recent Events Placeholder</div>
-      </div>
+      <BrowserRouter>
+        <Navbar />
+        <Routes>
+          <Route path="/" element={<Categories />} />
+          <Route path="/listing/:id" element={<postDetails />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/passwordemail" element={<ForgotPasswordEmail />} />
+          <Route path="/passwordconfirm" element={<ForgotPasswordConfirm />} />
+          <Route path="/*" element={<NotFound />} />
+        </Routes>
+      </BrowserRouter>
     </div>
   );
 }
