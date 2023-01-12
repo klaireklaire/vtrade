@@ -6,11 +6,14 @@ import Login from "./Components/Login";
 import Register from "./Components/Register";
 import ForgotPasswordConfirm from "./Components/ForgotPassword/ForgotPasswordConfirm";
 import ForgotPasswordEmail from "./Components/ForgotPassword/ForgotPasswordEmail";
+import NewPost from "./Components/NewPost";
 import NotFound from "./Components/NotFound";
 import { useState, useEffect } from "react";
 import CircularProgress from '@mui/material/CircularProgress';
 import apiClient from "./Services/apiClient";
 import Box from '@mui/material/Box';
+import PostOffer from "./Components/PostOffer";
+import PostRequest from "./Components/PostRequest";
 
 
 
@@ -59,12 +62,14 @@ function App() {
         <Navbar user={user} setUser={setUser} isLoading={isLoading} setIsLoading={setIsLoading} loader={loader}/>
         <Routes>
           <Route path="/" element={<Categories />} />
-          {/* <Route path="/listing/:id" element={<postDetails />} /> */}
+          <Route path="/post" element={<NewPost />} />
           <Route path="/login" element={<Login user={user} setUser={setUser} isLoading={isLoading} setIsLoading={setIsLoading} loader={loader}/> } />
           <Route path="/register" element={<Register user={user} setUser={setUser} isLoading={isLoading} setIsLoading={setIsLoading}  loader={loader}/>} />
           <Route path="/passwordemail" element={<ForgotPasswordEmail />} />
           <Route path="/passwordconfirm" element={<ForgotPasswordConfirm />} />
           <Route path="/*" element={<NotFound />} />
+          <Route path="/post/offer" element={<PostOffer />} />
+          <Route path="/post/request" element={<PostRequest />} />
         </Routes>
       </BrowserRouter> 
     </div>

@@ -100,6 +100,13 @@ export default function Navbar(props) {
             <Button
               variant="contained"
               sx={{ backgroundColor: "#2b2c2e", color: "#ffff" }}
+              onClick={() => {
+                if(!props.user){
+                  navigate("/login")
+                } else{
+                  navigate("/post")
+                }
+              }}
             >
               Post
             </Button>

@@ -1,9 +1,9 @@
 import React from 'react'
 import Box from "@mui/material/Box";
 
-export default function PostOffer() {
+export default function PostRequest() {
 
   return (
-    <Box>Post</Box>
+    <Box>Request</Box>
   )
 }
