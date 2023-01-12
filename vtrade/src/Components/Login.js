@@ -14,10 +14,14 @@ import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
+import Tooltip from "@mui/material/Tooltip";
 // import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { Navigate, useNavigate } from "react-router-dom";
 import { useState } from "react";
-//import "./App.css";
+import apiClient from '../Services/apiClient';
+import '../App.css';
+
+
 
 function Copyright(props) {
   return (
@@ -39,61 +43,64 @@ function Copyright(props) {
 
 // const theme = createTheme();
 
-export default function Login({ returnEndpoint = "/listings", ...props}) {
+export default function Login({ returnEndpoint = "/", ...props}) {
   const navigate = useNavigate();
   const [errors, setErrors] = useState({});
   const [form, setForm] = useState({
     email: "",
     password: "",
   });
-  const [isLoading, setIsLoading] = useState(false);
+ // const [isLoading, setIsLoading] = useState(false);
 
-//   const handleOnInputChange = (event) => {
-//     if (event.target.name === "email") {
-//       if (event.target.value.indexOf("@") < 1) {
-//         setErrors((e) => ({ ...e, email: "Please enter a valid email." }));
-//       } else {
-//         setErrors((e) => ({ ...e, email: null }));
-//       }
-//     }
+  const handleOnInputChange = (event) => {
+    if (event.target.name === "email") {
+      if (event.target.value.indexOf("@") < 1) {
+        setErrors((e) => ({ ...e, email: "Please enter a valid email." }));
+      } else {
+        setErrors((e) => ({ ...e, email: null }));
+      }
+    }
 
-//     if (event.target.name === "password") {
-//       if (event.target.value.length < 1) {
-//         setErrors((e) => ({ ...e, password: "Please enter your password." }));
-//       } else {
-//         setErrors((e) => ({ ...e, password: null }));
-//       }
-//     }
+    if (event.target.name === "password") {
+      if (event.target.value.length < 1) {
+        setErrors((e) => ({ ...e, password: "Please enter your password." }));
+      } else {
+        setErrors((e) => ({ ...e, password: null }));
+      }
+    }
 
-//     setForm((f) => ({ ...f, [event.target.name]: event.target.value }));
-//   };
+    setForm((f) => ({ ...f, [event.target.name]: event.target.value }));
+  };
 
-//   const handleOnSubmit = async (e) => {
-//     e.preventDefault();
-//     setIsLoading(true);
-//     setErrors((e) => ({ ...e, form: null }));
+  const handleOnSubmit = async (e) => {
+    e.preventDefault();
+    props.setIsLoading(true);
+    setErrors((e) => ({ ...e, form: null }));
 
-//     const { data, error } = await apiClient.loginUser({
-//       email: form.email,
-//       password: form.password,
-//     });
-//     if (error) {
-//       setIsLoading(false);
-//       setErrors((e) => ({ ...e, form: error }));
-//     }
+    const { data, error } = await apiClient.loginUser({
+      email: form.email,
+      password: form.password,
+    });
+    if (error) {
+      
+      setErrors((e) => ({ ...e, form: error }));
+      props.setIsLoading(false);
+      return;
+    }
 
-//     if (data?.user) {
-//       props.setUser(data.user)
-//       setIsLoading(false);
-//       navigate(returnEndpoint);
-//       apiClient.setToken(data.token);
-//       setIsLoading(false);
+    if (data?.user) {
+      props.setUser(data.user)
+      navigate(returnEndpoint);
+      apiClient.setToken(data.token);
+      props.setIsLoading(false);
      
-//     }
-//   };
+    }
+  };
 
   return (
+   
     <div className="login">
+      {props.isLoading ? props.loader() :
       <Box>
         {/* <ThemeProvider theme={theme}> */}
         <Container component="main" maxWidth="xs">
@@ -113,7 +120,7 @@ export default function Login({ returnEndpoint = "/listings", ...props}) {
             <Typography component="h1" variant="h5">
               Log in
             </Typography>
-            {/* {errors.form && <span className="error">{errors.form}</span>} */}
+            {errors.form && <span className="error">{errors.form}</span>}
             <Box component="form" noValidate sx={{ mt: 1 }}>
               <TextField
                 margin="normal"
@@ -122,38 +129,45 @@ export default function Login({ returnEndpoint = "/listings", ...props}) {
                 id="email"
                 label="Email Address"
                 name="email"
-              //  onChange={handleOnInputChange}
+                onChange={handleOnInputChange}
                 autoComplete="email"
                 autoFocus
               />
-              {/* {errors.email && <span className="error">{errors.email}</span>} */}
+              {errors.email && <span className="error">{errors.email}</span>}
               <TextField
                 margin="normal"
                 required
                 fullWidth
                 name="password"
                 label="Password"
-            //    onChange={handleOnInputChange}
+                onChange={handleOnInputChange}
                 type="password"
                 id="password"
                 autoComplete="current-password"
               />
-              {/* {errors.password && (
+              {errors.password && (
                 <span className="error">{errors.password}</span>
-              )} */}
+              )}
               <br />
               <FormControlLabel
                 control={<Checkbox value="remember" color="primary" />}
                 label="Remember me"
               />
+
+              <Tooltip title="Fill in the required fields to log in">
+              <span>
               <Button
-             //   onClick={handleOnSubmit}
+                onClick={handleOnSubmit}
+                disabled={errors.email || errors.password || form.email.length == 0 || form.password.length == 0}
                 fullWidth
                 variant="contained"
                 sx={{ backgroundColor: "#2b2c2e", color: "#ffff" , mt: 3, mb: 2}}
               >
-                {isLoading ? "Loading...." : "Sign In"}
+                Sign In
+                
               </Button>
+              </span>
+              </Tooltip>
               <Grid container>
                 <Grid item xs>
                   <Link to="/passwordemail" variant="body2" style={{color: "#0000EE", textDecoration: "underline"}}>
@@ -171,7 +185,7 @@ export default function Login({ returnEndpoint = "/listings", ...props}) {
           <Copyright sx={{ mt: 8, mb: 4 }} />
         </Container>
         {/* </ThemeProvider> */}
-      </Box>
-    </div>
+      </Box> }
+    </div>  
   );
 }

@@ -9,9 +9,10 @@ import MenuIcon from "@mui/icons-material/Menu";
 import { color, fontStyle } from "@mui/system";
 import { Navigate, useNavigate } from "react-router-dom";
 import { Grid } from "@mui/material";
+import apiClient from "../Services/apiClient";
 
 
-export default function Navbar() {
+export default function Navbar(props) {
   const navigate = useNavigate();
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -77,8 +78,14 @@ export default function Navbar() {
             <Button
               variant="contained"
               onClick={() => {
+                if(!props.user){
                 navigate("/login")
+                } else {
+                  apiClient.logoutUser()
+                  props.setUser(null)
+                }
 
+  
               }}
               sx={{
                 backgroundColor: "#2b2c2e",
@@ -88,7 +95,7 @@ export default function Navbar() {
 
               
             >
-              Log in
+             {props.user ? "Log out" : "Log in"}
             </Button>
             <Button
               variant="contained"

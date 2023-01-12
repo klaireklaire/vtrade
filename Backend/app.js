@@ -3,7 +3,7 @@ const cors = require("cors");
 const morgan = require("morgan");
 const offerRoutes = require("./routes/offers")
 const wantRoutes = require("./routes/wants")
-
+const userRoutes = require("./routes/users")
 
 //Routes declared here
 
@@ -20,6 +20,7 @@ app.use(express.json());
 
 app.use(morgan("tiny"));
 
+app.use("/user", userRoutes)
 app.use("/offer", offerRoutes);
 app.use("/want", wantRoutes)
 //app.use(security.extractUserFromJwt);
