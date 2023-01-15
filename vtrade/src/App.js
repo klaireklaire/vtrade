@@ -62,14 +62,14 @@ function App() {
         <Navbar user={user} setUser={setUser} isLoading={isLoading} setIsLoading={setIsLoading} loader={loader}/>
         <Routes>
           <Route path="/" element={<Categories />} />
-          <Route path="/post" element={<NewPost />} />
+          <Route path="/post" element={<NewPost user={user} setUser={setUser}  />} />
           <Route path="/login" element={<Login user={user} setUser={setUser} isLoading={isLoading} setIsLoading={setIsLoading} loader={loader}/> } />
           <Route path="/register" element={<Register user={user} setUser={setUser} isLoading={isLoading} setIsLoading={setIsLoading}  loader={loader}/>} />
           <Route path="/passwordemail" element={<ForgotPasswordEmail />} />
           <Route path="/passwordconfirm" element={<ForgotPasswordConfirm />} />
           <Route path="/*" element={<NotFound />} />
-          <Route path="/post/offer" element={<PostOffer />} />
-          <Route path="/post/request" element={<PostRequest />} />
+          <Route path="/post/offer" element={<PostOffer user={user} setUser={setUser} />} />
+          <Route path="/post/request" element={<PostRequest user={user} setUser={setUser} />} />
         </Routes>
       </BrowserRouter> 
     </div>

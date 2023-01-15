@@ -83,6 +83,7 @@ export default function Navbar(props) {
                 } else {
                   apiClient.logoutUser()
                   props.setUser(null)
+                  navigate("/")
                 }
 
   

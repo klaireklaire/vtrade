@@ -32,7 +32,7 @@ router.post("/register", async (req, res, next) => {
 router.get("/me", security.requireAuthenticatedUser, async (req, res, next) => {
   try {
     const { id } = res.locals.user;
-
+    
     const user = await User.fetchUserById(id);
 
     const publicUser = User.makePublicUser(user);
