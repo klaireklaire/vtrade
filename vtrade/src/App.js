@@ -68,7 +68,7 @@ function App() {
           <Route path="/passwordemail" element={<ForgotPasswordEmail />} />
           <Route path="/passwordconfirm" element={<ForgotPasswordConfirm />} />
           <Route path="/*" element={<NotFound />} />
-          <Route path="/post/offer" element={<PostOffer user={user} setUser={setUser} />} />
+          <Route path="/post/offer" element={<PostOffer user={user} setUser={setUser} isLoading={isLoading} setIsLoading={setIsLoading} loader={loader}/>} />
           <Route path="/post/request" element={<PostRequest user={user} setUser={setUser} />} />
         </Routes>
       </BrowserRouter> 

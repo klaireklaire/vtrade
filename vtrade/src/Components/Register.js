@@ -254,8 +254,8 @@ export default function Register(props) {
                     />
                   </Grid>
                 </Grid>
-                <Tooltip title="fill all the required fields to submit">
-                  <span>
+                <Tooltip title="fill all the required fields to submit" arrow>
+                <Box sx={{width: "max-content"}}>
                     <Button
                       fullWidth
                       variant="contained"
@@ -280,7 +280,7 @@ export default function Register(props) {
                     >
                       Sign Up
                     </Button>
-                  </span>
+                  </Box>
                 </Tooltip>
 
                 <Grid container justifyContent="flex-end">

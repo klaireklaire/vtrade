@@ -67,6 +67,15 @@ class ApiClient {
     });
   }
 
+  async postItem(data){
+    return await this.request({
+      endpoint: `offer/post`,
+      method: `POST`,
+      data: data,
+      contentType: "multipart/form-data",
+    })
+  }
+ 
 
 }
 

@@ -154,8 +154,8 @@ export default function Login({ returnEndpoint = "/", ...props}) {
                 label="Remember me"
               />
 
-              <Tooltip title="Fill in the required fields to log in">
-              <span>
+              <Tooltip title="Fill in the required fields to log in" arrow>
+              <Box sx={{width: "max-content"}}>
               <Button
                 onClick={handleOnSubmit}
                 disabled={errors.email || errors.password || form.email.length == 0 || form.password.length == 0}
@@ -166,7 +166,7 @@ export default function Login({ returnEndpoint = "/", ...props}) {
                 Sign In
                 
               </Button>
-              </span>
+              </Box>
               </Tooltip>
               <Grid container>
                 <Grid item xs>
