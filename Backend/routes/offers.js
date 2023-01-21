@@ -21,6 +21,17 @@ router.post("/post",async (req, res, next) => {
   }
 );
 
+router.get("/", async (req, res, next) => {
+  try {
+    var offers = await Offer.getOffers();
+
+    return res.status(200).json({ offers });
+  } catch (error) {
+    next(error);
+  }
+});
+
+
 
 
 

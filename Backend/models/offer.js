@@ -4,6 +4,15 @@ const Token = require("../utils/tokens");
 const { s3 } = require("../config");
 
 class Offer {
+  static async getOffers(){
+    const result = await db.query(`
+    SELECT * FROM offering;
+    `)
+
+    const res = result.rows;
+
+    return res
+  }
   static async postOffer(offer, images) {
     const requiredFields = [
       "category",
@@ -56,16 +65,17 @@ class Offer {
       ]
     );
 
-    const offerId = result.rows[0].id;
+   const offerId = result.rows[0].id;
+
 
     for (let i = 0; i < images.length; i++) {
       const image = images[i];
-      console.log(image);
+    
       const uploadedImage = await s3
         .upload({
           Bucket: process.env.AWS_S3_BUCKET_NAME,
-          Key: blob.stuff.name,
-          Body: blob.stuff.data,
+          Key: image.name + "-" + offerId + "-" + i,
+          Body: image.data,
           Tagging: `public=yes`,
         })
         .promise();
@@ -81,13 +91,47 @@ class Offer {
       });
 
       const url = uploadedImage.Location;
+      const currImage = "image" + (i + 1)
 
-      console.log(uploadedImage.Location);
+      // id             SERIAL PRIMARY KEY,
+      // user_id             INTEGER NOT NULL,
+      // FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+      // title          TEXT NOT NULL,
+      // category       TEXT NOT NULL,
+      // condition      TEXT NOT NULL,
+      // price          FLOAT NOT NULL,
+      // image1         TEXT,
+      // image2         TEXT,
+      // image3         TEXT,
+      // image4         TEXT,
+      // image5         TEXT,
+      // image6         TEXT,
+      // image7         TEXT,
+      // image8         TEXT,
+      // image9         TEXT,
+      // image10         TEXT,
+      // description    TEXT,
+      // location       TEXT NOT NULL,
+      // payment        TEXT NOT NULL,
+      // createdat      TIMESTAMP NOT NULL DEFAULT NOW(),
+      // updatedat      TIMESTAMP NOT NULL DEFAULT NOW()
+
+      await db.query(`
+               UPDATE offering
+                        SET ` + currImage + ` = $1
+                        WHERE id = $2
+                        RETURNING user_id, title, category, condition, price, image1, image2, image3, image4, image5, image6, image7, image8, image9, image10, description, location, payment;
+      `, [
+        url,
+        offerId
+      ])
+
+      console.log(url);
     }
 
-    const res = result.rows;
+    // const res = result.rows;
 
-    return res;
+    // return res;
   }
 }
 

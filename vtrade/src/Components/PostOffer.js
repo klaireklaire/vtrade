@@ -90,7 +90,7 @@ export default function PostOffer(props) {
   const navigate = useNavigate();
 
   const handleOnSubmit = async () => {
-  //  props.setIsLoading(true);
+    props.setIsLoading(true);
 
     const pictures = images.map((image) => image.file);
    // console.log(pictures[0])
@@ -107,12 +107,12 @@ export default function PostOffer(props) {
       pictures,
     });
 
-    // if (data) {
-    //   navigate("/");
-    //   props.setIsLoading(false);
-    // }
+    if (data) {
+      navigate("/");
+      props.setIsLoading(false);
+    }
 
-    // props.setIsLoading(false);
+     props.setIsLoading(false);
   };
 
   const handleOnInputChange = (event) => {
@@ -455,6 +455,7 @@ export default function PostOffer(props) {
                   >
                     Post!!
                   </Button>
+              
                 </Box>
               </Tooltip>
             </Box>
