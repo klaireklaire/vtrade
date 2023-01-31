@@ -25,15 +25,12 @@ CREATE TABLE offering(
     image7         TEXT,
     image8         TEXT,
     image9         TEXT,
-    image10         TEXT,
+    image10        TEXT,
     description    TEXT,
     location       TEXT NOT NULL,
     payment        TEXT NOT NULL,
     createdat      TIMESTAMP NOT NULL DEFAULT NOW(),
     updatedat      TIMESTAMP NOT NULL DEFAULT NOW()
-
-
-
 
 );
 

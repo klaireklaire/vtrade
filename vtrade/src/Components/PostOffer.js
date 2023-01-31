@@ -93,8 +93,7 @@ export default function PostOffer(props) {
     props.setIsLoading(true);
 
     const pictures = images.map((image) => image.file);
-   // console.log(pictures[0])
-
+   
     const { data, error } = await apiClient.postItem({
       userId: props.user.id,
       title: title,
@@ -110,7 +109,10 @@ export default function PostOffer(props) {
     if (data) {
       navigate("/");
       props.setIsLoading(false);
+    } else{
+      console.log(error)
     }
+
 
      props.setIsLoading(false);
   };

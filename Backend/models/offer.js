@@ -13,21 +13,60 @@ class Offer {
 
     return res
   }
-  static async postOffer(offer, images) {
-    const requiredFields = [
-      "category",
-      "title",
-      "price",
-      "condition",
-      "location",
-      "payment",
-    ];
 
-    requiredFields.forEach((field) => {
-      if (!offer.hasOwnProperty(field)) {
-        throw new BadRequestError(`Missing ${field} in request body.`);
-      }
-    });
+  static async getOfferById(id){
+    const result = await db.query(`
+    SELECT * FROM offering
+    WHERE id=` + id + `;
+    `
+    )
+
+    const res = result.rows
+    return res;
+
+  }
+
+  static async getOffersByUser(userId){
+    const result = await db.query(`
+    SELECT * FROM offering
+    WHERE user_id=` + userId + `;
+    `
+    )
+
+    const res = result.rows
+    return res;
+
+  }
+
+  static async getHighlights(){
+    const result = await db.query(`
+    SELECT * FROM offering 
+    JOIN (
+      SELECT firstname, lastname, email, id FROM users
+    ) AS acc ON offering.user_id = acc.id;
+    `)
+
+    const res = result.rows
+
+    return res
+  }
+ 
+  static async postOffer(offer, images) {
+    // const requiredFields = [
+    //   "category",
+    //   "title",
+    //   "price",
+    //   "condition",
+    //   "location",
+    //   "payment",
+    // ];
+
+    // requiredFields.forEach((field) => {
+    //   if (!offer.hasOwnProperty(field)) {
+    //     throw new BadRequestError(`Missing ${field} in request body.`);
+    //   }
+    // });
+
     if (offer.title.length <= 0) {
       throw new BadRequestError("Provide a title for your item");
     }
@@ -36,7 +75,7 @@ class Offer {
       throw new BadRequestError("Invalid price");
     }
 
-    const result = await db.query(
+    var result = await db.query(
       `
                     INSERT INTO offering(
                           user_id,
@@ -61,7 +100,7 @@ class Offer {
         offer.description,
         offer.condition,
         offer.location,
-        offer.payment,
+        offer.method,
       ]
     );
 
@@ -93,30 +132,8 @@ class Offer {
       const url = uploadedImage.Location;
       const currImage = "image" + (i + 1)
 
-      // id             SERIAL PRIMARY KEY,
-      // user_id             INTEGER NOT NULL,
-      // FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
-      // title          TEXT NOT NULL,
-      // category       TEXT NOT NULL,
-      // condition      TEXT NOT NULL,
-      // price          FLOAT NOT NULL,
-      // image1         TEXT,
-      // image2         TEXT,
-      // image3         TEXT,
-      // image4         TEXT,
-      // image5         TEXT,
-      // image6         TEXT,
-      // image7         TEXT,
-      // image8         TEXT,
-      // image9         TEXT,
-      // image10         TEXT,
-      // description    TEXT,
-      // location       TEXT NOT NULL,
-      // payment        TEXT NOT NULL,
-      // createdat      TIMESTAMP NOT NULL DEFAULT NOW(),
-      // updatedat      TIMESTAMP NOT NULL DEFAULT NOW()
 
-      await db.query(`
+      result = await db.query(`
                UPDATE offering
                         SET ` + currImage + ` = $1
                         WHERE id = $2
@@ -126,12 +143,13 @@ class Offer {
         offerId
       ])
 
-      console.log(url);
+     
     }
+   
 
-    // const res = result.rows;
+     const res = result.rows;
 
-    // return res;
+     return res;
   }
 }
 

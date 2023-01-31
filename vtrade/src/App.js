@@ -14,6 +14,8 @@ import apiClient from "./Services/apiClient";
 import Box from '@mui/material/Box';
 import PostOffer from "./Components/PostOffer";
 import PostRequest from "./Components/PostRequest";
+import HomePage from "./Components/HomePage";
+import ProductCard from "./Components/ProductCard";
 
 
 
@@ -61,12 +63,13 @@ function App() {
       <BrowserRouter>
         <Navbar user={user} setUser={setUser} isLoading={isLoading} setIsLoading={setIsLoading} loader={loader}/>
         <Routes>
-          <Route path="/" element={<Categories />} />
+          <Route path="/" element={<HomePage />} />
           <Route path="/post" element={<NewPost user={user} setUser={setUser}  />} />
           <Route path="/login" element={<Login user={user} setUser={setUser} isLoading={isLoading} setIsLoading={setIsLoading} loader={loader}/> } />
           <Route path="/register" element={<Register user={user} setUser={setUser} isLoading={isLoading} setIsLoading={setIsLoading}  loader={loader}/>} />
           <Route path="/passwordemail" element={<ForgotPasswordEmail />} />
           <Route path="/passwordconfirm" element={<ForgotPasswordConfirm />} />
+          <Route path="/post/:id" element={<ProductCard />} />
           <Route path="/*" element={<NotFound />} />
           <Route path="/post/offer" element={<PostOffer user={user} setUser={setUser} isLoading={isLoading} setIsLoading={setIsLoading} loader={loader}/>} />
           <Route path="/post/request" element={<PostRequest user={user} setUser={setUser} />} />
