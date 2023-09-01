@@ -21,7 +21,7 @@ class Offer {
     `
     )
 
-    const res = result.rows
+    const res = result.rows[0]
     return res;
 
   }
@@ -42,8 +42,8 @@ class Offer {
     const result = await db.query(`
     SELECT * FROM offering 
     JOIN (
-      SELECT firstname, lastname, email, id FROM users
-    ) AS acc ON offering.user_id = acc.id;
+      SELECT firstname, lastname, email, id AS what FROM users
+    ) AS acc ON offering.user_id = acc.what;
     `)
 
     const res = result.rows
