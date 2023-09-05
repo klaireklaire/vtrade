@@ -28,6 +28,21 @@
   color: #61dafb;
 }
 
+.error{
+  color: red;
+  font-style: italic;
+  font-family:Arial, Helvetica, sans-serif;
+  margin-left: 10px;
+
+}
+
+.images{
+
+  background-color: aqua;
+
+
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
