@@ -20,14 +20,15 @@ import ProductCard from "./ProductCard";
 import apiClient from "../Services/apiClient";
 import { Container, Grid } from "@mui/material";
 import { useState, useEffect } from "react";
+import offers from "../mock_data/offers";
 
 export default function HomePage(props) {
   const [highlights, setHighlights] = useState(null);
 
   useEffect(() => {
     const getHighlights = async () => {
-      const response = await apiClient.getHighlights();
-      console.log(response.error)
+      const response = offers
+      // console.log(response.error)
       if (response?.data?.offers) {
         setHighlights(response.data.offers);
       }
