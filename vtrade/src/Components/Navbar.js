@@ -10,17 +10,11 @@ import { color, fontStyle } from "@mui/system";
 import { Navigate, useNavigate } from "react-router-dom";
 import { Grid } from "@mui/material";
 import apiClient from "../Services/apiClient";
+import { MENU_ITEMS } from '../Constants'
+
 
 
 export default function Navbar(props) {
-
-  const menuItems = [
-    { id: 'Housing', text: 'Housing' },
-    { id: 'Goods', text: 'Goods' },
-    { id: 'Jobs', text: 'Jobs' },
-    { id: 'Personals', text: 'Personals' },
-    { id: 'Services', text: 'Services' },
-  ];
 
   // Function to handle menu item click
   const handleMenuItemClick = (id) => {
@@ -44,7 +38,7 @@ export default function Navbar(props) {
       </div>
       <div className="flex items-center place-items-center">
         <div className="flex flex-row gap-8 h-6">
-          {menuItems.map((menuItem) => (
+          {MENU_ITEMS.map((menuItem) => (
           <p key={menuItem.id}>
             {/* Use an onClick event handler to call handleMenuItemClick */}
             <a 

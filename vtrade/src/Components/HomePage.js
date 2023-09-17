@@ -22,20 +22,13 @@ import { Container, Grid } from "@mui/material";
 import { useState, useEffect } from "react";
 import offers from "../mock_data/offers";
 import { Navigate, useNavigate } from "react-router-dom";
+import moment from "moment/moment";
+import { MENU_ITEMS } from '../Constants'
 
 export default function HomePage(props) {
   const [highlights, setHighlights] = useState(null);
 
   const navigate = useNavigate();
-
-  const menuItems = [
-    { id: 'Housing', text: 'Housing' },
-    { id: 'Goods', text: 'Goods' },
-    { id: 'Jobs', text: 'Jobs' },
-    { id: 'Personals', text: 'Personals' },
-    { id: 'Services', text: 'Services' },
-  ];
-
 
   useEffect(() => {
     const getHighlights = async () => {
@@ -65,7 +58,7 @@ export default function HomePage(props) {
         What would you like to find?
       </a>
         <div className="flex flex-row overflow-x-auto scrollbar-none pt-8">
-          {menuItems.map((menuItems) => (
+          {MENU_ITEMS.map((menuItems) => (
             <button class="w-[272px] h-[8rem] mr-6 border-2 border-slate-800 max-w-xs overflow-hidden rounded-3xl bg-white hover:bg-slate-100 duration-300 flex items-center justify-center inline-block px-3 text-lg text-slate-800 font-mulish font-bold"
               href={`/${menuItems.id}`} 
               onClick={() => handelMenuItemClick(menuItems.id)}>
@@ -90,7 +83,9 @@ export default function HomePage(props) {
                   <div className="text-light-black font-Mulish text-sm font-semibold leading-5 tracking-tighter">
                     {item.firstname + " " + item.lastname}
                   </div>
-                  <div className="text-black text-xs text-center mt-1">Subheader Text</div>
+                  <div className="text-black text-xs text-center mt-1">
+                    {moment(item.createdat).fromNow()}
+                  </div>
                 </div>
               </div>
               <div className="max-w rounded overflow-hidden shadow-lg">
@@ -100,7 +95,7 @@ export default function HomePage(props) {
                   alt="Listing photo"
                 />
               </div>
-              <div className="px-5 py-4 text-center">
+              <div className="px-5 py-4 text-start">
                 <p className="text-gray-800 font-Mulish text-base font-semibold leading-6 tracking-[0.2px]">
                   {item.title}
                 </p>
@@ -114,105 +109,6 @@ export default function HomePage(props) {
         ) : null
         }
       </div>
-
-    <Box sx={{ mt: "6px", ml: "6px" }}>
-
-      <Box
-        sx={{
-          mb: "30px",
-          display: "flex",
-          flexDirection: "row",
-          overflow: "auto",
-          "&::-webkit-scrollbar": { display: "none" },
-        }}
-      >
-        {highlights ? (
-          highlights.map((item, i) => (
-            <Grid key={i} item xs={4} justifyContent="center">
-              <Card
-                sx={{
-                  //  maxWidth: 345,
-                  m: "10px",
-                  width: "300px",
-                  height : "350px"
-                }}
-              >
-                <CardHeader
-                  avatar={
-                    <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
-                      <PersonIcon />
-                    </Avatar>
-                  }
-                  title={item.firstname + " " + item.lastname}
-                  subheader={
-                    (Date.now() - new Date(item.createdat)) / 1000 > 60
-                      ? (Date.now() - new Date(item.createdat)) / (1000 * 60) >
-                        60
-                        ? (Date.now() - new Date(item.createdat)) /
-                            (1000 * 60 * 60) >
-                          24
-                          ? (Date.now() - new Date(item.createdat)) /
-                              (1000 * 60 * 60 * 24) >
-                            7
-                            ? (Date.now() - new Date(item.createdat)) /
-                                (1000 * 60 * 60 * 24 * 7) >
-                              4
-                              ? (Date.now() - new Date(item.createdat)) /
-                                  (1000 * 60 * 60 * 24 * 7 * 4) >
-                                12
-                                ? Math.trunc(
-                                    (Date.now() - new Date(item.createdat)) /
-                                      (1000 * 60 * 60 * 24 * 7 * 4 * 12)
-                                  ) + " years ago"
-                                : Math.trunc(
-                                    (Date.now() - new Date(item.createdat)) /
-                                      (1000 * 60 * 60 * 24 * 7 * 4)
-                                  ) + " months ago"
-                              : Math.trunc(
-                                  (Date.now() - new Date(item.createdat)) /
-                                    (1000 * 60 * 60 * 24 * 7)
-                                ) + " weeks ago"
-                            : Math.trunc(
-                                (Date.now() - new Date(item.createdat)) /
-                                  (1000 * 60 * 60 * 24)
-                              ) + " days ago"
-                          : Math.trunc(
-                              (Date.now() - new Date(item.createdat)) /
-                                (1000 * 60 * 60)
-                            ) + " hours ago"
-                        : Math.trunc(
-                            (Date.now() - new Date(item.createdat)) /
-                              (1000 * 60)
-                          ) + " minutes ago"
-                      : Math.trunc(
-                          (Date.now() - new Date(item.createdat)) / 1000
-                        ) + " seconds ago"
-                  }
-                />
-
-                <CardMedia
-                  component="img"
-                  sx={{height : "200px"}}
-                  image={item.image1}
-                  alt="listing photo"
-                />
-
-                <CardContent sx={{ textAlign: "center" }}>
-                  <Typography variant="h6" color="text.secondary">
-                    {item.title}
-                  </Typography>
-                  <Typography variant="h6" color="text.secondary">
-                    {"$" + item.price}
-                  </Typography>
-                </CardContent>
-              </Card>
-            </Grid>
-          ))
-        ) : (
-          <Typography> 🇼🇫 </Typography>
-        )}
-      </Box>
-    </Box>
     </div>
   );
 }
