@@ -13,107 +13,74 @@ import apiClient from "../Services/apiClient";
 
 
 export default function Navbar(props) {
+
+  const menuItems = [
+    { id: 'Housing', text: 'Housing' },
+    { id: 'Goods', text: 'Goods' },
+    { id: 'Jobs', text: 'Jobs' },
+    { id: 'Personals', text: 'Personals' },
+    { id: 'Services', text: 'Services' },
+  ];
+
+  // Function to handle menu item click
+  const handleMenuItemClick = (id) => {
+    console.log(`Clicked on ${id}`);
+    navigate(id)
+  };
+
   const navigate = useNavigate();
   return (
-    <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static">
-        <Toolbar>
-          <Typography variant="h6" sx={{ flexGrow: 0.5, cursor: "pointer" }} onClick={() =>{
-            navigate("/")
-          }}>
+    <div className="flex justify-between items-centers opacity-6 h-20 bg-[#edebeb] p-5 drop-shadow-md ring-2 ring-gray-400">
+      <div className="flex items-center place-items-center">
+        <div className="py-6">
+          <button 
+            className="bg-transparent border-none text-[#333] leading-32 tracking-tight uppercase text-center text-lg font-medium cursor-pointer text-gray-700 ml-14 w-24" 
+            onClick={() => {
+              navigate("/");
+            }}>
             VTRADE
-          </Typography>
-          <Box sx={{ display: "flex", flexDirection: "row", flexGrow: 0.5 }}>
-            <Typography
-              sx={{
-                fontFamily: "mulish",
-                fontSize: "14px",
-                letterSpacing: "0.2px",
-                marginRight: "20px",
-              }}
-            >
-              Housing
-            </Typography>
-            <Typography
-              sx={{
-                fontFamily: "mulish",
-                fontSize: "14px",
-                letterSpacing: "0.2px",
-                marginRight: "20px",
-              }}
-            >
-              Goods
-            </Typography>
-            <Typography
-              sx={{
-                fontFamily: "mulish",
-                fontSize: "14px",
-                letterSpacing: "0.2px",
-                marginRight: "20px",
-              }}
-            >
-              Jobs
-            </Typography>
-            <Typography
-              sx={{
-                fontFamily: "mulish",
-                fontSize: "14px",
-                letterSpacing: "0.2px",
-                marginRight: "20px",
-              }}
-            >
-              Personals
-            </Typography>
-            <Typography
-              sx={{
-                fontFamily: "mulish",
-                fontSize: "14px",
-                letterSpacing: "0.2px",
-              }}
-            >
-              Services
-            </Typography>
-          </Box>
-          <Box>
-            <Button
-              variant="contained"
-              onClick={() => {
-                if(!props.user){
-                navigate("/login")
-                } else {
-                  apiClient.logoutUser()
-                  props.setUser(null)
-                  navigate("/")
-                }
-
-  
-              }}
-              sx={{
-                backgroundColor: "#2b2c2e",
-                color: "#ffff",
-                marginRight: "20px",
-              }}
-
-              
-            >
-             {props.user ? "Log out" : "Log in"}
-            </Button>
-            <Button
-              variant="contained"
-              sx={{ backgroundColor: "#2b2c2e", color: "#ffff" }}
-              onClick={() => {
-                if(!props.user){
-                  navigate("/login")
-                } else{
-                  navigate("/post")
-                }
-              }}
-            >
-              Post
-            </Button>
-          </Box>
-        </Toolbar>
-      </AppBar>
-    </Box>
+          </button>
+        </div>
+      </div>
+      <div className="flex items-center place-items-center">
+        <div className="flex flex-row gap-8 h-6">
+          {menuItems.map((menuItem) => (
+          <p key={menuItem.id}>
+            {/* Use an onClick event handler to call handleMenuItemClick */}
+            <a 
+              className="text-gray-600 hover:text-black font-mulish font-semibold text-14 leading-18 capitalize tracking-tight cursor-pointer" 
+              href={`/${menuItem.id}`} 
+              onClick={() => handleMenuItemClick(menuItem.id)}>
+                {menuItem.text}
+            </a>
+          </p>
+        ))}
+        </div>
+      </div>
+      <div className="flex flex-row justify-end items-center mr-10">
+        <button 
+          className="p-3 px-5 bg-black text-14 font-bold leading-18 tracking-wider text-center font-mulish border-none outline-none cursor-pointer mr-4 text-white hover:bg-[#808080]" type="button" onClick={() => {
+            if(!props.user){
+            navigate("/login")
+            } else {
+              apiClient.logoutUser()
+              props.setUser(null)
+              navigate("/")
+            }
+          }
+        }>
+          {props.user ? "Log out" : "Log in"}
+        </button>
+        <button className="p-3 px-4 bg-black font-mulish text-center font-bold text-14 leading-18 tracking-wider border-none outline-none cursor-pointer mr-4 text-white hover:bg-[#808080]" type="button" onClick={() => {
+          if(!props.user){
+            navigate("/login")
+          } else{
+            navigate("/post")
+          }
+        }}>
+          Post
+        </button>
+      </div>
+    </div>
   );
 }
