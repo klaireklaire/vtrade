@@ -3,7 +3,7 @@ const { BadRequestError, UnauthorizedError } = require("../utils/errors");
 const Token = require("../utils/tokens");
 const { s3 } = require("../config");
 
-class Offer {
+class Product {
   static async getOffers(){
     const result = await db.query(`
     SELECT * FROM offering;
@@ -153,4 +153,4 @@ class Offer {
   }
 }
 
-module.exports = Offer;
+module.exports = Product;
