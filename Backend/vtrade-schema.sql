@@ -35,7 +35,7 @@ CREATE TABLE productdetails(
     FOREIGN KEY (listing_id)  REFERENCES listings(id) ON DELETE CASCADE,
     category        TEXT NOT NULL,
     type            TEXT NOT NULL, --loan/sell
-    condition       TEXT NOT NULL,
+    condition       TEXT NOT NULL
 );
 
 CREATE TABLE transactionhistory(
