@@ -126,7 +126,7 @@ VALUES (
     'zelle'
 );
 
-INSERT INTO services(user_id, title, form, location, price, minprice, maxprice, status)
+INSERT INTO services(user_id, title, form, location, price, minprice, maxprice, status, description, payment)
 VALUES (
     1,
     'Haircut',
@@ -135,7 +135,9 @@ VALUES (
     20,
     NULL,
     NULL,
-    'available'
+    'available',
+    'Like your cut G',
+    'cash'
 ),
 (
     2,
@@ -145,7 +147,9 @@ VALUES (
     NULL,
     30,
     50,
-    'available'
+    'available',
+    'You want the fancy hairstyle?',
+    'zelle'
 ),
 (
     3,
@@ -155,7 +159,9 @@ VALUES (
     90,
     NULL,
     NULL,
-    'available'
+    'available',
+    'I''m a runner I''m a trackstar',
+    'venmo'
 ),
 (
     4,
@@ -165,7 +171,9 @@ VALUES (
     NULL,
     10,
     20,
-    'unavailable'
+    'unavailable',
+    'On that nerd grind',
+    'zelle'
 );
 
 INSERT INTO transactionhistory(user_id, price, seller_id, product_id, service_id)

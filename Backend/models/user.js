@@ -143,7 +143,6 @@ class User {
 
     return user;
   }
-   
 
   static async deleteUser(userId) {
     await db.query(
