@@ -1,12 +1,4 @@
-import React from "react";
-import Box from "@mui/material/Box";
-import TextField from "@mui/material/TextField";
-import Container from "@mui/material/Container";
-import Select, { SelectChangeEvent } from "@mui/material/Select";
-import Tooltip from "@mui/material/Tooltip";
-import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
-import Grid from "@mui/material/Grid";
+import React, { useState } from "react";
 import "../App.css";
 import Paper from "@mui/material/Paper";
 import InputLabel from "@mui/material/InputLabel";
@@ -14,7 +6,6 @@ import { Typography } from "@mui/material";
 import ToggleButton from "@mui/material/ToggleButton";
 import Button from "@mui/material/Button";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
 import InputAdornment from "@mui/material/InputAdornment";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import FormGroup from "@mui/material/FormGroup";
@@ -27,73 +18,30 @@ import ImageList from "@mui/material/ImageList";
 import ImageListItem from "@mui/material/ImageListItem";
 import apiClient from "../Services/apiClient";
 import { Navigate, useNavigate } from "react-router-dom";
+import { selectedSvg, unselectedSvg, currencyFormat } from "../Constants";
 
 export default function PostOffer(props) {
-  const theme = createTheme({
-    status: {
-      danger: "#e53e3e",
-    },
-    palette: {
-      primary: {
-        main: "#0971f1",
-        darker: "#053e85",
-      },
-      neutral: {
-        main: "#64748B",
-        contrastText: "#fff",
-      },
-    },
-    components: {
-      MuiToggleButton: {
-        defaultProps: {
-          disableRipple: true,
-        },
-        styleOverrides: {
-          root: {
-            transition: "",
-            width: "8rem",
-            height: "2.3rem",
-            textTransform: "capitalize",
-            color: "#0971f1",
-            marginRight: "15px",
-
-            "&:hover": { backgroundColor: "transparent" },
-            "&.MuiButtonBase-root": { borderRadius: "1rem" },
-            "&.MuiToggleButtonGroup-grouped": {
-              borderRadius: "5px !important",
-              border: "1px solid !important",
-              borderColor: "#0971f1" + " !important",
-            },
-            "&.Mui-selected, &.Mui-selected:hover": {
-              color: "white",
-              backgroundColor: "#0971f1",
-              borderColor: "#0971f1",
-              borderColor: "#0971f1" + " !important",
-            },
-          },
-        },
-      },
-    },
-  });
-
   const [title, setTitle] = React.useState("");
   const [category, setCategory] = React.useState("");
   const [condition, setCondition] = React.useState("");
   const [description, setDescription] = React.useState("");
   const [location, setLocation] = React.useState("");
-  const [amount, setAmount] = React.useState("");
   const [free, setFree] = React.useState(false);
   const [price, setPrice] = React.useState(null);
   const [method, setMethod] = React.useState(null);
   const [page, setPage] = React.useState(1);
   const [images, setImages] = React.useState([]);
+  const [selectedImageIndex, setSelectedImageIndex] = useState(0);
+
   const navigate = useNavigate();
+  const venmoValue = "venmo";
+  const cashValue = "cash";
+  const naValue = "na";
 
   const handleOnSubmit = async () => {
-    props.setIsLoading(true);
-
     const pictures = images.map((image) => image.file);
-   
+
+    //update this
     const { data, error } = await apiClient.postItem({
       userId: props.user.id,
       title: title,
@@ -109,361 +57,418 @@ export default function PostOffer(props) {
     if (data) {
       navigate("/");
       props.setIsLoading(false);
-    } else{
-      console.log(error)
+    } else {
+      console.log(error);
     }
 
-
-     props.setIsLoading(false);
+    props.setIsLoading(false);
   };
 
   const handleOnInputChange = (event) => {
-    if (event.target.name === "title") {
-      setTitle(event.target.value);
+    const { name, value } = event.target;
+    if (name === "title") {
+      setTitle(value);
     }
 
-    if (event.target.name === "category") {
-      setCategory(event.target.value);
+    if (name === "category") {
+      setCategory(value);
     }
 
-    if (event.target.name === "description") {
-      setDescription(event.target.value);
+    if (name === "condition") {
+      setCondition(value);
     }
 
-    if (event.target.name === "location") {
-      setLocation(event.target.value);
+    if (name === "description") {
+      setDescription(value);
+    }
+
+    if (name === "location") {
+      setLocation(value);
     }
   };
 
-  const handleImageInput = (e) => {
-    const newImages = [
-      ...images,
-      { url: URL.createObjectURL(e.target.files[0]), file: e.target.files[0] },
-    ];
-
-    setImages([
-      ...images,
-      { url: URL.createObjectURL(e.target.files[0]), file: e.target.files[0] },
-    ]);
+  const handlePaymentMethod = (value) => {
+    if (value === "venmo") {
+      if (method === "venmo") {
+        setMethod(null);
+      } else {
+        setMethod(value);
+      }
+    } else if (value === "cash") {
+      if (method === "cash") {
+        setMethod(null);
+      } else {
+        setMethod(value);
+      }
+    } else if (value === "na") {
+      if (method === "na") {
+        setMethod(null);
+      } else {
+        setMethod(value);
+      }
+    }
   };
 
-  const renderImages = () => {
-    return (
-      <ImageList cols={3} rowHeight={250} variant="masonry" sx={{ m: "10px" }}>
-        {images.map((item, index) => (
-          <ImageListItem key={index} sx={{ padding: "11px" }}>
-            <img src={item.url} alt={index} loading="lazy" className="images" />
-            <HighlightOffIcon
-              sx={{
-                position: "absolute",
-                top: "0px",
-                right: "0px",
-                transform: "translate(-0px)",
-                color: "#63686e",
-                cursor: "pointer",
-              }}
-              onClick={() => {
-                const newState = images.filter(
-                  (data) => !(data.url === item.url)
-                );
-                setImages(newState);
-              }}
-            />
-            {/* <img src="http://wecision.com/enterprise/images/icons/closeIcon.png" style="position: absolute; top: 4px; right: 5px"/> */}
-          </ImageListItem>
-        ))}
-      </ImageList>
-    );
-    // images.map((image, index) => (
-
-    // ))
+  const handleOnPriceInputChange = (event) => {
+    if (event.target.value === "For Free") {
+      setPrice(0);
+      setFree(true);
+    } else {
+      setFree(false);
+    }
   };
 
-  
-  // console.log({
-  //   title: title,
-  //   category: category,
-  //   condition: condition,
-  //   price: price,
-  //   description: description,
-  //   location: location,
-  //   method: method,
-  //   images
+  const handleRemoveImage = (index) => {
+    const newImages = [...images];
+    newImages.splice(index, 1);
+    setImages(newImages);
 
-  // })
+    if (index === selectedImageIndex) {
+      // If the removed image was the selected one, update the selected index
+      setSelectedImageIndex(0);
+    }
+  };
+
+  const handleFileInputChange = (event) => {
+    const files = Array.from(event.target.files);
+    setImages([...images, ...files]);
+    setSelectedImageIndex(images.length); // Select the last uploaded image
+    console.log(images);
+  };
+
+  const handleSelectImage = (index) => {
+    setSelectedImageIndex(index);
+  };
 
   return (
-    <Box>
+    <div>
       {props.isLoading ? (
         props.loader()
       ) : (
-        <Box>
-          <Fade in={page == 1} unmountOnExit>
-            <Container fixed sx={{ display: "flex", flexDirection: "column" }}>
-              <TextField
-                margin="normal"
-                required
+        <div>
+          <div className="flex flex-row mt-[40px]">
+            <div className="flex flex-col">
+              <div
+                className="ml-[77px] mr-[55px] h-[440px] w-[640px] mx-auto rounded-2xl bg-white border-dashed border-2 border-gray-300 overflow-hidden flex flex-col items-center justify-center"
+                onDragOver={handleFileInputChange}
+                onDragLeave={handleFileInputChange}
+                onDrop={handleFileInputChange}
+                onClick={() => document.getElementById("file-input").click()}
+              >
+                <input
+                  type="file"
+                  id="file-input"
+                  hidden
+                  onChange={handleFileInputChange}
+                  accept="image/*"
+                  multiple
+                />
+                {images.length === 0 ? (
+                  <p className="text-light-black font-mulish text-lg text-center font-semibold tracking-[0.1px]">
+                    Click or Drag Photos Here
+                  </p>
+                ) : (
+                  <img
+                    src={URL.createObjectURL(images[selectedImageIndex])}
+                    alt={`Image ${selectedImageIndex}`}
+                    className="max-h-full max-w-full mx-auto"
+                  />
+                )}
+              </div>
+              <div>
+                {images.length > 0 && (
+                  <div
+                    className="overflow-x-auto"
+                    style={{ maxWidth: "710px" }}
+                  >
+                    <div className="flex flex-nowrap justify-start mt-3 ml-[77px]">
+                      {images.map((file, index) => (
+                        <div key={index} className="relative m-2">
+                          <button
+                            className="flex items-center justify-center absolute -top-2 -right-2 w-6 h-6 p-1 bg-black rounded-full text-white text-xs cursor-pointer hover:bg-gray-700"
+                            onClick={() => handleRemoveImage(index)}
+                          >
+                            x
+                          </button>
+                          <img
+                            src={URL.createObjectURL(file)}
+                            alt={`Image ${index + 1}`}
+                            className="max-h-[100px] max-w-[100px]"
+                          />
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+            <div className="flex flex-col justify-top items-start flex-shrink-0">
+              <input
+                type="text"
                 name="title"
-                label="title"
+                value={title}
+                placeholder="Title"
+                required
                 onChange={handleOnInputChange}
-                sx={{ width: "250px" }}
+                className="px-3 py-2 w-[600px] h-[50px] font-mulish text-grey-700 font-normal tracking-[0.1px] border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-300 rounded-md border border-gray-700 bg-white"
               />
-              <FormControl sx={{ width: "350px", marginTop: "10px" }}>
-                <InputLabel id="demo-simple-select-label">Category</InputLabel>
-                <Select
-                  labelId="demo-simple-select-label"
-                  id="demo-simple-select"
-                  value={category}
-                  label="category"
-                  name="category"
-                  onChange={handleOnInputChange}
+              <select
+                value={category}
+                name="category"
+                onChange={handleOnInputChange}
+                required
+                className="block w-full font-mulish px-3 py-2 mt-[18px] text-grey-700 font-normal tracking-[0.1px] border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-300 rounded-md border border-gray-700 bg-white"
+              >
+                <option value="" disabled>
+                  --Please choose a Category--
+                </option>
+                <option value="Housing">Housing</option>
+                <option value="Goods">Goods</option>
+                <option value="Jobs">Jobs</option>
+                <option value="Personal">Personal</option>
+                <option value="Services">Services</option>
+              </select>
+              <p className="mt-[24px] text-light-black font-mulish text-lg font-bold tracking-[0.1px]">
+                About the item
+              </p>
+              <p className="mt-[22px] text-light-black font-mulish text-[18px] leading-[24px] font-normal tracking-[0.1px]">
+                Condition
+              </p>
+              <div className="w-full flex justify-start space-x-4 mt-[8px]">
+                <label
+                  className={`inline-flex items-center px-3 py-2 text-primary border border-gray-300 rounded-full cursor-pointer transition duration-300 ease-in-out ${
+                    condition === "Brand New"
+                      ? "bg-[#373F41] text-white"
+                      : "bg-white hover:bg-[#373F41] hover:text-white"
+                  }`}
                 >
-                  <MenuItem value={"Housing"}>Housing</MenuItem>
-                  <MenuItem value={"Goods"}>Goods</MenuItem>
-                  <MenuItem value={"Jobs"}>Jobs</MenuItem>
-                  <MenuItem value={"Personal"}>Personal</MenuItem>
-                  <MenuItem value={"Services"}>Services</MenuItem>
-                </Select>
-              </FormControl>
-
-              <Typography variant="h6">About the item</Typography>
-              <Typography>Condition</Typography>
-              <ThemeProvider theme={theme}>
-                <ToggleButtonGroup
-                  color="primary"
-                  value={condition}
-                  name="condition"
-                  exclusive
-                  onChange={(event) => {
-                    setCondition(event.target.value);
-                  }}
-                  aria-label="Platform"
+                  <input
+                    type="radio"
+                    hidden
+                    name="condition"
+                    value="Brand New"
+                    onChange={handleOnInputChange}
+                  />
+                  Brand New
+                </label>
+                <label
+                  className={`inline-flex items-center px-3 py-2 text-primary border border-gray-300 rounded-full cursor-pointer transition duration-300 ease-in-out ${
+                    condition === "Like New"
+                      ? "bg-[#373F41] text-white"
+                      : "bg-white hover:bg-[#373F41] hover:text-white"
+                  }`}
                 >
-                  <ToggleButton value="Brand New">Brand New</ToggleButton>
-                  <ToggleButton value="Like New">Like New</ToggleButton>
-                  <ToggleButton value="Lightly Used">Lightly Used</ToggleButton>
-                  <ToggleButton value="Well Used">Well Used</ToggleButton>
-                  <ToggleButton value="Heavily Used">Heavily used</ToggleButton>
-                </ToggleButtonGroup>
-                <Typography>Price</Typography>
-                <ToggleButtonGroup
-                  color="primary"
-                  value={amount}
-                  exclusive
-                  onChange={(event) => {
-                    if (event.target.value === "For Free") {
-                      setPrice(0);
-                      setFree(true);
-                    } else {
-                      setFree(false);
-                    }
-                    setAmount(event.target.value);
-                  }}
-                  aria-label="Platform"
+                  <input
+                    type="radio"
+                    hidden
+                    name="condition"
+                    value="Like New"
+                    onChange={handleOnInputChange}
+                  />
+                  Like New
+                </label>
+                <label
+                  className={`inline-flex items-center px-3 py-2 text-primary border border-gray-300 rounded-full cursor-pointer transition duration-300 ease-in-out ${
+                    condition === "Lightly Used"
+                      ? "bg-[#373F41] text-white"
+                      : "bg-white hover:bg-[#373F41] hover:text-white"
+                  }`}
                 >
-                  <ToggleButton value="For Sale">For Sale</ToggleButton>
-                  <ToggleButton value="For Free">For Free</ToggleButton>
-                </ToggleButtonGroup>
-              </ThemeProvider>
-              <FormControl
+                  <input
+                    type="radio"
+                    name="condition"
+                    hidden
+                    value="Lightly Used"
+                    onChange={handleOnInputChange}
+                  />
+                  Lightly Used
+                </label>
+                <label
+                  className={`inline-flex items-center px-3 py-2 text-primary border border-gray-300 rounded-full cursor-pointer transition duration-300 ease-in-out ${
+                    condition === "Well Used"
+                      ? "bg-[#373F41] text-white"
+                      : "bg-white hover:bg-[#373F41] hover:text-white"
+                  }`}
+                >
+                  <input
+                    type="radio"
+                    hidden
+                    name="condition"
+                    value="Well Used"
+                    onChange={handleOnInputChange}
+                  />
+                  Well Used
+                </label>
+                <label
+                  className={`inline-flex items-center px-3 py-2 text-primary border border-gray-300 rounded-full cursor-pointer transition duration-300 ease-in-out ${
+                    condition === "Heavily Used"
+                      ? "bg-[#373F41] text-white"
+                      : "bg-white hover:bg-[#373F41] hover:text-white"
+                  }`}
+                >
+                  <input
+                    type="radio"
+                    hidden
+                    name="condition"
+                    value="Heavily Used"
+                    onChange={handleOnInputChange}
+                  />
+                  Heavily Used
+                </label>
+              </div>
+              <p className="mt-[16px] text-light-black font-mulish text-[18px] leading-[24px] font-normal tracking-[0.1px]">
+                Price
+              </p>
+              <div className="w-full flex justify-start space-x-4 mt-[8px]">
+                <label
+                  className={`inline-flex items-center px-3 py-2 text-primary bg-white border border-gray-300 rounded-full cursor-pointer transition duration-300 ease-in-out ${
+                    !free
+                      ? "bg-[#373F41] text-white"
+                      : "bg-white hover:bg-[#373F41] hover:text-white"
+                  }`}
+                >
+                  <input
+                    type="radio"
+                    hidden
+                    name="price"
+                    value="For Sale"
+                    onChange={handleOnPriceInputChange}
+                  />
+                  For Sale
+                </label>
+                <label
+                  className={`inline-flex items-center px-3 py-2 text-primary bg-white border border-gray-300 rounded-full cursor-pointer transition duration-300 ease-in-out ${
+                    free
+                      ? "bg-[#373F41] text-white"
+                      : "bg-white hover:bg-[#373F41] hover:text-white"
+                  }`}
+                >
+                  <input
+                    type="radio"
+                    hidden
+                    name="price"
+                    value="For Free"
+                    onChange={handleOnPriceInputChange}
+                  />
+                  Free!
+                </label>
+              </div>
+              <input
+                type="number"
+                className={`border border-solid border-black bg-white rounded-md p-4 w-full mt-[16px] text-gray-500 text-base font-mulish font-normal leading-5 tracking-wider ${
+                  free ? "opacity-25" : ""
+                }`}
+                placeholder="$ Price your listing"
+                disabled={free}
+                value={price}
                 onChange={(event) => {
                   setPrice(event.target.value);
                 }}
-                sx={{ width: "300px", mt: "20px" }}
-              >
-                <InputLabel htmlFor="outlined-adornment-amount">
-                  Amount
-                </InputLabel>
-                <OutlinedInput
-                  id="outlined-adornment-amount"
-                  value={price}
-                  startAdornment={
-                    <InputAdornment position="start">$</InputAdornment>
-                  }
-                  disabled={free}
-                  label="Amount"
-                  type="number"
-                />
-              </FormControl>
-
-              <Typography sx={{ mt: "20px" }}>Description</Typography>
-
-              <TextField
-                minRows={3}
-                maxRows={7}
+              />
+              <p className="mt-[16px] text-light-black font-mulish text-[18px] leading-[24px] font-normal tracking-[0.1px]">
+                Payment Method
+              </p>
+              <div className="flex flex-row items-center justify-center mt-[8px]">
+                <div className="flex flex-row mr-[24px]">
+                  <div
+                    className="cursor-pointer"
+                    name="method"
+                    value="cash"
+                    onClick={() => handlePaymentMethod(cashValue)}
+                  >
+                    {method === "cash" ? selectedSvg : unselectedSvg}
+                  </div>
+                  <label
+                    name="method"
+                    value="cash"
+                    onClick={() => handlePaymentMethod(cashValue)}
+                    className=" select-none inline-flex cursor-pointer items-center ml-[8px] text-primary bg-white font-mulish text-base font-normal tracking-[0.1px]"
+                  >
+                    Cash
+                  </label>
+                </div>
+                <div className="flex flex-row mx-[24px]">
+                  <div
+                    className="cursor-pointer"
+                    name="method"
+                    value="venmo"
+                    onClick={() => handlePaymentMethod(venmoValue)}
+                  >
+                    {method === "venmo" ? selectedSvg : unselectedSvg}
+                  </div>
+                  <label
+                    name="method"
+                    className=" select-none inline-flex cursor-pointer items-center ml-[8px] text-primary bg-white font-mulish text-base font-normal tracking-[0.1px]"
+                    onClick={() => handlePaymentMethod(venmoValue)}
+                  >
+                    Venmo
+                  </label>
+                </div>
+                <div className="flex flex-row mx-[24px]">
+                  <div
+                    className="cursor-pointer"
+                    name="method"
+                    value="not_applicable"
+                    onClick={() => handlePaymentMethod(naValue)}
+                  >
+                    {method === "na" ? selectedSvg : unselectedSvg}
+                  </div>
+                  <label
+                    name="method"
+                    value="not_applicable"
+                    onClick={() => handlePaymentMethod(naValue)}
+                    className=" select-none inline-flex cursor-pointer items-center ml-[8px] text-primary bg-white font-mulish text-base font-normal tracking-[0.1px]"
+                  >
+                    Not Applicable
+                  </label>
+                </div>
+              </div>
+              <p className="mt-[16px] text-light-black font-mulish text-[18px] leading-[24px] font-normal tracking-[0.1px]">
+                Description
+              </p>
+              <textarea
                 name="description"
-                //    value={form.description}
-                multiline
-                sx={{ width: "600px" }}
-                placeholder="sizing, brand, any issues/imperfections, etc..."
-                id="description"
+                className="font-mulish text-light-black font-normal mt-[8px] w-full h-[208px] resize-none border-2 border-solid border-gray-600 bg-white rounded-md p-3 rounded-md focus:ring focus:ring-blue-400"
+                placeholder="Describe what you are selling and include any details a buyer might be interested in. People love items with stories!"
+                value={description}
                 onChange={handleOnInputChange}
                 autoFocus
+                rows={3}
               />
-
-              <Typography sx={{ mt: "20px" }}>Pickup location</Typography>
-              <FormControl sx={{ width: "350px", mb: "50px" }}>
-                <InputLabel id="demo-simple-select-label">Location</InputLabel>
-                <Select
-                  labelId="demo-simple-select-label"
-                  id="demo-simple-select"
-                  value={location}
-                  label="location"
-                  name="location"
-                  onChange={handleOnInputChange}
-                >
-                  <MenuItem value={"Campus"}>Campus</MenuItem>
-                </Select>
-              </FormControl>
-
-              <Typography>Payment method</Typography>
-              <FormGroup
-                name="method"
-                onChange={(event) => {
-                  if (event.target.checked) {
-                    setMethod(event.target.value);
-                  } else {
-                    setMethod(null);
-                  }
-                }}
-                sx={{
-                  border: "solid",
-                  borderWidth: "1px",
-                  borderRadius: "2px",
-                  mb: "20px",
-                  padding: "20px",
-                  width: "120px",
-                }}
+              <p className="mt-[16px] text-light-black font-mulish text-[18px] leading-[24px] font-normal tracking-[0.1px]">
+                Pickup Location
+              </p>
+              <select
+                value={location}
+                name="location"
+                onChange={handleOnInputChange}
+                className="block w-full font-mulish px-3 py-2 mt-[18px] text-grey-700 font-normal tracking-[0.1px] border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-300 rounded-md border border-gray-700 bg-white"
               >
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      sx={{
-                        "&.Mui-checked": {
-                          color: "#0971f1",
-                        },
-                      }}
-                    />
-                  }
-                  value="Cash"
-                  label="Cash"
-                />
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      sx={{
-                        "&.Mui-checked": {
-                          color: "#0971f1",
-                        },
-                      }}
-                    />
-                  }
-                  value="Venmo"
-                  label="Venmo"
-                />
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      sx={{
-                        "&.Mui-checked": {
-                          color: "#0971f1",
-                        },
-                      }}
-                    />
-                  }
-                  value="Zelle"
-                  label="Zelle"
-                />
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      sx={{
-                        "&.Mui-checked": {
-                          color: "#0971f1",
-                        },
-                      }}
-                    />
-                  }
-                  value="Free"
-                  label="Free"
-                />
-              </FormGroup>
-              <Box
-                sx={{
-                  marginTop: "30px",
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                  mb: "10px",
-                }}
+                <option value="" disabled selected>
+                  Location
+                </option>
+                <option value="Housing">TH</option>
+                <option value="Goods">TA</option>
+                <option value="Jobs">Jewett</option>
+                <option value="Personal">Raymond</option>
+                <option value="Services">Davi</option>
+                <option value="Services">Joss</option>
+                <option value="Services">Main</option>
+                <option value="Services">Noyes</option>
+                <option value="Services">Cushing</option>
+                <option value="Services">Ferry</option>
+                <option value="Services">Other</option>
+              </select>
+              <button
+                className="mt-[32px] p-3 px-4 bg-black tracking-wider border-none outline-none cursor-pointer mr-4 text-white hover:bg-[#808080] text-center font-mulish text-base font-semibold leading-4 tracking-wider text-light-white"
+                onClick={handleOnSubmit}
               >
-                <Button
-                  variant="contained"
-                  sx={{
-                    backgroundColor: "#2b2c2e",
-                    color: "#ffff",
-                    width: "150px",
-                  }}
-                  onClick={() => {
-                    setPage(2);
-                  }}
-                >
-                  Add images
-                </Button>
-              </Box>
-            </Container>
-          </Fade>
-
-          <Fade in={page == 2}>
-            <Box sx={{ display: "flex", flexDirection: "column" }}>
-              <Typography>Add at least 1 image and at most 10</Typography>
-
-              <Button
-                variant="contained"
-                component="label"
-                sx={{
-                  backgroundColor: "#2b2c2e",
-                  color: "#ffff",
-                  width: "120px",
-                }}
-                //   disabled={form.images.length > 4}
-              >
-                Add Image
-                <input
-                  //   onChange={handleImageInput}
-                  type="file"
-                  name={`image`}
-                  onChange={handleImageInput}
-                  hidden
-                  accept="image/png, image/jpeg"
-                />
-              </Button>
-
-              {renderImages()}
-
-              <Tooltip title="Add at least one image" arrow>
-                <Box sx={{ width: "max-content" }}>
-                  <Button
-                    variant="contained"
-                    component="label"
-                    onClick={handleOnSubmit}
-                    sx={{
-                      backgroundColor: "#2b2c2e",
-                      color: "#ffff",
-                      width: "120px",
-                      mt: "20px",
-                    }}
-                    disabled={images.length < 1 || images.length > 10}
-                  >
-                    Post!!
-                  </Button>
-              
-                </Box>
-              </Tooltip>
-            </Box>
-          </Fade>
-        </Box>
+                List Now
+              </button>
+            </div>
+          </div>
+        </div>
       )}
-    </Box>
+    </div>
   );
 }
