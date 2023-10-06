@@ -49,206 +49,228 @@ VALUES
     'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQrkjilXJ25sRAWzns91MsF1PB7lYKwIA1bmA&usqp=CAU'
 );
 
-INSERT INTO products(user_id, title, category, location, description, type, form, price, condition, minprice, maxprice, status, payment)
+INSERT INTO listings(user_id, title, location, description, form, price, minprice, maxprice, status, payment, listingtype)
 VALUES (
     1,
     'New fifa game',
-    'Electronics',
     'Campus',
     'Standard edition FIFA 23',
-    'sell',
     'provide',
     45.00,
-    'Brand new',
     NULL,
     NULL,
     'available',
-    'zelle'
+    'zelle',
+    0
 ),
 (
     2,
     'Laundry detergent',
-    'Goods',
     'Deece',
     'Tide original large',
-    'loan',
     'provide',
     NULL,
-    'A quarter used up',
     20.50,
     30.00,
     'available',
-    'venmo'
+    'venmo',
+    0
 ),
 (
     3,
     'Soccer cleats',
-    'Sports',
     'Cushing',
     'Barely used soccer cleats',
-    'sell',
     'request',
     NULL,
-    'Barely used',
     50.00,
     70.00,
     'available',
-    'zelle'
+    'zelle',
+    0
 ),
 (
     4,
     'Fridge',
-    'Electronics',
     'Campus',
     'Mini-fridge easily transportable',
-    'loan',
     'request',
     32.00,
-    'used',
     NULL,
     NULL,
     'available',
-    'cash'
+    'cash',
+    0
 ),
 (
     1,
     'TV',
-    'Electronics',
     'Raymond',
     'LGTV',
-    'sell',
     'provide',
     120.00,
-    'Brand new',
     NULL,
     NULL,
     'unavailable',
-    'zelle'
-);
-
-INSERT INTO services(user_id, title, form, location, price, minprice, maxprice, status)
-VALUES (
+    'zelle',
+    0
+),
+(
     1,
     'Haircut',
-    'provide',
     'Davison',
+    'Like your cut G',
+    'provide',
     20,
     NULL,
     NULL,
-    'available'
+    'available',
+    'cash',
+    1
 ),
 (
     2,
     'Hairdressing',
-    'request',
     'Campus',
+    'You want the fancy hairstyle?',
+    'request',
     NULL,
     30,
     50,
-    'available'
+    'available',
+    'zelle',
+    1
 ),
 (
     3,
     'Running lessons',
-    'provide',
     'Athletics centre',
+    'I''m a runner I''m a trackstar',
+    'provide',
     90,
     NULL,
     NULL,
-    'available'
+    'available',
+    'venmo',
+    1
 ),
 (
     4,
     'Leetcode sessions',
-    'request',
     'Sanders',
+    'On that nerd grind',
+    'request',
     NULL,
     10,
     20,
-    'unavailable'
+    'unavailable',
+    'zelle',
+    1
 );
 
-INSERT INTO transactionhistory(user_id, price, seller_id, product_id, service_id)
+INSERT INTO productdetails(listing_id, category, type, condition)
+VALUES (
+    1,
+    'Electronics',
+    'sell',
+    'Brand new'
+),
+(
+    2,
+    'Goods',
+    'loan',
+    'A quarter used up'
+),
+(
+    3,
+    'Sports',
+    'sell',
+    'Barely used'
+),
+(
+    4,
+    'Electronics',
+    'loan',
+    'used'
+),
+(
+    5,
+    'Electronics',
+    'sell',
+    'Brand new'
+);
+
+INSERT INTO transactionhistory(user_id, price, seller_id, listing_id)
 VALUES (
     1,
     50.99,
     2,
-    2,
-    NULL
+    2
 ),
 (
     2,
     20.99,
     1,
-    1,
-    NULL
+    1
 ),
 (
     3,
     100.10,
     4,
-    NULL,
-    4
+    9
 ),
 (
     4,
     200.00,
     1,
-    NULL,
-    1
+    6
 ),
 (
     4,
     30.00,
     2,
-    NULL,
-    2
+    7
 );
 
-INSERT INTO ratings(user_id, rating, seller_id, product_id, service_id)
+
+INSERT INTO ratings(user_id, rating, seller_id, listing_id)
 VALUES (
     1,
     4.5,
     2,
-    2,
-    NULL
+    2
 ),
 (
     2,
     3.4,
     1,
-    1,
-    NULL
+    1
 ),
 (
     3,
     2.0,
     4,
-    NULL,
-    4
+    9
 ),
 (
     4,
     5.0,
     1,
-    NULL,
-    1
+    6
 ),
 (
     4,
     4.2,
     2,
-    NULL,
-    2
+    7
 );
 
-INSERT INTO reviews(user_id, review, seller_id, product_id, service_id, rating_id)
+INSERT INTO reviews(user_id, review, seller_id, listing_id, rating_id)
 VALUES (
     1,
     'Great product, just as described on the website',
     2,
     2,
-    NULL,
     1
 ),
 (
@@ -256,73 +278,63 @@ VALUES (
     'Loved the seller, was really nice',
     1,
     1,
-    NULL,
     2
 ),
 (
     3,
     'Service could''ve been a bit better but I liked it overall',
     4,
-    NULL,
-    4,
+    9,
     3
 ),
 (
     4,
     'You''ll never find better service anywhere in the world trust me',
     1,
-    NULL,
-    1,
+    6,
     4
 ),
 (
     4,
     'I''ll definitely be back here',
     2,
-    NULL,
-    2,
+    7,
     5
 );
 
-INSERT INTO productimages(product_id, service_id, image1, image2, image3)
+INSERT INTO productimages(listing_id, image1, image2, image3)
 VALUES(
     1,
-    NULL,
     'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSS1dC83bxfJ_z7-0bQvJz-zoUU1chXVyYY-A&usqp=CAU',
     'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSmDAIVHC9IPAkCx4bqLVWMfyv12Vp6Xn-exw&usqp=CAU',
     'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQxL5yQNZdumuXH_c7l9TKyWK5SvA8yDl-Mrw&usqp=CAU'
 ),
 (
     2,
-    NULL,
     'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQxL5yQNZdumuXH_c7l9TKyWK5SvA8yDl-Mrw&usqp=CAU',
     'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSmDAIVHC9IPAkCx4bqLVWMfyv12Vp6Xn-exw&usqp=CAU',
     NULL
 ),
 (
     3,
-    NULL,
     'https://i.insider.com/63a0c2f4b5600000185b5f11?width=700',
     'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSmDAIVHC9IPAkCx4bqLVWMfyv12Vp6Xn-exw&usqp=CAU',
     'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQxL5yQNZdumuXH_c7l9TKyWK5SvA8yDl-Mrw&usqp=CAU'
 ),
 (
-    NULL,
-    1,
+    6,
     'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQrkjilXJ25sRAWzns91MsF1PB7lYKwIA1bmA&usqp=CAU',
     'https://i.insider.com/63a0c2f4b5600000185b5f11?width=700',
     'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQxL5yQNZdumuXH_c7l9TKyWK5SvA8yDl-Mrw&usqp=CAU'
 ),
 (
-    NULL,
-    2,
+    7,
     'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQlZQNzKFr-NbbLgEWuIOLvx0J3q2bcZJw6YQ&usqp=CAU',
     'https://i.insider.com/63a0c2f4b5600000185b5f11?width=700',
     'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSmDAIVHC9IPAkCx4bqLVWMfyv12Vp6Xn-exw&usqp=CAU'
 ),
 (
-    NULL,
-    3,
+    8,
     'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSS1dC83bxfJ_z7-0bQvJz-zoUU1chXVyYY-A&usqp=CAU',
     'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSmDAIVHC9IPAkCx4bqLVWMfyv12Vp6Xn-exw&usqp=CAU',
     'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQxL5yQNZdumuXH_c7l9TKyWK5SvA8yDl-Mrw&usqp=CAU'
