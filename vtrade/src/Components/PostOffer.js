@@ -49,6 +49,16 @@ export default function PostOffer(props) {
     props.setIsLoading(false);
   };
 
+  // Callback function to update images
+  const updateImages = (newImages) => {
+    setImages(newImages);
+  };
+
+  // Callback function to update selectedImageIndex
+  const updateSelectedImageIndex = (newIndex) => {
+    setSelectedImageIndex(newIndex);
+  };
+
   const handleOnInputChange = (event) => {
     const { name, value } = event.target;
     if (name === "title") {
