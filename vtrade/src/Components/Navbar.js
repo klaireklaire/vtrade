@@ -57,7 +57,8 @@ export default function Navbar(props) {
       </div>
       <div className="flex flex-row justify-end items-center mr-10">
         <button
-          className="p-3 px-5 w-24 bg-black text-14 font-bold leading-18 tracking-wider text-center font-mulish border-none outline-none cursor-pointer mr-4 text-white hover:bg-[#808080]"
+          className={`p-3 px-5  bg-black text-14 font-bold leading-18 tracking-wider text-center font-mulish border-none outline-none cursor-pointer mr-4 text-white hover:bg-[#808080]
+          ${props.user ? "w-26" : "w-24"}`}
           type="button"
           onClick={() => {
             if (!props.user) {
@@ -87,7 +88,7 @@ export default function Navbar(props) {
           >
             Post
           </button>
-          <DropdownMenu isOpen={isMenuOpen} />
+          <DropdownMenu isOpen={isMenuOpen} props={props} />
         </div>
       </div>
     </div>
