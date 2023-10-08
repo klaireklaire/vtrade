@@ -3,6 +3,7 @@ import offers from "../mock_data/offers";
 import moment from "moment/moment";
 import { useState, useEffect } from "react";
 import PersonIcon from "@mui/icons-material/Person";
+import apiClient from "../Services/apiClient";
 
 export default function HighLights() {
   const [highlights, setHighlights] = useState(null);
@@ -10,6 +11,7 @@ export default function HighLights() {
   useEffect(() => {
     const getHighlights = async () => {
       const response = offers;
+      // const {data, error} = await apiClient.getHighlights()
       if (response?.data?.offers) {
         setHighlights(response.data.offers);
       }
