@@ -1,6 +1,5 @@
 import "./App.css";
-import Categories from "./Components/Categories";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
 import Navbar from "./Components/Navbar";
 import Login from "./Components/Login";
 import Register from "./Components/Register";
@@ -9,14 +8,13 @@ import ForgotPasswordEmail from "./Components/ForgotPassword/ForgotPasswordEmail
 import NewPost from "./Components/NewPost";
 import NotFound from "./Components/NotFound";
 import { useState, useEffect } from "react";
-import CircularProgress from "@mui/material/CircularProgress";
 import apiClient from "./Services/apiClient";
-import Box from "@mui/material/Box";
 import PostOffer from "./Components/PostOffer";
 import PostRequest from "./Components/PostRequest";
 import HomePage from "./Components/HomePage";
 import ProductCard from "./Components/ProductCard";
 import { loader } from "./Constants";
+import Breadcrumbs from "./Components/Breadcrumbs";
 
 function App() {
   const [user, setUser] = useState(null);
@@ -55,6 +53,7 @@ function App() {
           setIsLoading={setIsLoading}
           loader={loader}
         />
+        <Breadcrumbs />
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route
