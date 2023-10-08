@@ -1,21 +1,5 @@
 import React, { useState } from "react";
 import "../App.css";
-import Paper from "@mui/material/Paper";
-import InputLabel from "@mui/material/InputLabel";
-import { Typography } from "@mui/material";
-import ToggleButton from "@mui/material/ToggleButton";
-import Button from "@mui/material/Button";
-import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
-import InputAdornment from "@mui/material/InputAdornment";
-import OutlinedInput from "@mui/material/OutlinedInput";
-import FormGroup from "@mui/material/FormGroup";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Fade from "@mui/material/Fade";
-import ClearIcon from "@mui/icons-material/Clear";
-import HighlightOffIcon from "@mui/icons-material/HighlightOff";
-import Checkbox from "@mui/material/Checkbox";
-import ImageList from "@mui/material/ImageList";
-import ImageListItem from "@mui/material/ImageListItem";
 import apiClient from "../Services/apiClient";
 import { Navigate, useNavigate } from "react-router-dom";
 import { selectedSvg, unselectedSvg, currencyFormat } from "../Constants";
@@ -136,10 +120,6 @@ export default function PostOffer(props) {
     console.log(images);
   };
 
-  const handleSelectImage = (index) => {
-    setSelectedImageIndex(index);
-  };
-
   return (
     <div>
       {props.isLoading ? (
@@ -178,10 +158,10 @@ export default function PostOffer(props) {
               <div>
                 {images.length > 0 && (
                   <div
-                    className="overflow-x-auto"
-                    style={{ maxWidth: "710px" }}
+                    className="overflow-x-auto whitespace-nowrap ml-[77px]"
+                    style={{ maxWidth: "640px" }}
                   >
-                    <div className="flex flex-nowrap justify-start mt-3 ml-[77px]">
+                    <div className="flex flex-nowrap justify-start mt-3 ">
                       {images.map((file, index) => (
                         <div key={index} className="relative m-2">
                           <button
@@ -193,7 +173,8 @@ export default function PostOffer(props) {
                           <img
                             src={URL.createObjectURL(file)}
                             alt={`Image ${index + 1}`}
-                            className="max-h-[100px] max-w-[100px]"
+                            onClick={() => setSelectedImageIndex(index)}
+                            className="max-h-[100px] max-w-[100px] cursor-pointer"
                           />
                         </div>
                       ))}
