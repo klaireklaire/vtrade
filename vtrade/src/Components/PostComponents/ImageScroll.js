@@ -1,6 +1,4 @@
-export default function ImageScroll() {
-  const [images, setImages] = React.useState([]);
-  const [selectedImageIndex, setSelectedImageIndex] = useState(0);
+export default function ImageScroll({ images }) {
   const handleRemoveImage = (index) => {
     const newImages = [...images];
     newImages.splice(index, 1);
