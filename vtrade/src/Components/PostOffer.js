@@ -3,6 +3,7 @@ import "../App.css";
 import apiClient from "../Services/apiClient";
 import { Navigate, useNavigate } from "react-router-dom";
 import { selectedSvg, unselectedSvg, currencyFormat } from "../Constants";
+import ImageUpload from "./PostComponents/ImageUpload";
 
 export default function PostOffer(props) {
   const [title, setTitle] = React.useState("");
@@ -127,62 +128,8 @@ export default function PostOffer(props) {
       ) : (
         <div>
           <div className="flex flex-row mt-[40px]">
-            <div className="flex flex-col">
-              <div
-                className="ml-[77px] mr-[55px] h-[440px] w-[640px] mx-auto rounded-2xl bg-white border-dashed border-2 border-gray-300 overflow-hidden flex flex-col items-center justify-center"
-                onDragOver={handleFileInputChange}
-                onDragLeave={handleFileInputChange}
-                onDrop={handleFileInputChange}
-                onClick={() => document.getElementById("file-input").click()}
-              >
-                <input
-                  type="file"
-                  id="file-input"
-                  hidden
-                  onChange={handleFileInputChange}
-                  accept="image/*"
-                  multiple
-                />
-                {images.length === 0 ? (
-                  <p className="text-light-black font-mulish text-lg text-center font-semibold tracking-[0.1px]">
-                    Click or Drag Photos Here
-                  </p>
-                ) : (
-                  <img
-                    src={URL.createObjectURL(images[selectedImageIndex])}
-                    alt={`Image ${selectedImageIndex}`}
-                    className="max-h-full max-w-full mx-auto"
-                  />
-                )}
-              </div>
-              <div>
-                {images.length > 0 && (
-                  <div
-                    className="overflow-x-auto whitespace-nowrap ml-[77px]"
-                    style={{ maxWidth: "640px" }}
-                  >
-                    <div className="flex flex-nowrap justify-start mt-3 ">
-                      {images.map((file, index) => (
-                        <div key={index} className="relative m-2">
-                          <button
-                            className="flex items-center justify-center absolute -top-2 -right-2 w-6 h-6 p-1 bg-black rounded-full text-white text-xs cursor-pointer hover:bg-gray-700"
-                            onClick={() => handleRemoveImage(index)}
-                          >
-                            x
-                          </button>
-                          <img
-                            src={URL.createObjectURL(file)}
-                            alt={`Image ${index + 1}`}
-                            onClick={() => setSelectedImageIndex(index)}
-                            className="max-h-[100px] max-w-[100px] cursor-pointer"
-                          />
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                )}
-              </div>
-            </div>
+            <ImageUpload />
+
             <div className="flex flex-col justify-top items-start flex-shrink-0">
               <input
                 type="text"
