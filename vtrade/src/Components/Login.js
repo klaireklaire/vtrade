@@ -5,18 +5,9 @@ import { Link } from "react-router-dom";
 import { Navigate, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import apiClient from "../Services/apiClient";
-import moment from "moment";
+import { Copyright } from "./RegisterOrLogin/Copyright";
 import "../App.css";
 
-function Copyright(props) {
-  return (
-    <div className="text-gray-300 text-sm flex flex-row justify-center">
-      <div className="text-center text-gray-500 text-sm">
-        &copy; {new moment().year()} VTRADE
-      </div>
-    </div>
-  );
-}
 export default function Login({ returnEndpoint = "/", ...props }) {
   const navigate = useNavigate();
   const [errors, setErrors] = useState({});
@@ -74,12 +65,12 @@ export default function Login({ returnEndpoint = "/", ...props }) {
       {props.isLoading ? (
         props.loader()
       ) : (
-        <div className="flex justify-center items-center h-full mt-20">
+        <div className="flex justify-center items-center h-full">
           <form className="max-w-[400px] w-full mx-auto p-8">
             <h2 className="select-none text-xl font-bold text-center py-4 font-mulish">
               VTRADE
             </h2>
-            <div className="flex flex-col mb-4">
+            <div className="flex flex-col">
               <label className="font-mulish">Username</label>
               <input
                 className="border relative bg-gray-100 p-2 font-mulish"
@@ -92,7 +83,9 @@ export default function Login({ returnEndpoint = "/", ...props }) {
                 autoComplete="email"
                 autoFocus
               />
-              {errors.email && <span className="error">{errors.email}</span>}
+              <div className="emailErrors mt-4">
+                {errors.email && <span className="error">{errors.email}</span>}
+              </div>
             </div>
             <div className="flex flex-col">
               <label className="font-mulish">Password</label>
@@ -106,16 +99,18 @@ export default function Login({ returnEndpoint = "/", ...props }) {
                 id="password"
                 autoComplete="current-password"
               />
-              {errors.password && (
-                <span className="error">{errors.password}</span>
-              )}
+              <div className="passwordErrors mt-3">
+                {errors.password && (
+                  <span className="error">{errors.password}</span>
+                )}
+              </div>
             </div>
             <p className="font-mulish text-sm select-none flex items-center mt-2">
               <input className="mr-2 " type="checkbox" />
               Remember me
             </p>
             <button
-              className="font-mulish text-md cursor-pointer w-full py-3 mt-5 bg-black hover:bg-gray-700 relative text-white"
+              className="font-mulish text-md cursor-pointer w-full py-3 mt-4 bg-black hover:bg-gray-700 relative text-white"
               onClick={handleOnSubmit}
               disabled={
                 errors.email ||
@@ -126,7 +121,7 @@ export default function Login({ returnEndpoint = "/", ...props }) {
             >
               Sign In
             </button>
-            <div className="select-none flex flex-row justify-between mt-2 mb-2 cursor-pointer">
+            <div className="select-none flex flex-row justify-between mt-3 mb-2 cursor-pointer">
               <p
                 className="text-start font-mulish"
                 onClick={() => {

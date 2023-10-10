@@ -1,4 +1,5 @@
 import { DotPulse } from "@uiball/loaders";
+import moment from "moment";
 
 export const MENU_ITEMS = [
   { id: "Housing", text: "Housing" },
@@ -66,3 +67,13 @@ export const loader = () => {
     </div>
   );
 };
+
+export function Copyright(props) {
+  return (
+    <div className="text-gray-300 text-sm flex flex-row justify-center">
+      <div className="text-center text-gray-500 text-sm">
+        &copy; {new moment().year()} VTRADE
+      </div>
+    </div>
+  );
+}
