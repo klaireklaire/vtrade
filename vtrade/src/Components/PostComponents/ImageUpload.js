@@ -8,7 +8,6 @@ export default function ImageUpload() {
     const files = Array.from(event.target.files);
     setImages([...images, ...files]);
     setSelectedImageIndex(images.length); // Select the last uploaded image
-    console.log(images);
   };
 
   return (
