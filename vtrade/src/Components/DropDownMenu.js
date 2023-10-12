@@ -16,8 +16,6 @@ export const DropdownMenu = ({ isOpen, props }) => {
             if (!props.user) {
               navigate("/login");
             } else {
-              apiClient.logoutUser();
-              props.setUser(null);
               navigate("/post/request");
             }
           }}
@@ -31,8 +29,6 @@ export const DropdownMenu = ({ isOpen, props }) => {
             if (!props.user) {
               navigate("/login");
             } else {
-              apiClient.logoutUser();
-              props.setUser(null);
               navigate("/post/offer");
             }
           }}

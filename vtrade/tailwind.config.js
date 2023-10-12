@@ -10,11 +10,16 @@ module.exports = {
       xsm: ["12px", "16px"],
       sm: ["14px", "20px"],
       base: ["16px", "24px"],
+      basePlus: ["18px", "26px"],
       md: ["20px", "28px"],
       lg: ["24px", "32px"],
       xl: ["32px", "40px"],
     },
-    extend: {},
+    extend: {
+      colors: {
+        "light-black": "#373F41",
+      },
+    },
   },
   plugins: [],
 };

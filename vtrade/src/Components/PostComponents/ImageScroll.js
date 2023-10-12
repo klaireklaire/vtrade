@@ -1,13 +1,12 @@
-export default function ImageScroll({ images }) {
-  const handleRemoveImage = (index) => {
-    const newImages = [...images];
-    newImages.splice(index, 1);
-    setImages(newImages);
+import React from "react";
 
-    if (index === selectedImageIndex) {
-      // If the removed image was the selected one, update the selected index
-      setSelectedImageIndex(0);
-    }
+export default function ImageScroll({
+  images,
+  updateParentRemovedImage,
+  updateParentSelectedImageIndex,
+}) {
+  const handleRemoveImage = (index) => {
+    updateParentRemovedImage(index);
   };
 
   return (
@@ -29,7 +28,7 @@ export default function ImageScroll({ images }) {
                 <img
                   src={URL.createObjectURL(file)}
                   alt={`Image ${index + 1}`}
-                  onClick={() => setSelectedImageIndex(index)}
+                  onClick={() => updateParentSelectedImageIndex(index)}
                   className="max-h-[100px] max-w-[100px] cursor-pointer"
                 />
               </div>
