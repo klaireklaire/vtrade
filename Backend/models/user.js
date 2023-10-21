@@ -155,7 +155,10 @@ class User {
       [userId]
     );
   }
-  
+
+  static async editUser(updates){
+    
+  }
 
   static async requestPasswordReset(email) {
     const user = await this.fetchUserByEmail(email);

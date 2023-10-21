@@ -302,7 +302,7 @@ VALUES (
     5
 );
 
-INSERT INTO productimages(listing_id, image1, image2, image3)
+INSERT INTO listingimages(listing_id, image1, image2, image3)
 VALUES(
     1,
     'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSS1dC83bxfJ_z7-0bQvJz-zoUU1chXVyYY-A&usqp=CAU',

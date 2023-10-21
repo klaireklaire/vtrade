@@ -74,7 +74,7 @@ CREATE TABLE reviews(
     FOREIGN KEY (rating_id) REFERENCES ratings(id) ON DELETE CASCADE
 );
 
-CREATE TABLE productimages(
+CREATE TABLE listingimages(
     id          SERIAL PRIMARY KEY,
     listing_id  INTEGER NOT NULL,
     FOREIGN KEY (listing_id) REFERENCES listings(id) ON DELETE CASCADE,

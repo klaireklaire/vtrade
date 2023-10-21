@@ -2,10 +2,13 @@ const express = require("express");
 const cors = require("cors");
 const morgan = require("morgan");
 const fileUpload = require("express-fileupload");
-const userRoutes = require("./routes/users")
 const security = require("./middleware/security");
 const { NotFoundError } = require("./utils/errors");
 const app = express();
+const userRoutes = require("./routes/users")
+const listingRoutes = require("./routes/listings")
+const productRoutes = require("./routes/products")
+const serviceRoutes = require("./routes/services")
 
 app.use(cors());
 app.use(fileUpload());
@@ -14,7 +17,9 @@ app.use(morgan("tiny"));
 app.use(security.extractUserFromJwt);
 
 app.use("/user", userRoutes)
-
+app.use("/listing", listingRoutes)
+app.use("/product", productRoutes)
+app.use("/service", serviceRoutes)
 
 app.get("/", function (req, res) {
   return res.status(200).json({
