@@ -18,9 +18,6 @@ const serviceQuery = `
             l.status,
             l.payment,
             l.createdat AS listing_createdat,
-            pd.category,
-            pd.type,
-            pd.condition,
             li.image1,
             li.image2,
             li.image3,
@@ -30,8 +27,6 @@ const serviceQuery = `
             li.image7
             FROM
             listings l
-            LEFT JOIN
-            productdetails pd ON l.id = pd.listing_id
             LEFT JOIN
             listingimages li ON l.id = li.listing_id
             WHERE listingtype=1
@@ -45,7 +40,9 @@ class Service{
     }
 
     static async getServiceById(id){
-        
+        const query = serviceQuery + ` AND l.id=${id};`
+        const result = await db.query(query)
+        return result.rows
     }
 
     static async getServicesByUser(userId){

@@ -24,4 +24,14 @@ router.get("/user/:userid", async (req, res, next) => {
     }
 })
 
+router.get("/item/:id", async (req, res, next) => {
+    try{
+        const { id } = req.params
+        const listings = await Product.getProductById(id)
+        return res.status(200).json({ listings })
+    } catch(err){
+        next(err)
+    }
+})
+
 module.exports = router;

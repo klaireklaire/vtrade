@@ -10,11 +10,15 @@ class Rating {
 
     }
 
-    static async editRating(update, id){
+    static async getRating(id){
 
     }
 
-    static async getRating(id){
+    static async postRating(rating){
+        
+    }
+
+    static async editRating(update, id){
 
     }
 

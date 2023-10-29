@@ -44,11 +44,13 @@ class Product{
     }
 
     static async getProductById(id){
-        
+        const query = productQuery + ` AND l.id=${id};`
+        const result = await db.query(query)
+        return result.rows
     }
 
     static async getProductsByUser(userId){
-        const query = productQuery + ` AND user_id=${userId}`
+        const query = productQuery + ` AND user_id=${userId};`
         const result = await db.query(query)
         return result.rows
     }

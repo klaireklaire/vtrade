@@ -47,7 +47,8 @@ CREATE TABLE transactionhistory(
     seller_id   INTEGER NOT NULL,
     FOREIGN KEY (seller_id) REFERENCES users(id) ON DELETE CASCADE,
     listing_id  INTEGER NOT NULL,
-    FOREIGN KEY (listing_id) REFERENCES listings(id) ON DELETE CASCADE
+    FOREIGN KEY (listing_id) REFERENCES listings(id) ON DELETE CASCADE,
+    createdat     TIMESTAMP NOT NULL DEFAULT NOW()
 );
 
 CREATE TABLE ratings( 
@@ -58,7 +59,8 @@ CREATE TABLE ratings(
     seller_id   INTEGER NOT NULL,
     FOREIGN KEY (seller_id) REFERENCES users(id) ON DELETE CASCADE,
     listing_id  INTEGER NOT NULL,
-    FOREIGN KEY (listing_id) REFERENCES listings(id) ON DELETE CASCADE
+    FOREIGN KEY (listing_id) REFERENCES listings(id) ON DELETE CASCADE,
+    createdat      TIMESTAMP NOT NULL DEFAULT NOW()
 );
 
 CREATE TABLE reviews(
@@ -71,7 +73,9 @@ CREATE TABLE reviews(
     listing_id  INTEGER NOT NULL,
     FOREIGN KEY (listing_id) REFERENCES listings(id) ON DELETE CASCADE,
     rating_id   INTEGER NOT NULL,
-    FOREIGN KEY (rating_id) REFERENCES ratings(id) ON DELETE CASCADE
+    FOREIGN KEY (rating_id) REFERENCES ratings(id) ON DELETE CASCADE,
+    createdat   TIMESTAMP NOT NULL DEFAULT NOW(),
+    updatedat   TIMESTAMP NOT NULL DEFAULT NOW()
 );
 
 CREATE TABLE listingimages(
@@ -84,5 +88,7 @@ CREATE TABLE listingimages(
     image4      TEXT,
     image5      TEXT,
     image6      TEXT,
-    image7      TEXT
+    image7      TEXT,
+    createdat   TIMESTAMP NOT NULL DEFAULT NOW(),
+    updatedat   TIMESTAMP NOT NULL DEFAULT NOW()
 );

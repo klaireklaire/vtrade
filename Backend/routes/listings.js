@@ -34,4 +34,28 @@ router.get("/user/:userId", async (req, res, next) => {
   }
 });
 
+router.get("/filter", async (req, res, next) => {
+  try {
+    const { min } = req.body
+    const { max } = req.body
+    const listings = await Listing.filterPrice(min, max)
+    return res.status(200).json({ listings })
+  } catch (err) {
+    next(err)
+  }
+})
+
+router.delete(
+  "/:listingId",
+  //security.requireAuthenticatedUser,
+ // permissions.userOwnsListing,
+  async (req, res, next) => {
+    try {
+      const { listingId } = req.params;
+      await Listing.deleteListing(listingId);
+      return res.status(200).json();
+    } catch (error) {}
+  }
+);
+
 module.exports = router;

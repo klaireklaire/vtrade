@@ -9,6 +9,7 @@ const userRoutes = require("./routes/users")
 const listingRoutes = require("./routes/listings")
 const productRoutes = require("./routes/products")
 const serviceRoutes = require("./routes/services")
+const reviewRoutes = require("./routes/reviews")
 
 app.use(cors());
 app.use(fileUpload());
@@ -20,6 +21,7 @@ app.use("/user", userRoutes)
 app.use("/listing", listingRoutes)
 app.use("/product", productRoutes)
 app.use("/service", serviceRoutes)
+app.use("/review", reviewRoutes)
 
 app.get("/", function (req, res) {
   return res.status(200).json({

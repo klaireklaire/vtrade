@@ -39,31 +39,30 @@ const listingQuery = `
 class Listing {
   static async getListings(){
     const result = await db.query(listingQuery + `;`)
-    const res = result.rows;
-
-    return res
+    return result.rows
   }
 
   static async getListingById(id){
     const query = listingQuery + ` WHERE l.id=${id};`
     const result = await db.query(query)
-
-    const res = result.rows[0]
-    return res;
+    return result.rows[0];
 
   }
 
   static async getListingsByUser(userId){
-    const query = listingQuery + `WHERE user_id=${userId};`
+    const query = listingQuery + ` WHERE user_id=${userId};`
     const result = await db.query(query)
-
-    const res = result.rows
-    return res;
+    return result.rows;
 
   }
 
   static async deleteListing(id){
-
+    const query = ` 
+          DELETE FROM listings
+          WHERE id=${id}
+        `
+    await db.query(query)
+  
   }
 
   static async editListing(update, id){
@@ -75,31 +74,58 @@ class Listing {
   }
 
   static async filterLocation(location){
-
+    const query = listingQuery + ` WHERE location ILIKE '%${location}%';`
+    const result = await db.query(query)
+    return result.rows
   }
 
   static async filterTitle(title){
-
+    const query = listingQuery + ` WHERE title ILIKE '%${title}%';`
+    const result = await db.query(query)
+    return result.rows
   }
 
   static async filterForm(form){
-    
+    const query = listingQuery + ` WHERE form ILIKE '%${form}%';`
+    const result = await db.query(query)
+    return result.rows
   }
 
   static async filterPrice(min, max){
-
+    const query = listingQuery + ` WHERE (price > ${min ? min : 0} AND price < ${max ? max : Number.MAX_VALUE}) 
+                  OR (minprice > ${min ? min : 0} AND maxprice < ${max ? max : Number.MAX_VALUE});`
+    const result = await db.query(query)
+    return result.rows
   }
 
   static async filterStatus(status){
-
+    const query = listingQuery + ` WHERE status ILIKE '%${status}%';`
+    const result = await db.query(query)
+    return result.rows
   }
 
   static async filterPayment(payment){
-
+    const query = listingQuery + ` WHERE payment ILIKE '%${payment}%';`
+    const result = await db.query(query)
+    return result.rows
   }
 
   static async filterType(type){
-    
+    const query = listingQuery + ` WHERE type ILIKE '%${type}%';`
+    const result = await db.query(query)
+    return result.rows
+  }
+
+  static async filterCategory(category){
+    const query = listingQuery + ` WHERE category ILIKE '%${category}%';`
+    const result = await db.query(query)
+    return result.rows
+  }
+
+  static async filterCondition(condition){
+    const query = listingQuery + ` WHERE condition ILIKE '%${condition}%';`
+    const result = await db.query(query)
+    return result.rows
   }
 
   static async postListing(offer, images) {
