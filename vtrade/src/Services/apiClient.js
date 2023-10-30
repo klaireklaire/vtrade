@@ -71,6 +71,13 @@ class ApiClient {
     })
   }
 
+  async getListings(){
+    return await this.request({
+      endpoint: `listing`,
+      method: `GET`
+    })
+  }
+
   async postItem(data){
     return await this.request({
       endpoint: `offer/post`,
