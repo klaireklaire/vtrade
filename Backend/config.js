@@ -1,7 +1,7 @@
 require("dotenv").config();
 require("colors");
 
-const AWS = require("aws-sdk")
+const AWS = require("aws-sdk");
 const PORT = process.env.PORT ? Number(process.env.PORT) : 3000;
 const SECRET_KEY = process.env.SECRET_KEY || "secret_dev";
 
@@ -29,7 +29,6 @@ const s3 = new AWS.S3({
   secretAccessKey: process.env.AWS_S3_SECRET_ACCESS_KEY,
 });
 
-
 const BCRYPT_WORK_FACTOR = IS_TESTING ? 1 : 13;
 
 console.log("vtrade config:".red);
@@ -46,6 +45,5 @@ module.exports = {
   IS_TESTING,
   BCRYPT_WORK_FACTOR,
   getDatabaseUri,
-  s3
- 
+  s3,
 };
