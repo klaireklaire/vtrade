@@ -6,6 +6,7 @@ CREATE TABLE users(
     username       TEXT NOT NULL UNIQUE,
     email          TEXT NOT NULL UNIQUE CHECK (POSITION('@vassar.edu' IN email) > 1),
     createdat      TIMESTAMP NOT NULL DEFAULT NOW(),
+    updatedat   TIMESTAMP NOT NULL DEFAULT NOW(),
     bio            TEXT,
     phone          FLOAT UNIQUE,
     rating         FLOAT,
@@ -27,7 +28,9 @@ CREATE TABLE listings(
     maxprice        FLOAT,
     status          TEXT NOT NULL,
     payment         TEXT NOT NULL,
-    createdat       TIMESTAMP NOT NULL DEFAULT NOW()
+    createdat       TIMESTAMP NOT NULL DEFAULT NOW(),
+    updatedat   TIMESTAMP NOT NULL DEFAULT NOW()
+
 );
 
 CREATE TABLE productdetails(
@@ -47,7 +50,9 @@ CREATE TABLE transactionhistory(
     seller_id   INTEGER NOT NULL,
     FOREIGN KEY (seller_id) REFERENCES users(id) ON DELETE CASCADE,
     listing_id  INTEGER NOT NULL,
-    FOREIGN KEY (listing_id) REFERENCES listings(id) ON DELETE CASCADE
+    FOREIGN KEY (listing_id) REFERENCES listings(id) ON DELETE CASCADE,
+    createdat     TIMESTAMP NOT NULL DEFAULT NOW(),
+    updatedat   TIMESTAMP NOT NULL DEFAULT NOW()
 );
 
 CREATE TABLE ratings( 
@@ -58,7 +63,9 @@ CREATE TABLE ratings(
     seller_id   INTEGER NOT NULL,
     FOREIGN KEY (seller_id) REFERENCES users(id) ON DELETE CASCADE,
     listing_id  INTEGER NOT NULL,
-    FOREIGN KEY (listing_id) REFERENCES listings(id) ON DELETE CASCADE
+    FOREIGN KEY (listing_id) REFERENCES listings(id) ON DELETE CASCADE,
+    createdat      TIMESTAMP NOT NULL DEFAULT NOW(),
+    updatedat   TIMESTAMP NOT NULL DEFAULT NOW()
 );
 
 CREATE TABLE reviews(
@@ -71,10 +78,12 @@ CREATE TABLE reviews(
     listing_id  INTEGER NOT NULL,
     FOREIGN KEY (listing_id) REFERENCES listings(id) ON DELETE CASCADE,
     rating_id   INTEGER NOT NULL,
-    FOREIGN KEY (rating_id) REFERENCES ratings(id) ON DELETE CASCADE
+    FOREIGN KEY (rating_id) REFERENCES ratings(id) ON DELETE CASCADE,
+    createdat   TIMESTAMP NOT NULL DEFAULT NOW(),
+    updatedat   TIMESTAMP NOT NULL DEFAULT NOW()
 );
 
-CREATE TABLE productimages(
+CREATE TABLE listingimages(
     id          SERIAL PRIMARY KEY,
     listing_id  INTEGER NOT NULL,
     FOREIGN KEY (listing_id) REFERENCES listings(id) ON DELETE CASCADE,
@@ -84,5 +93,7 @@ CREATE TABLE productimages(
     image4      TEXT,
     image5      TEXT,
     image6      TEXT,
-    image7      TEXT
+    image7      TEXT,
+    createdat   TIMESTAMP NOT NULL DEFAULT NOW(),
+    updatedat   TIMESTAMP NOT NULL DEFAULT NOW()
 );
