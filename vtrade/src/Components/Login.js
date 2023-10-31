@@ -71,7 +71,7 @@ export default function Login({ returnEndpoint = "/", ...props }) {
               VTRADE
             </h2>
             <div className="flex flex-col">
-              <label className="font-mulish">Username</label>
+              <label className="font-mulish">Email</label>
               <input
                 className="border relative bg-gray-100 p-2 font-mulish"
                 required
