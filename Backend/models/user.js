@@ -52,6 +52,7 @@ class User {
       "lastname",
       "email",
       "password",
+      "username"
     ];
     requiredFields.forEach((field) => {
       if (!credentials.hasOwnProperty(field)) {
@@ -76,6 +77,10 @@ class User {
       throw new BadRequestError("Please input last name");
     }
 
+    if (credentials.username.length < 1) {
+      throw new BadRequestError("Please input username");
+    }
+
 
     const existingUser = await User.fetchUserByEmail(credentials.email);
     if (existingUser) {
@@ -97,9 +102,10 @@ class User {
             firstname,
             lastname,
             email,
-            password  
+            password,
+            username
         )
-        VALUES ($1,$2,$3,$4)
+        VALUES ($1,$2,$3,$4,$5)
         RETURNING id,firstname,lastname,email, createdat, updatedat;
         `,
       [
@@ -107,6 +113,7 @@ class User {
         credentials.lastname,
         lowercasedEmail,
         hashedPassword,
+        credentials.username
       ]
     );
 
@@ -155,7 +162,10 @@ class User {
       [userId]
     );
   }
-  
+
+  static async editUser(updates){
+    
+  }
 
   static async requestPasswordReset(email) {
     const user = await this.fetchUserByEmail(email);
