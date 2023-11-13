@@ -133,7 +133,7 @@ export default function PostOffer(props) {
   return (
     <div>
       {props.isLoading ? (
-        props.loader()
+        props.Loader
       ) : (
         <div>
           <div className="flex flex-row mt-10">

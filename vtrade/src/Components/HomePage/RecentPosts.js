@@ -1,5 +1,5 @@
 import React from "react";
-import posts from "../mock_data/recent_posts.json";
+import posts from "../../mock_data/recent_posts.json";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 

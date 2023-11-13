@@ -3,18 +3,36 @@ import { useState, useEffect } from "react";
 import offers from "../mock_data/offers";
 import posts from "../mock_data/recent_posts.json";
 import { useNavigate } from "react-router-dom";
-import CategoryScroll from "./CategoryScroll.js";
-import HighLights from "./Highlights";
-import RecentPosts from "./RecentPosts";
+import CategoryScroll from "./HomePage/CategoryScroll.js";
+import HighLights from "./HomePage/Highlights";
+import RecentPosts from "./HomePage/RecentPosts";
 
-export default function HomePage(props) {
+export default function HomePage({
+  user,
+  setUser,
+  isLoading,
+  setIsLoading,
+  Loader,
+}) {
   return (
-    <div className="pt-12 pl-14">
-      <CategoryScroll />
-      <HighLights />
-      <div>
-        <RecentPosts />
-      </div>
+    <div>
+      {isLoading ? (
+        Loader
+      ) : (
+        <div className="pt-12 pl-14">
+          <CategoryScroll />
+          <HighLights
+            user={user}
+            setUser={setUser}
+            isLoading={isLoading}
+            setIsLoading={setIsLoading}
+            Loader={Loader}
+          />
+          <div>
+            <RecentPosts />
+          </div>
+        </div>
+      )}
     </div>
   );
 }

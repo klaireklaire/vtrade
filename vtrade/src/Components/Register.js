@@ -113,7 +113,7 @@ export default function Register(props) {
   return (
     <div className="register">
       {props.isLoading ? (
-        props.loader()
+        props.Loader
       ) : (
         <div className="flex justify-center items-center h-full">
           <form className="max-w-[400px] w-full mx-auto p-8">

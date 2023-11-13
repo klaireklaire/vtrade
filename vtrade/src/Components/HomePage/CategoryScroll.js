@@ -1,5 +1,5 @@
 import React from "react";
-import { MENU_ITEMS } from "../Constants";
+import { MENU_ITEMS } from "../../Constants";
 import { Navigate, useNavigate } from "react-router-dom";
 
 export default function CategoryScroll() {
