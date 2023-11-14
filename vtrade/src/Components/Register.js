@@ -92,11 +92,13 @@ export default function Register(props) {
 
     const { data, error } = await apiClient.signupUser({
       email: form.email,
+      username: form.username,
       password: form.password,
       firstname: form.firstname,
       lastname: form.lastname,
     });
-
+    console.log(data);
+    console.log(error);
     if (error) {
       props.setIsLoading(false);
       setErrors((e) => ({ ...e, form: error }));
@@ -161,7 +163,7 @@ export default function Register(props) {
                 )}
               </div>
               <div className="flex flex-col">
-                <label className="font-mulish">Username</label>
+                <label className="font-mulish">Email</label>
                 <input
                   className="border relative bg-gray-100 p-2 font-mulish"
                   required
@@ -177,6 +179,24 @@ export default function Register(props) {
                   {errors.email && (
                     <span className="error">{errors.email}</span>
                   )}
+                </div>
+              </div>
+              <div className="flex flex-col">
+                <label className="font-mulish">Username</label>
+                <input
+                  className="border relative bg-gray-100 p-2 font-mulish"
+                  required
+                  type="username"
+                  id="username"
+                  label="Username"
+                  name="username"
+                  onChange={handleOnInputChange}
+                  autoComplete="username"
+                  autoFocus
+                />
+                {/* Update this */}
+                <div className="emailErros my-2">
+                  {errors.email && <span className="error">{errors.name}</span>}
                 </div>
               </div>
               <div className="flex flex-col">
