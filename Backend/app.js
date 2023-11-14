@@ -21,7 +21,6 @@ app.use(express.json());
 app.use(morgan("tiny"));
 app.use(security.extractUserFromJwt);
 
-
 app.use("/user", userRoutes)
 app.use("/listing", listingRoutes)
 app.use("/product", productRoutes)

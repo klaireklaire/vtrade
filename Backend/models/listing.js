@@ -222,7 +222,7 @@ class Listing {
     result = await Appimage.postListingImages(listingId, images)
     postedListing = {
       ...postedListing,
-      ...result.rows[0]
+      ...result[0]
     }
   
     return postedListing
