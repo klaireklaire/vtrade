@@ -1,7 +1,7 @@
 require("dotenv").config();
 require("colors");
 
-const AWS = require("aws-sdk")
+const AWS = require("aws-sdk");
 const PORT = process.env.PORT ? Number(process.env.PORT) : 3000;
 const SECRET_KEY = process.env.SECRET_KEY || "secret_dev";
 
@@ -13,7 +13,7 @@ function getDatabaseUri() {
     ? encodeURI(process.env.DATABASE_PASS)
     : "postgres";
   const dbHost = process.env.DATABASE_HOST || "localhost";
-  const dbPort = process.env.DATABASE_PORT || 5433;
+  const dbPort = process.env.DATABASE_PORT || 5432;
   const dbProdName = process.env.DATABASE_NAME || "vtrade";
   const dbTestName = process.env.DATABASE_TEST_NAME || "vtrade";
   const dbName = process.env.NODE_ENV === "test" ? dbTestName : dbProdName;
@@ -28,7 +28,6 @@ const s3 = new AWS.S3({
   accessKeyId: process.env.AWS_S3_ACCESS_KEY_ID,
   secretAccessKey: process.env.AWS_S3_SECRET_ACCESS_KEY,
 });
-
 
 const BCRYPT_WORK_FACTOR = IS_TESTING ? 1 : 13;
 
@@ -46,6 +45,5 @@ module.exports = {
   IS_TESTING,
   BCRYPT_WORK_FACTOR,
   getDatabaseUri,
-  s3
- 
+  s3,
 };

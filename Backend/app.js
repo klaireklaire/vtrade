@@ -2,6 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const morgan = require("morgan");
 const fileUpload = require("express-fileupload");
+
 const security = require("./middleware/security");
 const { NotFoundError } = require("./utils/errors");
 const app = express();
@@ -19,6 +20,7 @@ app.use(fileUpload());
 app.use(express.json());
 app.use(morgan("tiny"));
 app.use(security.extractUserFromJwt);
+
 
 app.use("/user", userRoutes)
 app.use("/listing", listingRoutes)

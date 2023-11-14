@@ -1,22 +1,28 @@
 import * as React from "react";
-import AppBar from "@mui/material/AppBar";
-import Box from "@mui/material/Box";
-import Toolbar from "@mui/material/Toolbar";
-import Typography from "@mui/material/Typography";
-import Button from "@mui/material/Button";
-import IconButton from "@mui/material/IconButton";
-import MenuIcon from "@mui/icons-material/Menu";
-import { color, fontStyle } from "@mui/system";
+import { useState } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
-import { Grid } from "@mui/material";
 import apiClient from "../Services/apiClient";
 import { MENU_ITEMS } from "../Constants";
+import DropdownMenu from "./DropDownMenu";
 
 export default function Navbar(props) {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
   // Function to handle menu item click
   const handleMenuItemClick = (id) => {
     console.log(`Clicked on ${id}`);
     navigate(id);
+  };
+
+  const toggleMenu = () => {
+    console.log(props.user.id);
+    if (!isMenuOpen) {
+      setIsMenuOpen(!isMenuOpen);
+    }
+  };
+
+  const closeMenu = () => {
+    setIsMenuOpen(false);
   };
 
   const navigate = useNavigate();
@@ -52,7 +58,8 @@ export default function Navbar(props) {
       </div>
       <div className="flex flex-row justify-end items-center mr-10">
         <button
-          className="p-3 px-5 bg-black text-14 font-bold leading-18 tracking-wider text-center font-mulish border-none outline-none cursor-pointer mr-4 text-white hover:bg-[#808080]"
+          className={`p-3 px-5  bg-black text-14 font-bold leading-18 tracking-wider text-center font-mulish border-none outline-none cursor-pointer mr-4 text-white hover:bg-[#808080]
+          ${props.user ? "w-26" : "w-24"}`}
           type="button"
           onClick={() => {
             if (!props.user) {
@@ -66,21 +73,24 @@ export default function Navbar(props) {
         >
           {props.user ? "Log out" : "Log in"}
         </button>
-        <button
-          className="p-3 px-4 bg-black font-mulish text-center font-bold text-14 leading-18 tracking-wider border-none outline-none cursor-pointer mr-4 text-white hover:bg-[#808080]"
-          type="button"
-          onClick={() => {
-            //   if (!props.user) {
-            //     navigate("/login");
-            //   } else {
-            //     navigate("/post");
-            //   }
-            // }}
-            navigate("/post");
-          }}
+        <div
+          className={`flex flex-col justify-end items-center ${
+            isMenuOpen ? "mt-24" : "mt-0"
+          }`}
+          onMouseEnter={toggleMenu}
+          onMouseLeave={closeMenu}
         >
-          Post
-        </button>
+          <button
+            className={`p-3 px-4 w-20 font-mulish text-center font-bold text-14 leading-18 tracking-wider border-none outline-none cursor-pointer mr-4 text-white hover:bg-[#808080] ${
+              isMenuOpen ? "bg-[#808080]" : "bg-black"
+            }`}
+            type="button"
+            onClick={toggleMenu}
+          >
+            Post
+          </button>
+          <DropdownMenu isOpen={isMenuOpen} props={props} />
+        </div>
       </div>
     </div>
   );
