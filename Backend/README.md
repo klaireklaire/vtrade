@@ -19,9 +19,9 @@ The backend is run using nodemon so any changes made to the code are automatical
 - `.env` - File that contains secret keys and passwords (is not pushed to remote git repository)
 - `.env.template` - A template for the .env file that can be used to define the required variables in the .env file
 - `.gitignore` - Git ignore file
-- `app.js` - This file combines most of the logic of our backend in one place. It defines:
-                - The base endpoints for all the routes in our express api
-                - The dependencies and technologies that our backend server and database use
+- `app.js` * This file combines most of the logic of our backend in one place. It defines:
+                * The base endpoints for all the routes in our express api
+                * The dependencies and technologies that our backend server and database use
 - `config.js` 
 - `db.js`
 - `package-lock.json`
