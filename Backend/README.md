@@ -49,6 +49,8 @@ The backend is run using nodemon so any changes made to the code are automatical
 * `middleware`
     * The files in this directory define various middleware used by various routes and functions within the app. They are mostly
       for security and authentication purposes
+      * `security.js`
+        * Defines secu
 
 * `models`
 * `routes`
