@@ -71,7 +71,7 @@ export default function HighLights({
           ? highlights.map((item, i) => (
               <div
                 key={i}
-                className="flex flex-col justify-center border-transparent mx-2.5"
+                className="flex flex-col justify-start border-transparent mx-2.5"
               >
                 <div className="w-72 h-16 flex items-start ">
                   <div
@@ -90,16 +90,16 @@ export default function HighLights({
                     </div>
                   </div>
                 </div>
-
-                {allImages &&
-                Array.isArray(allImages) &&
-                allImages.length > i &&
-                allImages[i] ? (
-                  <ImageSlider images={allImages[i].images} />
-                ) : (
-                  Loader
-                )}
-
+                <div className="">
+                  {allImages &&
+                  Array.isArray(allImages) &&
+                  allImages.length > i &&
+                  allImages[i] ? (
+                    <ImageSlider images={allImages[i].images} />
+                  ) : (
+                    Loader
+                  )}
+                </div>
                 <div className="px-5 py-4 text-start">
                   <p className="text-gray-800 font-Mulish text-base font-semibold leading-6 tracking-[0.2px]">
                     {item.title}

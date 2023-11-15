@@ -22,32 +22,30 @@ export default function ImageSlider({ images }) {
 
   return (
     <div className="relative">
-      <div className="mb-8 flex flex-row">
-        <div className="max-w rounded overflow-hidden shadow-lg">
-          {images && images.length > 0 ? (
-            <div>
-              <img
-                className="h-48 w-full object-cover absolute transition-transform"
-                src={images[currentImageIndex]}
-                alt={`Listing photo ${currentImageIndex + 1}`}
-              />
-              <button
-                onClick={handlePrevClick}
-                className="absolute top-1/2 left-2 transform -translate-y-1/2 bg-gray-800 text-white px-3 py-1 rounded"
-              >
-                &lt;
-              </button>
-              <button
-                onClick={handleNextClick}
-                className="absolute top-1/2 right-2 transform -translate-y-1/2 bg-gray-800 text-white px-3 py-1 rounded"
-              >
-                &gt;
-              </button>
-            </div>
-          ) : (
-            <p>No images available</p>
-          )}
-        </div>
+      <div className="mb-48 flex flex-row">
+        {images && images.length > 0 ? (
+          <div>
+            <img
+              className="h-48 w-full object-cover absolute transition-transform"
+              src={images[currentImageIndex]}
+              alt={`Listing photo ${currentImageIndex + 1}`}
+            />
+            <button
+              onClick={handlePrevClick}
+              className="absolute top-24 left-1 transform -translate-y-1/2 bg-gray-800 text-white px-2 py-1 rounded"
+            >
+              &lt;
+            </button>
+            <button
+              onClick={handleNextClick}
+              className="absolute top-24 right-1 transform -translate-y-1/2 bg-gray-800 text-white px-2 py-1 rounded"
+            >
+              &gt;
+            </button>
+          </div>
+        ) : (
+          <p>No images available</p>
+        )}
       </div>
     </div>
   );
