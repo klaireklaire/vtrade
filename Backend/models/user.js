@@ -15,6 +15,10 @@ class User {
       lastname: user.lastname,
       email: user.email,
       createdat: user.createdat,
+      updatedat: user.updatedat,
+      bio: user.bio,
+      classyear: user.classyear,
+      profileimage: user.profileimage
     };
   }
 
@@ -88,7 +92,12 @@ class User {
       throw new BadRequestError(`Email already exists: ${credentials.email}`);
     }
 
-   
+    const existingUsername = await User.fetchUserByUsername(credentials.username);
+    if (existingUsername) {
+      throw new BadRequestError(
+        `Username already exists: ${credentials.username}`
+      );
+    }
 
     const hashedPassword = await bcrypt.hash(
       credentials.password,
@@ -140,6 +149,17 @@ class User {
     return user;
   }
 
+  static async fetchUserByUsername(username) {
+    if (!username) {
+      throw new BadRequestError("No username provided");
+    }
+
+    const query = `SELECT * FROM users WHERE username = $1`;
+    const result = await db.query(query, [username]);
+    const user = result.rows[0];
+    return user;
+  }
+
   static async fetchUserById(id) {
     if (!id) {
       throw new BadRequestError("No id provided");
@@ -164,8 +184,76 @@ class User {
     );
   }
 
-  static async editUser(updates, images = null){
+  static async editUser(userId, updates, image = null){
+    if (updates.email){
+      if (updates.email.indexOf("@vassar.edu") <= 0 || updates.email.length < 1){
+        throw new BadRequestError("Invalid email")
+      }
+
+      const existingUser = await User.fetchUserByEmail(updates.email)
+      if (existingUser) {
+        throw new BadRequestError(`Email already exists: ${updates.email}`)
+      }
+    }
+
+    if (updates.password?.length < 1){
+      throw new BadRequestError("Please input a valid password")
+    }
+
+     if (updates.firstname?.length < 1) {
+      throw new BadRequestError("Please input valid first name");
+    }
+
+    if (updates.lastname?.length < 1) {
+      throw new BadRequestError("Please input valid last name");
+    }
+
+    if (updates.username?.length < 1) {
+      throw new BadRequestError("Please input valid username");
+    }
+
+    if (updates.username) {
+      const existingUsername = await User.fetchUserByUsername(updates.username);
+      if (existingUsername) {
+        throw new BadRequestError(
+          `Username already exists: ${updates.username}`
+        );
+      }
+    }
+
+    let query = `UPDATE users SET`
+    let data = [userId]
+    let userUpdates = Object.entries(updates)
+   
+    for (let i = 0; i < userUpdates.length; i++){
+      const currUpdate = userUpdates[i]
+      const key = currUpdate[0]
+      const value = currUpdate[1]
+
+      if (value === "" || !value){
+        continue;
+      }
+
+      if (key == "password"){
+        const hashedPassword = await bcrypt.hash(value, BCRYPT_WORK_FACTOR)
+        data = data.concat(hashedPassword)
+      } else {
+        data = data.concat(value)
+      }
+      
+      query += ` ${key} = $${i + 2},`
+    }
+    query += `updatedat = NOW() WHERE id = $1 
+              RETURNING id, firstname, lastname, username, email, createdat, updatedat, bio, phone, classyear, rating, profileimage;`
+  
+    let result = await db.query(query, data)
+    result = result.rows[0]
+
+    if (image){
+      result = await Appimage.postProfileImage(userId, image)
+    }
     
+    return result
   }
 
   static async requestPasswordReset(email) {
