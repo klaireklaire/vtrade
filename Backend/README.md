@@ -50,8 +50,17 @@ The backend is run using nodemon so any changes made to the code are automatical
     * The files in this directory define various middleware used by various routes and functions within the app. They are mostly
       for security and authentication purposes
       * `security.js`
-        * Defines secu
-
+        * Defines security middleware that ensures certain conditions are met before a function/route/api call is made. For example, the *requireAuthenticatedUser* middleware function
+          is used on various api endpoints to ensure there is a verified user logged in before that call is made. This is helpful with api calls such as posting a listing where we need
+          there to be a logged in user before they can post something.
 * `models`
+    * The files in this directory define the models that handle storing, deleting, fetching and updating data in our database.
+    * Each table in our schema has its own model file to handle these data management processes
 * `routes`
+    * The files in this directory define the api endpoints that are used for data manipulation. They make use of the functions defined in the models files
 * `utils`
+    * The files in this directory define various additional utility functions that make server and database handling easier
+        * `errors.js`
+            * Defines the different types of errors that can be thrown depending on the situation
+        * `tokens.js`
+            * Helps in creating, validating and manipulating tokens that are used in various aspects of the application
