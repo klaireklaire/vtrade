@@ -36,9 +36,27 @@ export default function HighLights({
   }, []);
 
   useEffect(() => {
-    if (highlights) {
-      console.log(highlights);
+    console.log(highlights);
+    const getUsers = async () => {
+      try {
+        setIsLoading(true);
+        const { data, error } = await apiClient.getUsers();
 
+        // if (data) {
+        //   console.log(data);
+        // }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    getUsers();
+  }, []);
+
+  useEffect(() => {
+    if (highlights) {
       const allImages = highlights.map((item) => {
         const productImages = [];
         for (let i = 1; i <= 7; i++) {
@@ -55,7 +73,6 @@ export default function HighLights({
       });
 
       setAllImages(allImages);
-      console.log(allImages);
     }
   }, [highlights]);
 
@@ -100,13 +117,19 @@ export default function HighLights({
                     Loader
                   )}
                 </div>
-                <div className="px-5 py-4 text-start">
+                <div className="px-2 py-4 text-start">
                   <p className="text-gray-800 font-Mulish text-base font-semibold leading-6 tracking-[0.2px]">
                     {item.title}
                   </p>
-                  <p className="text-gray-500 font-Mulish text-base font-normal leading-6 tracking-[0.1px]">
-                    ${item.price}
-                  </p>
+                  {item.price !== null ? (
+                    <p className="text-gray-500 font-Mulish text-base font-normal leading-6 tracking-[0.1px]">
+                      ${item.price}
+                    </p>
+                  ) : (
+                    <p className="text-gray-500 font-Mulish text-base font-normal leading-6 tracking-[0.1px]">
+                      ${item.minprice} ~ ${item.maxprice}
+                    </p>
+                  )}
                 </div>
               </div>
             ))
