@@ -1,5 +1,6 @@
 const db = require("../db");
 const { BadRequestError, UnauthorizedError } = require("../utils/errors");
+const Appimage = require("./appimage")
 const { s3 } = require("../config");
 
 
@@ -128,105 +129,103 @@ class Listing {
     return result.rows
   }
 
-  static async postListing(offer, images) {
-    // const requiredFields = [
-    //   "category",
-    //   "title",
-    //   "price",
-    //   "condition",
-    //   "location",M
-    //   "payment",
-    // ];
+  static async postListing(listing, images) {
+    var requiredFields = [
+      "listingtype",
+      "title",
+      "location",
+      "form",
+      "status",
+      "payment"
+    ]
 
-    // requiredFields.forEach((field) => {
-    //   if (!offer.hasOwnProperty(field)) {
-    //     throw new BadRequestError(`Missing ${field} in request body.`);
-    //   }
-    // });
+    if (listing.listingtype == 0){
+      requiredFields = requiredFields.concat(["category", "type", "condition"])
+    }
+    
+    requiredFields.forEach((field) => {
+      if (!listing.hasOwnProperty(field)) {
+        throw new BadRequestError(`Missing ${field} in request body.`);
+      }
+    });
 
-    if (offer.title.length <= 0) {
+    if (listing.title.length <= 0) {
       throw new BadRequestError("Provide a title for your item");
     }
 
-    if (offer.price < 0) {
-      throw new BadRequestError("Invalid price");
+    if (listing.location.length <= 0){
+      throw new BadRequestError("Provive a location for your item")
     }
 
     var result = await db.query(
       `
-                    INSERT INTO offering(
+                    INSERT INTO listings(
                           user_id,
+                          listingtype,
                           title,
-                          price,  
-                          category,
-                          description,
-                          condition,
                           location,
+                          description,
+                          form,
+                          price,
+                          minprice,
+                          maxprice,
+                          status,
                           payment
-                          
-                          
                           )
-                     VALUES ($1,$2,$3,$4,$5,$6,$7,$8)
-                     RETURNING title,price,description,condition,category,location,payment, id, user_id;
+                     VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11)
+                     RETURNING id, user_id, listingtype, title, location, description, form, price, minprice, maxprice, status, payment, createdat, updatedat;
                     `,
       [
-        offer.userId,
-        offer.title,
-        offer.price,
-        offer.category,
-        offer.description,
-        offer.condition,
-        offer.location,
-        offer.method,
+        listing.user_id,
+        listing.listingtype,
+        listing.title,
+        listing.location,
+        listing.description,
+        listing.form,
+        listing.price,
+        listing.minprice,
+        listing.maxprice,
+        listing.status,
+        listing.payment
       ]
     );
 
-   const offerId = result.rows[0].id;
+    var postedListing = result.rows[0]
+    const listingId = postedListing.id
 
+    if (listing.listingtype == 0){
+      result = await db.query(
+        `
+                      INSERT INTO productdetails(
+                            listing_id,
+                            category,
+                            type,
+                            condition
+                            )
+                       VALUES ($1,$2,$3,$4)
+                       RETURNING category, type, condition;
+                      `,
+        [
+          listingId,
+          listing.category,
+          listing.type,
+          listing.condition
+        ]
+      );
 
-    for (let i = 0; i < images.length; i++) {
-      const image = images[i];
-    
-      const uploadedImage = await s3
-        .upload({
-          Bucket: process.env.AWS_S3_BUCKET_NAME,
-          Key: image.name + "-" + offerId + "-" + i,
-          Body: image.data,
-          Tagging: `public=yes`,
-        })
-        .promise();
-
-      var params = {
-        Bucket: process.env.AWS_S3_BUCKET_NAME,
-        Key: uploadedImage.Key,
-        ACL: "public-read",
-      };
-      s3.putObjectAcl(params, function (err, data) {
-        if (err) console.log(err, err.stack); // an error occurred
-        else console.log(data); // successful response
-      });
-
-      const url = uploadedImage.Location;
-      const currImage = "image" + (i + 1)
-
-
-      result = await db.query(`
-               UPDATE offering
-                        SET ` + currImage + ` = $1
-                        WHERE id = $2
-                        RETURNING user_id, title, category, condition, price, image1, image2, image3, image4, image5, image6, image7, image8, image9, image10, description, location, payment;
-      `, [
-        url,
-        offerId
-      ])
-
-     
+      postedListing = {
+        ...postedListing,
+        ...result.rows[0]
+      }
     }
-   
-
-     const res = result.rows;
-
-     return res;
+    
+    result = await Appimage.postListingImages(listingId, images)
+    postedListing = {
+      ...postedListing,
+      ...result[0]
+    }
+  
+    return postedListing
   }
 }
 

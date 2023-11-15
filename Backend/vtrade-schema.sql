@@ -42,7 +42,7 @@ CREATE TABLE productdetails(
 );
 
 CREATE TABLE transactionhistory(
-    id          SERIAL PRIMARY KEY,
+    id         SERIAL PRIMARY KEY,
     user_id     INTEGER NOT NULL,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
     time        TIMESTAMP NOT NULL DEFAULT NOW(),
