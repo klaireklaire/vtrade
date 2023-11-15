@@ -95,7 +95,16 @@ function App() {
               />
             }
           />
-          <Route path="/passwordemail" element={<ForgotPasswordEmail />} />
+          <Route
+            path="/passwordemail"
+            element={
+              <ForgotPasswordEmail
+                isLoading={isLoading}
+                setIsLoading={setIsLoading}
+                Loader={Loader}
+              />
+            }
+          />
           <Route path="/passwordconfirm" element={<ForgotPasswordConfirm />} />
           <Route path="/post/:id" element={<ProductCard />} />
           <Route path="/*" element={<NotFound />} />
