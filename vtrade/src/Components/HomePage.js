@@ -6,6 +6,8 @@ import { useNavigate } from "react-router-dom";
 import CategoryScroll from "./HomePage/CategoryScroll.js";
 import HighLights from "./HomePage/Highlights";
 import RecentPosts from "./HomePage/RecentPosts";
+import RecentEvents from "./HomePage/RecentEvents";
+import apiClient from "../Services/apiClient";
 
 export default function HomePage({
   user,
@@ -29,7 +31,27 @@ export default function HomePage({
             Loader={Loader}
           />
           <div>
-            <RecentPosts />
+            <div className="flex flex-row justify-start">
+              <div className="flex-1 mr-6">
+                <RecentPosts
+                  user={user}
+                  setUser={setUser}
+                  isLoading={isLoading}
+                  setIsLoading={setIsLoading}
+                  Loader={Loader}
+                />
+              </div>
+
+              <div className="flex-1">
+                <RecentEvents
+                  user={user}
+                  setUser={setUser}
+                  isLoading={isLoading}
+                  setIsLoading={setIsLoading}
+                  Loader={Loader}
+                />
+              </div>
+            </div>
           </div>
         </div>
       )}

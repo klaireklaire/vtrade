@@ -79,9 +79,9 @@ export default function HighLights({
   return (
     <div>
       <div className="mt-12 mb-6">
-        <a className="text-xl font-bold tracking-tight font-mulish">
+        <p className="text-xl font-bold tracking-tight font-mulish">
           Highlights
-        </a>
+        </p>
       </div>
       <div className="mb-8 flex flex-row overflow-x-auto h-96">
         {highlights && Array.isArray(highlights) && highlights.length > 0
