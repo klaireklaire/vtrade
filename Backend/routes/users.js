@@ -47,10 +47,29 @@ router.get("/:userId", async (req, res, next) => {
   try {
     const { userId } = req.params;
     const user = await User.fetchUserById(userId);
-    return res.status(200).json({ user, user });
+    return res.status(200).json({ user });
   } catch (error) {
     next(error);
   }
 });
+
+router.put("/update/:userId", async (req, res, next) => {
+  try {
+    const { userId } = req.params
+    const image = Object.values({ ...req.files })[0]
+    const user = await User.editUser(userId, req.body, image)
+    return res.status(200).json(user)
+  } catch (error){
+    next(error)
+  }
+})
+
+router.delete("/delete/:userId", async (req, res, next) => {
+  try {
+
+  } catch (error){
+    next(error)
+  }
+})
 
 module.exports = router;

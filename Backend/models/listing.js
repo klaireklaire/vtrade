@@ -28,7 +28,10 @@ const listingQuery = `
               li.image4,
               li.image5,
               li.image6,
-              li.image7
+              li.image7,
+              u.firstname,
+              u.lastname,
+              u.profileimage
               FROM
               listings l
               LEFT JOIN
@@ -39,7 +42,9 @@ const listingQuery = `
 
 class Listing {
   static async getListings(){
-    const result = await db.query(listingQuery + `;`)
+    const query = listingQuery + ` LEFT JOIN
+                      users u on u.id = l.user_id;`
+    const result = await db.query(query)
     return result.rows
   }
 
