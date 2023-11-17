@@ -2,15 +2,7 @@ const db = require('../db');
 const { BadRequestError } = require('../utils/errors');
 const { s3 } = require('../config');
 
-class Productimages {
-    static async getImagesForListing(listingId){
-        const result = await db.query(`
-                SELECT * FROM listingimages
-                WHERE listing_id=${listingId}
-        `)
-
-        return result.rows
-    }
+class Appimage {
 
     static async postProfileImage(userId, image){
         const unixTimestamp = Math.floor(Date.now() / 1000);
@@ -29,16 +21,15 @@ class Productimages {
 
         s3.putObjectAcl(params, function (err, data) {
             if (err) console.log(err, err.stack); 
-            else console.log(data);
+        
         });
         const url = uploadedImage.Location;
-        console.log(url)
         const result = await db.query(`
             UPDATE users
             SET profileimage = $1,
             updatedat = NOW()
             WHERE id=$2
-            RETURNING id, firstname, lastname, profileimage, username, createdat, updatedat, bio, classyear;
+            RETURNING id, firstname, lastname, profileimage, username, email, phone, rating, createdat, updatedat, bio, classyear;
              `,[url, userId])
 
         return result.rows[0]
@@ -68,7 +59,6 @@ class Productimages {
 
             s3.putObjectAcl(params, function (err, data) {
                 if (err) console.log(err, err.stack); // an error occurred
-                else console.log(data); // successful response
             });
             const url = uploadedImage.Location;
             data = data.concat(url)
@@ -84,13 +74,18 @@ class Productimages {
         return res;
     }
 
-    static async updateImages(listingId, images){
+    static async updateListingImages(listingId, images){
 
     }
 
-    static async deleteImages(listingId){
+    static async deleteListingImages(listingId, images){
 
     }
+
+    static async deleteProfileImage(userId){
+        
+    }
+
 }
 
-module.exports = Productimages
+module.exports = Appimage
