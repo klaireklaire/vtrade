@@ -2,15 +2,7 @@ const db = require('../db');
 const { BadRequestError } = require('../utils/errors');
 const { s3 } = require('../config');
 
-class Productimages {
-    static async getImagesForListing(listingId){
-        const result = await db.query(`
-                SELECT * FROM listingimages
-                WHERE listing_id=${listingId}
-        `)
-
-        return result.rows
-    }
+class Appimage {
 
     static async postProfileImage(userId, image){
         const unixTimestamp = Math.floor(Date.now() / 1000);
@@ -82,13 +74,18 @@ class Productimages {
         return res;
     }
 
-    static async updateImages(listingId, images){
+    static async updateListingImages(listingId, images){
 
     }
 
-    static async deleteImages(listingId){
+    static async deleteListingImages(listingId, images){
 
     }
+
+    static async deleteProfileImage(userId){
+        
+    }
+
 }
 
-module.exports = Productimages
+module.exports = Appimage

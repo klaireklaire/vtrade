@@ -64,4 +64,12 @@ router.put("/update/:userId", async (req, res, next) => {
   }
 })
 
+router.delete("/delete/:userId", async (req, res, next) => {
+  try {
+
+  } catch (error){
+    next(error)
+  }
+})
+
 module.exports = router;

@@ -34,6 +34,30 @@ router.get("/item/:id", async (req, res, next) => {
   }
 })
 
+router.post("/item", async (req, res, next) => {
+  try{
+
+  } catch (error){
+    next(error)
+  }
+})
+
+router.post("/filter", async (req, res, next) => {
+  try{
+
+  } catch (error){
+    next(error)
+  }
+})
+
+router.put("/update", async (req, res, next) => {
+  try{
+
+  } catch (error){
+    next(error)
+  }
+})
+
 router.delete("/:id", async (req, res, next) => {
   try{
     const { id } = req.params
