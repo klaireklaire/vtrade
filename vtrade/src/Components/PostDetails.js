@@ -109,7 +109,7 @@ export default function PostDetails(props) {
       {props.isLoading ? (
         props.loader()
       ) : (
-        <div>
+        <div className="mb-10">
           <div className="flex flex-row mt-10">
             <div className="flex flex-col">
               {imageUploadComponent}
