@@ -45,6 +45,17 @@ router.get("/filter", async (req, res, next) => {
   }
 })
 
+router.post("/item", async (req, res, next) => {
+  try{
+    const listingInfo = { ...req.body }
+    const images = Object.values({ ...req.files })[0]
+    const listing = await Listing.postListing(listingInfo, images)
+    return res.status(200).json({ listing })
+  } catch (err){
+    next(err)
+  }
+})
+
 router.delete(
   "/:listingId",
   //security.requireAuthenticatedUser,

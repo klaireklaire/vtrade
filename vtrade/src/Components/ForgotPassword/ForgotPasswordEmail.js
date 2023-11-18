@@ -1,178 +1,117 @@
 import * as React from "react";
-import Avatar from "@mui/material/Avatar";
-import Button from "@mui/material/Button";
-import CssBaseline from "@mui/material/CssBaseline";
-import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
-import { Link } from "react-router-dom";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogTitle from "@mui/material/DialogTitle";
-import Grid from "@mui/material/Grid";
-import Box from "@mui/material/Box";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import Typography from "@mui/material/Typography";
-import Container from "@mui/material/Container";
-
 import { Navigate, useNavigate } from "react-router-dom";
 import { useState } from "react";
-//import apiClient from "../../services/apiClient";
-//import "../App.css";
+import { Copyright } from "../RegisterOrLogin/Copyright";
+import apiClient from "../../Services/apiClient";
 
-function Copyright(props) {
-  return (
-    <Typography
-      variant="body2"
-      color="text.secondary"
-      align="center"
-      {...props}
-    >
-      {"Copyright © "}
-      <Link
-        color="inherit"
-        to="https://mui.com/"
-        style={{ textDecoration: "none" }}
-      >
-        VanLyfe
-      </Link>{" "}
-      {new Date().getFullYear()}
-      {"."}
-    </Typography>
-  );
-}
+//import "../App.css";
 
 // const theme = createTheme();
 
-export default function ForgotPasswordEmail() {
+export default function ForgotPasswordEmail({
+  isLoading,
+  setIsLoading,
+  loader,
+}) {
   const navigate = useNavigate();
-  const [error, setError] = useState(null);
+  const [error, setError] = useState("");
   const [email, setEmail] = useState(null);
   const [success, setSuccess] = useState(false);
+  const [isFocused, setIsFocused] = useState(false);
 
-  const [isLoading, setIsLoading] = useState(false);
+  const handleOnSubmit = async (e) => {
+    e.preventDefault();
 
-//   const handleOnInputChange = (event) => {
-//     setEmail(event.target.value);
-//   };
+    setError(null);
+    setSuccess(true);
 
-//   const handleOnSubmit = async (e) => {
-//     e.preventDefault();
+    // const { data, error } = await apiClient.requestreset({ email: email });
+    if (error) {
+      setIsLoading(false);
+      setError(error);
+    }
 
-//     setError(null);
+    // if (data) {
+    //   setSuccess(true);
+    // }
+  };
 
-//     const { data, error } = await apiClient.requestreset({ email: email });
-//     if (error) {
-//       setIsLoading(false);
-//       setError(error);
-//     }
-
-    
-
-//     if (data) {
-//       setSuccess(true);
-//     }
-//   };
-
-//   const handleOnDone = async () => {
-//     setSuccess(false);
-//   };
+  const handleOnDone = async () => {
+    setSuccess(false);
+    navigate("/");
+  };
 
   return (
-    <div className="login">
-      <Box justifyContent="centre">
-        {/* <ThemeProvider theme={theme}> */}
-
-        <Container component="main" maxWidth="xs">
-          <CssBaseline />
-          <Dialog
-            open={success}
-            // onClose={handleClose}
-            aria-labelledby="alert-dialog-title"
-            aria-describedby="alert-dialog-description"
-          >
-            <DialogTitle
-              id="alert-dialog-title"
-              sx={{
-                fontSize: 20,
-                alignItems: "center",
-              }}
-            >
-              A reset link has been sent to the email provided
-            </DialogTitle>
-
-            <DialogActions>
-              <Button
-           //   onClick={handleOnDone}
-                className="resetDialog"
-                sx={{
-                  border: "solid",
-                  border: 1,
-                  borderColor: "grey",
+    <div>
+      {isLoading ? (
+        loader()
+      ) : (
+        <div className="flex justify-center">
+          <div className="w-full max-w-md">
+            <div className={`mt-8 ${success ? "block" : "hidden"}`}>
+              <div className="bg-gray-100 p-4 rounded-lg shadow-lg cursor-pointer">
+                <h2
+                  className="text-base font-bold font-mulish mb-4"
+                  onClick={handleOnDone}
+                >
+                  A reset link has been sent to the email provided. Click here
+                  to return back to the homepage
+                </h2>
+              </div>
+            </div>
+            {/* <div className={`${success ? "hidden" : ""}`}> */}
+            <div className="mt-12 flex flex-col items-center">
+              <p className="font-bold font-mulish text-llg mb-6">
+                Enter your email address and follow the instructions sent to
+                your email.
+              </p>
+              <div className="emailAddressError">
+                {/* {error && <span className="error">{error}</span>} */}
+              </div>
+              <div className="relative w-full">
+                <input
+                  id="myInput"
+                  className="w-full px-3 py-3 border rounded-md focus:outline-none"
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  onFocus={() => setIsFocused(true)}
+                  onBlur={() => setIsFocused(false)}
+                  name="email"
+                  autoComplete="email"
+                  autoFocus
+                />
+                <label
+                  htmlFor="myInput"
+                  className={`absolute left-3 top-1 text-gray-600 transition-all transform ${
+                    isFocused || email
+                      ? "text-xsm -translate-y-5 -translate-x-2"
+                      : "text-base translate-y-2 text-black"
+                  }`}
+                >
+                  Email Address
+                </label>
+              </div>
+              <button
+                onClick={handleOnSubmit}
+                className="w-full bg-gray-800 text-white font-mulish px-4 py-2 rounded-md mt-3 mb-2 focus:outline-none hover:shadow-lg transform hover:scale-105 transition duration-300"
+              >
+                Continue
+              </button>
+              <p
+                className="text-start font-mulish hover:cursor-pointer mb-1 hover:underline"
+                onClick={() => {
+                  navigate("/register");
                 }}
               >
-                Done
-              </Button>
-            </DialogActions>
-          </Dialog>
-
-          <Box
-            component="form"
-            noValidate
-            sx={{
-              marginTop: 8,
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-            }}
-          >
-            
-
-            <Typography component="h1" variant="h5">
-              Enter your email address and follow the instructions sent to your
-              email
-            </Typography>
-
-            {/* {error && <span className="error">{error}</span>} */}
-
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              id="email"
-              label="Email Address"
-              name="email"
-        //      onChange={handleOnInputChange}
-              autoComplete="email"
-              autoFocus
-            />
-
-            <Button
-       //       onClick={handleOnSubmit}
-              fullWidth
-              variant="contained"
-              
-              sx={{ backgroundColor: "#2b2c2e", color: "#ffff" , mt: 3, mb: 2}}
-            >
-              Continue
-            </Button>
-
-            <Grid item>
-              <Link
-                to="/register"
-                variant="body2"
-                style={{color: "#0000EE", textDecoration: "underline"}}
-              >
-                {"Don't have an account? Sign Up"}
-              </Link>
-            </Grid>
-
-            <Copyright sx={{ mt: 8, mb: 4 }} />
-
-            {/* </ThemeProvider> */}
-          </Box>
-        </Container>
-      </Box>
+                Don't have an account? Sign Up!
+              </p>
+              <Copyright />
+            </div>
+          </div>
+          {/* </div> */}
+        </div>
+      )}
     </div>
   );
 }
