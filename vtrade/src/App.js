@@ -128,7 +128,7 @@ function App() {
                 setUser={setUser}
                 isLoading={isLoading}
                 setIsLoading={setIsLoading}
-                loader={loader}
+                Loader={Loader}
               />
             }
           />
