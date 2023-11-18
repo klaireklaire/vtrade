@@ -95,12 +95,16 @@ export default function HighLights({
                     className=" bg-gray-300 rounded-full w-10 h-10 flex flex-row items-center justify-center"
                     aria-label="recipe"
                   >
-                    <PersonIcon className="text-white" />
+                    <img
+                      className="overflow-hidden"
+                      src={item.profileimage}
+                      alt={<PersonIcon className="text-white" />}
+                    />
                   </div>
                   <div className="ml-3 flex flex-col">
                     <div className="text-light-black font-Mulish text-sm font-semibold leading-5 tracking-tighter">
                       {/* need to extract the first and last name from userId */}
-                      {item.user_id + " " + item.lastname}
+                      {item.firstname + " " + item.lastname}
                     </div>
                     <div className="text-black text-xs text-center mt-1">
                       {moment(item.listing_createdat).fromNow()}
