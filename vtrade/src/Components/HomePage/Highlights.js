@@ -88,7 +88,7 @@ export default function HighLights({
           ? highlights.map((item, i) => (
               <div
                 key={i}
-                className="flex flex-col justify-start border-transparent mx-2.5"
+                className="flex flex-col justify-start border-gray-200 border p-2 mx-2"
               >
                 <div className="w-72 h-16 flex items-start ">
                   <div
@@ -100,7 +100,7 @@ export default function HighLights({
                   <div className="ml-3 flex flex-col">
                     <div className="text-light-black font-Mulish text-sm font-semibold leading-5 tracking-tighter">
                       {/* need to extract the first and last name from userId */}
-                      {item.user_id + " " + item.lastname}
+                      {item.firstname + " " + item.lastname}
                     </div>
                     <div className="text-black text-xs text-center mt-1">
                       {moment(item.listing_createdat).fromNow()}
