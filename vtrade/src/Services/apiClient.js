@@ -80,7 +80,7 @@ class ApiClient {
     });
   }
 
-  async postListing(data) {
+  async postItem(data) {
     return await this.request({
       endpoint: `listing/item`,
       method: `POST`,
