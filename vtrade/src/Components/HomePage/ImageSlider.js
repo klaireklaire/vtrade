@@ -31,18 +31,22 @@ export default function ImageSlider({ images }) {
                 src={images[currentImageIndex]}
                 alt={`Listing photo ${currentImageIndex + 1}`}
               />
-              <button
-                onClick={handlePrevClick}
-                className="absolute top-28 left-1 transform -translate-y-1/2 bg-gray-800 text-white px-2 py-1 rounded"
-              >
-                &lt;
-              </button>
-              <button
-                onClick={handleNextClick}
-                className="absolute top-28 right-1 transform -translate-y-1/2 bg-gray-800 text-white px-2 py-1 rounded"
-              >
-                &gt;
-              </button>
+              {images.length > 1 && (
+                <>
+                  <button
+                    onClick={handlePrevClick}
+                    className="absolute top-28 left-1 transform -translate-y-1/2 bg-gray-800 text-white px-2 py-1 rounded"
+                  >
+                    &lt;
+                  </button>
+                  <button
+                    onClick={handleNextClick}
+                    className="absolute top-28 right-1 transform -translate-y-1/2 bg-gray-800 text-white px-2 py-1 rounded"
+                  >
+                    &gt;
+                  </button>
+                </>
+              )}
             </div>
           ) : (
             <p>No images available</p>

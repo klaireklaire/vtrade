@@ -36,26 +36,6 @@ export default function HighLights({
   }, []);
 
   useEffect(() => {
-    console.log(highlights);
-    const getUsers = async () => {
-      try {
-        setIsLoading(true);
-        const { data, error } = await apiClient.getUsers();
-
-        // if (data) {
-        //   console.log(data);
-        // }
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    getUsers();
-  }, []);
-
-  useEffect(() => {
     if (highlights) {
       const allImages = highlights.map((item) => {
         const productImages = [];

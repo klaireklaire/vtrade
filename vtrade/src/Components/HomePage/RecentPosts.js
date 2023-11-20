@@ -22,10 +22,20 @@ export default function RecentPosts({
       try {
         setIsLoading(true);
         const response = await apiClient.getListings();
-        const { data, error } = response; // Default to an empty object
+        const { data, error } = response;
 
         if (data) {
-          console.log(data);
+          // Sort the listings by time using moment.js
+          // const sortedListings = data.listings.sort((a, b) =>
+          //   moment(b.listing_createdat)
+          //     .fromNow()
+          //     .localeCompare(moment(a.listing_createdat).fromNow())
+          // );
+
+          // // Store only the top 10 listings
+          // const recentPosts = sortedListings.slice(0, 10);
+
+          // setHighlights(recentPosts);
           setHighlights(data.listings);
         }
       } catch (error) {
@@ -47,29 +57,43 @@ export default function RecentPosts({
           <p className="text-xl font-bold tracking-tight font-mulish mb-3">
             Recent Posts
           </p>
-          <div className="flex flex-col">
+          <div className="grid grid-cols-2 gap-y-1 gap-x-4">
             {highlights && Array.isArray(highlights) && highlights.length > 0
               ? highlights.map((item, i) => (
                   <div
                     key={i}
-                    className="flex flex-col border-black border-solid border w-full my-3 py-3 px-2"
+                    className={`flex flex-col border-black border-solid border w-full my-2`}
                   >
-                    <div className="ml-3 flex flex-col items-start">
-                      <div className="text-light-black font-Mulish text-base font-semibold leading-5 tracking-tighter">
-                        {/* need to extract the first and last name from userId */}
-                        {item.description}
+                    <div className="flex flex-row justify-between">
+                      <div className="mt-2 mb-3 ml-4 flex flex-col items-start">
+                        {item.title && (
+                          <div className="text-light-black font-mulish text-base font-bold tracking-[0.1px]]">
+                            {item.title}
+                          </div>
+                        )}
+                        {item.price !== null && item.price > 0 ? (
+                          <p className="text-light-black font-mulish text-base font-bold tracking-[0.1px]">
+                            ${item.price}
+                          </p>
+                        ) : (
+                          <p className="text-light-black font-mulish text-base font-bold tracking-[0.1px]">
+                            ${item.minprice} ~ ${item.maxprice}
+                          </p>
+                        )}
+                        {item.description && (
+                          <div className="text-light-black text-sm font-normal font-mulish text-center">
+                            {moment(item.listing_createdat).fromNow()}
+                          </div>
+                        )}
                       </div>
-                      {item.price !== null ? (
-                        <p className="text-gray-500 font-Mulish text-base font-normal leading-6 tracking-[0.1px]">
-                          ${item.price}
-                        </p>
-                      ) : (
-                        <p className="text-gray-500 font-Mulish text-base font-normal leading-6 tracking-[0.1px]">
-                          ${item.minprice} ~ ${item.maxprice}
-                        </p>
-                      )}
-                      <div className="text-gray-500  text-xs text-center">
-                        {moment(item.listing_createdat).fromNow()}
+                      <div>
+                        {item.image1 && (
+                          <img
+                            className="object-contain h-52 w-52"
+                            src={item.image1}
+                            alt={`Listing photo`}
+                          />
+                        )}
                       </div>
                     </div>
                   </div>
