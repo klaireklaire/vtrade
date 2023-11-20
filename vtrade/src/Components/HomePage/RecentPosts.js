@@ -62,12 +62,16 @@ export default function RecentPosts({
               ? highlights.map((item, i) => (
                   <div
                     key={i}
-                    className={`flex flex-col border-black border-solid border w-full my-2`}
+                    className={`flex flex-col border-black border-solid border max-h-[210px] w-full my-2`}
                   >
                     <div className="flex flex-row justify-between">
                       <div className="mt-2 mb-3 ml-4 flex flex-col items-start">
                         {item.title && (
-                          <div className="text-light-black font-mulish text-base font-bold tracking-[0.1px]]">
+                          <div
+                            className={`text-light-black font-mulish text-base font-bold truncate tracking-[0.1px] ${
+                              item.image1 ? "max-w-[310px]" : "max-w-[610px]"
+                            }`}
+                          >
                             {item.title}
                           </div>
                         )}
@@ -89,7 +93,7 @@ export default function RecentPosts({
                       <div>
                         {item.image1 && (
                           <img
-                            className="object-contain h-52 w-52"
+                            className="object-cover h-52 w-52"
                             src={item.image1}
                             alt={`Listing photo`}
                           />

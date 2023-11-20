@@ -44,7 +44,6 @@ export default function HighLights({
           const imageUrl = item[imageKey];
 
           if (imageUrl) {
-            // productImages.push({ imageUrl, index: i });
             productImages.push(imageUrl);
           }
         }
@@ -72,10 +71,18 @@ export default function HighLights({
               >
                 <div className="w-72 h-16 flex items-start ">
                   <div
-                    className=" bg-gray-300 rounded-full w-10 h-10 flex flex-row items-center justify-center"
-                    aria-label="recipe"
+                    className="bg-gray-300 rounded-full w-10 h-10 overflow-hidden"
+                    aria-label="profile-image"
                   >
-                    <PersonIcon className="text-white" />
+                    {item.profileimage ? (
+                      <img
+                        src={item.profileimage}
+                        alt="Profile"
+                        className="object-cover w-full h-full"
+                      />
+                    ) : (
+                      <PersonIcon className="text-white" />
+                    )}
                   </div>
                   <div className="ml-3 flex flex-col">
                     <div className="text-light-black font-Mulish text-sm font-semibold leading-5 tracking-tighter">
