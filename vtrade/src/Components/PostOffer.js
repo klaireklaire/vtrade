@@ -50,7 +50,7 @@ export default function PostOffer(props) {
       }
 
       //Try to create a new listing
-      const { data, error } = await apiClient.postListing({
+      const { data, error } = await apiClient.postItem({
         user_id: props.user.id,
         listingtype: 0,
         title: title,
