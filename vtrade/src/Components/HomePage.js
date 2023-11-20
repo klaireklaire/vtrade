@@ -41,7 +41,7 @@ export default function HomePage({
                   Loader={Loader}
                 />
               </div>
-
+              {/* 
               <div className="flex-1">
                 <RecentEvents
                   user={user}
@@ -50,7 +50,7 @@ export default function HomePage({
                   setIsLoading={setIsLoading}
                   Loader={Loader}
                 />
-              </div>
+              </div> */}
             </div>
           </div>
         </div>

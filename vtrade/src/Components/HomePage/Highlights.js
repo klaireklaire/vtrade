@@ -36,26 +36,6 @@ export default function HighLights({
   }, []);
 
   useEffect(() => {
-    console.log(highlights);
-    const getUsers = async () => {
-      try {
-        setIsLoading(true);
-        const { data, error } = await apiClient.getUsers();
-
-        // if (data) {
-        //   console.log(data);
-        // }
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    getUsers();
-  }, []);
-
-  useEffect(() => {
     if (highlights) {
       const allImages = highlights.map((item) => {
         const productImages = [];
@@ -64,7 +44,6 @@ export default function HighLights({
           const imageUrl = item[imageKey];
 
           if (imageUrl) {
-            // productImages.push({ imageUrl, index: i });
             productImages.push(imageUrl);
           }
         }
@@ -88,18 +67,22 @@ export default function HighLights({
           ? highlights.map((item, i) => (
               <div
                 key={i}
-                className="flex flex-col justify-start border-transparent mx-2.5"
+                className="flex flex-col justify-start border-gray-200 border p-2 mx-2"
               >
                 <div className="w-72 h-16 flex items-start ">
                   <div
-                    className=" bg-gray-300 rounded-full w-10 h-10 flex flex-row items-center justify-center"
-                    aria-label="recipe"
+                    className="bg-gray-300 rounded-full w-10 h-10 overflow-hidden"
+                    aria-label="profile-image"
                   >
-                    <img
-                      className="overflow-hidden"
-                      src={item.profileimage}
-                      alt={<PersonIcon className="text-white" />}
-                    />
+                    {item.profileimage ? (
+                      <img
+                        src={item.profileimage}
+                        alt="Profile"
+                        className="object-cover w-full h-full"
+                      />
+                    ) : (
+                      <PersonIcon className="text-white" />
+                    )}
                   </div>
                   <div className="ml-3 flex flex-col">
                     <div className="text-light-black font-Mulish text-sm font-semibold leading-5 tracking-tighter">

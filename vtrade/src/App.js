@@ -10,10 +10,10 @@ import NotFound from "./Components/NotFound";
 import { useState, useEffect } from "react";
 import apiClient from "./Services/apiClient";
 import PostOffer from "./Components/PostOffer";
-import PostRequest from "./Components/PostRequest";
+import PostDetails from "./Components/PostDetails";
 import HomePage from "./Components/HomePage";
 import ProductCard from "./Components/ProductCard";
-import { Loader } from "./Components/Loader";
+import Loader from "./Components/Loader";
 import Breadcrumbs from "./Components/Breadcrumbs";
 
 function App() {
@@ -123,7 +123,15 @@ function App() {
           />
           <Route
             path="/post/request"
-            element={<PostRequest user={user} setUser={setUser} />}
+            element={
+              <PostDetails
+                user={user}
+                setUser={setUser}
+                isLoading={isLoading}
+                setIsLoading={setIsLoading}
+                Loader={Loader}
+              />
+            }
           />
         </Routes>
       </BrowserRouter>
