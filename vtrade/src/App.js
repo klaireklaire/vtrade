@@ -13,7 +13,7 @@ import PostOffer from "./Components/PostOffer";
 import PostDetails from "./Components/PostDetails";
 import HomePage from "./Components/HomePage";
 import ProductCard from "./Components/ProductCard";
-import { Loader } from "./Components/Loader";
+import Loader from "./Components/Loader";
 import Breadcrumbs from "./Components/Breadcrumbs";
 
 function App() {
@@ -22,6 +22,7 @@ function App() {
   const [error, setError] = useState(null);
   useEffect(() => {
     const fetchUser = async () => {
+      setIsLoading(true);
       const { data, error } = await apiClient.fetchUserFromToken();
 
       if (data) {

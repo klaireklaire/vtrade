@@ -15,7 +15,6 @@ export default function Navbar(props) {
   };
 
   const toggleMenu = () => {
-    console.log(props.user.id);
     if (!isMenuOpen) {
       setIsMenuOpen(!isMenuOpen);
     }
