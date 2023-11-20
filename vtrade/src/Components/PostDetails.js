@@ -4,8 +4,6 @@ import apiClient from "../Services/apiClient";
 import { Navigate, useNavigate } from "react-router-dom";
 import { selectedSvg, unselectedSvg, currencyFormat } from "../Constants";
 import {
-  ImageScroll,
-  ImageUpload,
   Title,
   Condition,
   Description,
@@ -34,16 +32,16 @@ export default function PostDetails(props) {
 
   // TODO
   const handleOnSubmit = async () => {
-    console.log(title)
-    console.log(category)
-    console.log(condition)
-    console.log(description)
-    console.log(location)
-    console.log(minPrice)
-    console.log(maxPrice)
-    console.log(method)
-    console.log(images)
-  }
+    console.log(title);
+    console.log(category);
+    console.log(condition);
+    console.log(description);
+    console.log(location);
+    console.log(minPrice);
+    console.log(maxPrice);
+    console.log(method);
+    console.log(images);
+  };
 
   const handleOnInputChange = (event) => {
     const { name, value } = event.target;
@@ -72,37 +70,29 @@ export default function PostDetails(props) {
     }
   };
 
-  const updateParentRemovedImage = (index) => {
+  const updateRemovedImage = (index) => {
     const newImages = [...images];
     newImages.splice(index, 1);
     setImages(newImages);
 
     if (index === selectedImageIndex) {
-      // If the removed image was the selected one, update the selected index
       setSelectedImageIndex(0);
     }
   };
 
-  const updateParentFile = (event) => {
-    const files = Array.from(event.target.files);
-    setImages([...images, ...files]);
-    setSelectedImageIndex(images.length); // Select the last uploaded image
+  const handleFileInputChange = (event) => {
+    if (images.length < 7) {
+      const files = Array.from(event.target.files);
+      setImages([...images, ...files]);
+      setSelectedImageIndex(images.length); // Select the last uploaded image
+    } else {
+      alert("You can only upload a maximum of 7 photos.");
+    }
   };
 
-  const updateParentSelectedImageIndex = (index) => {
+  const updateSelectedImageIndex = (index) => {
     setSelectedImageIndex(index);
   };
-
-  const imageUploadComponent = useMemo(
-    () => (
-      <ImageUpload
-        updateParentFile={updateParentFile}
-        images={images}
-        selectedImageIndex={selectedImageIndex}
-      />
-    ),
-    [updateParentFile, images, selectedImageIndex]
-  );
 
   return (
     <div>
@@ -112,12 +102,60 @@ export default function PostDetails(props) {
         <div className="mb-10">
           <div className="flex flex-row mt-10">
             <div className="flex flex-col">
-              {imageUploadComponent}
-              <ImageScroll
-                updateParentRemovedImage={updateParentRemovedImage}
-                updateParentSelectedImageIndex={updateParentSelectedImageIndex}
-                images={images}
-              />
+              <div
+                className="ml-[77px] mr-[55px] h-[440px] w-[640px] mx-auto rounded-2xl bg-white border-dashed border-2 border-gray-300 overflow-hidden flex flex-col items-center justify-center"
+                onDragOver={handleFileInputChange}
+                onDragLeave={handleFileInputChange}
+                onDrop={handleFileInputChange}
+                onClick={() => document.getElementById("file-input").click()}
+              >
+                <input
+                  type="file"
+                  id="file-input"
+                  hidden
+                  onChange={handleFileInputChange}
+                  accept="image/*"
+                  multiple
+                />
+                {images.length === 0 ? (
+                  <p className="text-light-black font-mulish text-lg text-center font-semibold tracking-wide">
+                    Click or Drag Photos Here
+                  </p>
+                ) : (
+                  <img
+                    class="lazy"
+                    src={URL.createObjectURL(images[selectedImageIndex])}
+                    alt={`Image ${selectedImageIndex}`}
+                    className="max-h-full max-w-full mx-auto"
+                  />
+                )}
+              </div>
+
+              {images.length > 0 && (
+                <div
+                  className="overflow-x-auto whitespace-nowrap ml-[77px]"
+                  style={{ maxWidth: "640px" }}
+                >
+                  <div className="flex flex-nowrap justify-start mt-3 ">
+                    {images.map((file, index) => (
+                      <div key={index} className="relative m-2">
+                        <button
+                          className="flex items-center justify-center absolute -top-2 -right-2 w-6 h-6 p-1 bg-black rounded-full text-white text-xs cursor-pointer hover:bg-gray-700"
+                          onClick={() => updateRemovedImage(index)}
+                        >
+                          x
+                        </button>
+                        <img
+                          src={URL.createObjectURL(file)}
+                          alt={`Image ${index + 1}`}
+                          onClick={() => updateSelectedImageIndex(index)}
+                          className="max-h-[100px] max-w-[100px] cursor-pointer"
+                        />
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
             <div className="flex flex-col justify-top items-start flex-shrink-0">
               <Title

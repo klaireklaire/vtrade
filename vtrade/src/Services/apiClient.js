@@ -82,7 +82,7 @@ class ApiClient {
 
   async postItem(data) {
     return await this.request({
-      endpoint: `offer/post`,
+      endpoint: `listing/item`,
       method: `POST`,
       data: data,
       contentType: "multipart/form-data",

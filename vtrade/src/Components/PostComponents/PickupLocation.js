@@ -20,7 +20,7 @@ export default function PickupLocation({
         name="location"
         required
         onChange={handleOnInputChange}
-        className="block w-[600px] h-11 font-mulish px-3 py-2 mt-4 text-grey-700 font-normal tracking-wide border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-300  bg-white"
+        className="block w-[600px] h-11 font-mulish p-2 mt-4 text-grey-700 font-normal tracking-wide border border-gray-700 rounded-md bg-white"
       >
         <option value="" disabled selected>
           Location
@@ -41,7 +41,7 @@ export default function PickupLocation({
         <input
           type="text"
           name="customLocation"
-          className="border border-solid border-black bg-white h-11 rounded-md px-3 py-2 w-full mt-4 text-gray-500 text-base font-mulish font-normal leading-5 tracking-wider"
+          className="border border-solid border-gray-700 bg-white h-11 rounded-md px-3 py-2 w-full mt-4 text-gray-700 text-base font-mulish font-normal leading-5 tracking-wider"
           required
           value={customLocation}
           onChange={updateCustomLocation}
