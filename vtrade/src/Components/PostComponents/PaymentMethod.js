@@ -16,7 +16,7 @@ export default function PaymentMethod({ type, method, handlePaymentMethod }) {
         name="method"
         value={type}
         onClick={() => handlePaymentMethod(type)}
-        className=" select-none inline-flex cursor-pointer items-center ml-2 text-primary bg-white font-mulish text-base font-normal tracking-wide"
+        className="select-none inline-flex cursor-pointer items-center text-gray-700 ml-2 text-primary bg-white font-mulish text-base font-normal tracking-wide"
       >
         {type}
       </label>

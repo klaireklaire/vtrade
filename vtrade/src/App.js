@@ -10,10 +10,10 @@ import NotFound from "./Components/NotFound";
 import { useState, useEffect } from "react";
 import apiClient from "./Services/apiClient";
 import PostOffer from "./Components/PostOffer";
-import PostDetails from "./Components/PostDetails";
+import PostRequest from "./Components/PostRequest";
 import HomePage from "./Components/HomePage";
 import ProductCard from "./Components/ProductCard";
-import { loader } from "./Constants";
+import { Loader } from "./Components/Loader";
 import Breadcrumbs from "./Components/Breadcrumbs";
 
 function App() {
@@ -22,6 +22,7 @@ function App() {
   const [error, setError] = useState(null);
   useEffect(() => {
     const fetchUser = async () => {
+      setIsLoading(true);
       const { data, error } = await apiClient.fetchUserFromToken();
 
       if (data) {
@@ -51,11 +52,22 @@ function App() {
           setUser={setUser}
           isLoading={isLoading}
           setIsLoading={setIsLoading}
-          loader={loader}
+          Loader={Loader}
         />
         <Breadcrumbs />
         <Routes>
-          <Route path="/" element={<HomePage />} />
+          <Route
+            path="/"
+            element={
+              <HomePage
+                user={user}
+                setUser={setUser}
+                isLoading={isLoading}
+                setIsLoading={setIsLoading}
+                Loader={Loader}
+              />
+            }
+          />
           <Route
             path="/post"
             element={<NewPost user={user} setUser={setUser} />}
@@ -68,7 +80,7 @@ function App() {
                 setUser={setUser}
                 isLoading={isLoading}
                 setIsLoading={setIsLoading}
-                loader={loader}
+                Loader={Loader}
               />
             }
           />
@@ -80,7 +92,7 @@ function App() {
                 setUser={setUser}
                 isLoading={isLoading}
                 setIsLoading={setIsLoading}
-                loader={loader}
+                Loader={Loader}
               />
             }
           />
@@ -90,7 +102,7 @@ function App() {
               <ForgotPasswordEmail
                 isLoading={isLoading}
                 setIsLoading={setIsLoading}
-                loader={loader}
+                Loader={Loader}
               />
             }
           />
@@ -105,21 +117,13 @@ function App() {
                 setUser={setUser}
                 isLoading={isLoading}
                 setIsLoading={setIsLoading}
-                loader={loader}
+                Loader={Loader}
               />
             }
           />
           <Route
             path="/post/request"
-            element={
-              <PostDetails
-                user={user}
-                setUser={setUser}
-                isLoading={isLoading}
-                setIsLoading={setIsLoading}
-                loader={loader}
-              />
-            }
+            element={<PostRequest user={user} setUser={setUser} />}
           />
         </Routes>
       </BrowserRouter>

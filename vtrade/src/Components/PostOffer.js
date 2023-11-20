@@ -2,10 +2,7 @@ import React, { useState, useMemo } from "react";
 import "../App.css";
 import apiClient from "../Services/apiClient";
 import { Navigate, useNavigate } from "react-router-dom";
-import { selectedSvg, unselectedSvg, currencyFormat } from "../Constants";
 import {
-  ImageScroll,
-  ImageUpload,
   Title,
   Condition,
   Description,
@@ -14,18 +11,17 @@ import {
 } from "./PostComponents/";
 
 export default function PostOffer(props) {
-  const [title, setTitle] = React.useState("");
-  const [category, setCategory] = React.useState("");
-  const [condition, setCondition] = React.useState("");
-  const [description, setDescription] = React.useState("");
-  const [location, setLocation] = React.useState("");
-  const [free, setFree] = React.useState(false);
+  const [title, setTitle] = useState("");
+  const [category, setCategory] = useState("");
+  const [condition, setCondition] = useState("");
+  const [description, setDescription] = useState("");
+  const [location, setLocation] = useState("");
+  const [free, setFree] = useState(false);
   const [customLocation, setCustomLocation] = useState("");
-  const [price, setPrice] = React.useState(0.0);
-  const [method, setMethod] = React.useState(null);
-  const [page, setPage] = React.useState(1);
-  const [images, setImages] = React.useState([]);
-  const [stringPrice, setStringPrice] = React.useState("");
+  const [price, setPrice] = useState(0.0);
+  const [method, setMethod] = useState(null);
+  const [images, setImages] = useState([]);
+  const [stringPrice, setStringPrice] = useState("");
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
 
   const navigate = useNavigate();
@@ -33,141 +29,211 @@ export default function PostOffer(props) {
   const cashValue = "Cash";
   const naValue = "N/A";
   const allValue = "All";
-  const forFree = "For Free";
 
   const handleOnSubmit = async () => {
-    console.log(images);
-    const pictures = images.map((image) => image.file);
-    console.log(pictures);
-
+    console.log(props);
     try {
+      props.setIsLoading(true);
+
+      // Validation check for required fields
+      if (
+        !title ||
+        !category ||
+        !condition ||
+        !description ||
+        (!free && price === 0) ||
+        (!location && !customLocation) ||
+        !method
+      ) {
+        alert("Please fill in all required fields before submitting.");
+        return;
+      }
+
+      //Try to create a new listing
       const { data, error } = await apiClient.postListing({
         user_id: props.user.id,
         listingtype: 0,
         title: title,
         form: 1,
-        status: "avaliable",
+        status: "available",
         category: category,
         condition: condition,
         price: price,
         description: description,
-        location: location,
+        location: location || customLocation,
         payment: method,
         type: "sell",
         images,
       });
-      console.log(data);
+
+      //success, navigate back to home
       if (data) {
         navigate("/");
       } else {
-        console.log(error);
+        console.error("API Error:", error);
       }
-    } catch {
-      console.log("error");
+    } catch (error) {
+      console.error("Unexpected Error:", error);
+    } finally {
+      // Set loading back to false after submission (whether successful or not)
+      props.setIsLoading(false);
     }
   };
 
+  //handle the input changes for title, category, condition, description, and location
   const handleOnInputChange = (event) => {
-    const { name, value } = event.target;
-    if (name === "title") {
-      setTitle(value);
-    } else if (name === "category") {
-      setCategory(value);
-    } else if (name === "condition") {
-      setCondition(value);
-    } else if (name === "description") {
-      setDescription(value);
-    } else {
-      setLocation(value);
+    try {
+      const { name, value } = event.target;
+      if (name === "title") {
+        setTitle(value);
+      } else if (name === "category") {
+        setCategory(value);
+      } else if (name === "condition") {
+        setCondition(value);
+      } else if (name === "description") {
+        setDescription(value);
+      } else {
+        //if we use the location that's given, the custom location string will reset back to null
+        setLocation(value);
+        setCustomLocation("");
+      }
+    } catch (error) {
+      console.error("Error in handleOnInputChange:", error);
     }
   };
 
   const handleCustomLocation = (event) => {
-    setCustomLocation(event.target.value);
+    try {
+      //setting custom location value
+      setCustomLocation(event.target.value);
+    } catch (error) {
+      console.error("Error in handleCustomLocation:", error);
+    }
   };
 
   const handlePaymentMethod = (value) => {
-    if (value === method) {
-      setMethod(null);
-    } else {
-      setMethod(value);
+    try {
+      //setting the payment method to corresponding value
+      if (value === method) {
+        setMethod(null);
+      } else {
+        setMethod(value);
+      }
+    } catch (error) {
+      console.error("Error in handlePaymentMethod:", error);
     }
   };
 
   const handleOnPriceInputChange = (value) => {
-    if (value) {
-      setStringPrice("$ Price your listing");
-      setPrice(0.0);
-      setFree(true);
-    } else {
-      setFree(false);
-      setPrice(0.0);
+    try {
+      //if free, then we set price to be 0.0, reset what the string price (placeholder value)
+      if (value) {
+        setStringPrice("$ Price your listing");
+        setPrice(0.0);
+        setFree(true);
+      } else {
+        setFree(false);
+        setPrice(0.0);
+      }
+    } catch (error) {
+      console.error("Error in handleOnPriceInputChange:", error);
     }
   };
 
+  //currency formatting the typed input
   const handleOnPriceChange = (event) => {
-    const userInput = event.target.value;
-    console.log("User Input:", userInput);
+    try {
+      const userInput = event.target.value;
+      // Remove all non-numeric and non-decimal characters except the first dot
+      const cleanedInput = userInput.replace(/[^0-9.]/g, "");
 
-    const cleanedInput = userInput.replace(/[^0-9.]/g, "");
-    console.log("Cleaned Input:", cleanedInput);
+      // Split the cleaned input into integer and decimal parts
+      const parts = cleanedInput.split(".");
+      const integerPart = parts[0];
+      const decimalPart = parts[1] ? parts[1].slice(0, 2) : ""; // Keep at most two decimal digits
 
-    const sanitizedInput = cleanedInput
-      .split(".")
-      .map((part, index) => (index === 1 ? part.slice(0, 2) : part))
-      .join(".");
-    console.log("Sanitized Input:", sanitizedInput);
+      // Ensure there is at most one dot in the decimal part
+      const sanitizedDecimalPart = decimalPart.includes(".")
+        ? decimalPart.replace(/\./g, "")
+        : decimalPart;
 
-    if (sanitizedInput === "" || sanitizedInput === ".") {
-      console.log("Setting Price and StringPrice to null and empty string");
-      setPrice(null);
-      setStringPrice("");
-    } else {
-      console.log(
-        "Setting Price and StringPrice:",
-        parseFloat(sanitizedInput),
-        "$" + sanitizedInput
-      );
-      setPrice(parseFloat(sanitizedInput));
-      setStringPrice("$" + sanitizedInput);
+      var sanitizedInput = "";
+      // Construct the sanitized input using the integer and sanitized decimal parts
+      if (parts.length > 1) {
+        sanitizedInput = `${integerPart}.${sanitizedDecimalPart}`;
+      } else {
+        sanitizedInput = integerPart;
+      }
+
+      if (sanitizedInput === "" || sanitizedInput === ".") {
+        setPrice(0.0);
+        setStringPrice("");
+      } else {
+        setPrice(parseFloat(sanitizedInput));
+        setStringPrice("$" + sanitizedInput);
+      }
+    } catch (error) {
+      console.error("Error in handleOnPriceChange:", error);
     }
   };
 
   const updateRemovedImage = (index) => {
-    const newImages = [...images];
-    newImages.splice(index, 1);
-    setImages(newImages);
+    try {
+      const newImages = [...images];
+      newImages.splice(index, 1);
+      setImages(newImages);
 
-    if (index === selectedImageIndex) {
-      // If the removed image was the selected one, update the selected index
-      setSelectedImageIndex(0);
+      //check if the current index. If so, set the current photo to be the first one
+      if (index === selectedImageIndex) {
+        setSelectedImageIndex(0);
+      }
+    } catch (error) {
+      console.error("Error in updateRemovedImage:", error);
     }
   };
 
-  const handleFileInputChange = (event) => {
-    if (images.length < 7) {
-      const files = Array.from(event.target.files);
-      setImages([...images, ...files]);
-      setSelectedImageIndex(images.length); // Select the last uploaded image
-    } else {
-      alert("You can only upload a maximum of 7 photos.");
+  const handleFileInputChange = async (event) => {
+    try {
+      if (images.length < 7) {
+        //adding new image file into the list of photos
+        const files = Array.from(event.target.files);
+        setImages([...images, ...files]);
+        setSelectedImageIndex(images.length); // Select the last uploaded image
+      } else {
+        alert("You can only upload a maximum of 7 photos.");
+      }
+    } catch (error) {
+      console.error("Error in handleFileInputChange:", error);
     }
   };
 
   const updateSelectedImageIndex = (index) => {
-    setSelectedImageIndex(index);
+    try {
+      setSelectedImageIndex(index);
+    } catch (error) {
+      console.error("Error in updateSelectedImageIndex:", error);
+    }
+  };
+
+  const getObjectUrlSafely = (file) => {
+    try {
+      return URL.createObjectURL(file);
+    } catch (error) {
+      console.error("Error creating object URL:", error);
+      return "";
+    }
   };
 
   return (
     <div>
       {props.isLoading ? (
-        props.loader()
+        props.Loader
       ) : (
         <div className="mb-10">
           <div className="flex flex-row mt-10">
             <div className="flex flex-col">
               <div
-                className="ml-[77px] mr-[55px] h-[440px] w-[640px] mx-auto rounded-2xl bg-white border-dashed border-2 border-gray-300 overflow-hidden flex flex-col items-center justify-center"
+                className="ml-[77px] mr-[55px] h-[440px] w-[640px] mx-auto rounded-2xl bg-white border-dashed border-2 border-gray-700 overflow-hidden flex flex-col items-center justify-center"
                 onDragOver={handleFileInputChange}
                 onDragLeave={handleFileInputChange}
                 onDrop={handleFileInputChange}
@@ -187,10 +253,9 @@ export default function PostOffer(props) {
                   </p>
                 ) : (
                   <img
-                    class="lazy"
-                    src={URL.createObjectURL(images[selectedImageIndex])}
-                    alt={`Image ${selectedImageIndex}`}
                     className="max-h-full max-w-full mx-auto"
+                    src={getObjectUrlSafely(images[selectedImageIndex])}
+                    alt={`Image ${selectedImageIndex}`}
                   />
                 )}
               </div>
@@ -221,7 +286,10 @@ export default function PostOffer(props) {
                 </div>
               )}
             </div>
-            <div className="flex flex-col justify-top items-start flex-shrink-0">
+            <div
+              style={{ maxWidth: "600px" }}
+              className="flex flex-col justify-top items-start flex-shrink-0"
+            >
               <Title
                 title={title}
                 category={category}
@@ -237,7 +305,7 @@ export default function PostOffer(props) {
               </p>
               <div className="w-full flex justify-start space-x-4 mt-2">
                 <label
-                  className={`inline-flex items-center px-3 py-2 border border-gray-300 rounded-full cursor-pointer transition duration-300 ease-in-out ${
+                  className={`inline-flex items-center px-3 py-2 border border-gray-700 rounded-full cursor-pointer transition duration-300 ease-in-out ${
                     !free
                       ? "bg-light-black text-white"
                       : "bg-white text-black hover:bg-light-black hover:text-white"
@@ -253,7 +321,7 @@ export default function PostOffer(props) {
                   For Sale
                 </label>
                 <label
-                  className={`inline-flex items-center px-3 py-2 border border-gray-300 rounded-full cursor-pointer transition duration-300 ease-in-out ${
+                  className={`inline-flex items-center px-3 py-2 border border-gray-700 rounded-full cursor-pointer transition duration-300 ease-in-out ${
                     free
                       ? "bg-light-black text-white"
                       : "bg-white text-black hover:bg-light-black hover:text-white"
@@ -271,7 +339,7 @@ export default function PostOffer(props) {
               </div>
               <input
                 type="text"
-                className={`border border-solid border-black bg-white h-11 rounded-md p-4 w-full mt-4 text-gray-500 text-base font-mulish font-normal leading-5 tracking-wider ${
+                className={`border border-solid border-black bg-white h-11 rounded-md px-3 py-2 w-full mt-4 text-gray-700 text-base font-mulish font-normal leading-5 tracking-wider ${
                   free ? "opacity-25" : ""
                 }`}
                 placeholder="$ Price your listing"
