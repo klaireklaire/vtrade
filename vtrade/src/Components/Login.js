@@ -63,7 +63,7 @@ export default function Login({ returnEndpoint = "/", ...props }) {
   return (
     <div className="login">
       {props.isLoading ? (
-        props.loader()
+        props.Loader
       ) : (
         <div className="flex justify-center items-center h-full">
           <form className="max-w-[400px] w-full mx-auto p-8">

@@ -13,7 +13,7 @@ import PostOffer from "./Components/PostOffer";
 import PostDetails from "./Components/PostDetails";
 import HomePage from "./Components/HomePage";
 import ProductCard from "./Components/ProductCard";
-import { loader } from "./Constants";
+import { Loader } from "./Components/Loader";
 import Breadcrumbs from "./Components/Breadcrumbs";
 
 function App() {
@@ -51,11 +51,22 @@ function App() {
           setUser={setUser}
           isLoading={isLoading}
           setIsLoading={setIsLoading}
-          loader={loader}
+          Loader={Loader}
         />
         <Breadcrumbs />
         <Routes>
-          <Route path="/" element={<HomePage />} />
+          <Route
+            path="/"
+            element={
+              <HomePage
+                user={user}
+                setUser={setUser}
+                isLoading={isLoading}
+                setIsLoading={setIsLoading}
+                Loader={Loader}
+              />
+            }
+          />
           <Route
             path="/post"
             element={<NewPost user={user} setUser={setUser} />}
@@ -68,7 +79,7 @@ function App() {
                 setUser={setUser}
                 isLoading={isLoading}
                 setIsLoading={setIsLoading}
-                loader={loader}
+                Loader={Loader}
               />
             }
           />
@@ -80,7 +91,7 @@ function App() {
                 setUser={setUser}
                 isLoading={isLoading}
                 setIsLoading={setIsLoading}
-                loader={loader}
+                Loader={Loader}
               />
             }
           />
@@ -90,7 +101,7 @@ function App() {
               <ForgotPasswordEmail
                 isLoading={isLoading}
                 setIsLoading={setIsLoading}
-                loader={loader}
+                Loader={Loader}
               />
             }
           />
@@ -105,7 +116,7 @@ function App() {
                 setUser={setUser}
                 isLoading={isLoading}
                 setIsLoading={setIsLoading}
-                loader={loader}
+                Loader={Loader}
               />
             }
           />

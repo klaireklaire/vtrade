@@ -12,7 +12,12 @@ class ApiClient {
     localStorage.setItem(this.tokenName, token);
   }
 
-  async request({ endpoint, method = `GET`, data = {}, contentType = "application/json" }) {
+  async request({
+    endpoint,
+    method = `GET`,
+    data = {},
+    contentType = "application/json",
+  }) {
     const url = `${this.remoteHostUrl}/${endpoint}`;
     const headers = {
       "Content-Type": contentType,
@@ -32,7 +37,6 @@ class ApiClient {
     }
   }
 
-
   async fetchUserFromToken() {
     return await this.request({ endpoint: `user/me`, method: `GET` });
   }
@@ -40,8 +44,6 @@ class ApiClient {
   // async fetchUserFromId(userId) {
   //   return await this.request({ endpoint: `auth/` + userId, method: `GET` });
   // }
-
- 
 
   async loginUser(credentials) {
     return await this.request({
@@ -64,33 +66,28 @@ class ApiClient {
     });
   }
 
-  async getHighlights(){
+  async getHighlights() {
     return await this.request({
       endpoint: `offer/highlights`,
-      method: `GET`
-    })
+      method: `GET`,
+    });
   }
 
-  async getListings(){
+  async getListings() {
     return await this.request({
       endpoint: `listing`,
-      method: `GET`
-    })
+      method: `GET`,
+    });
   }
 
-  async postItem(data){
+  async postItem(data) {
     return await this.request({
       endpoint: `offer/post`,
       method: `POST`,
       data: data,
       contentType: "multipart/form-data",
-    })
+    });
   }
- 
-
 }
 
-
-
 export default new ApiClient("http://localhost:3001");
-
