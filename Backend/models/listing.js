@@ -38,12 +38,13 @@ const listingQuery = `
               productdetails pd ON l.id = pd.listing_id
               LEFT JOIN
               listingimages li ON l.id = li.listing_id
+              LEFT JOIN
+              users u on u.id = l.user_id
 `
 
 class Listing {
   static async getListings(){
-    const query = listingQuery + ` LEFT JOIN
-                      users u on u.id = l.user_id;`
+    const query = listingQuery + ';'
     const result = await db.query(query)
     return result.rows
   }

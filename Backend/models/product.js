@@ -1,7 +1,14 @@
-const db = require("../db");
-const { BadRequestError, UnauthorizedError } = require("../utils/errors");
-const { s3 } = require("../config");
+/**
+ * This file defines routes for fetching product data from the database. Products are listings that are of
+ * Listing type 0
+ */
 
+const db = require("../db");
+
+/**
+ * Base string that is used by all product data fetching queries. Defines the fields fetched and
+ * joins various tables having the data that is needed
+ */
 const productQuery = `
             SELECT
             l.id,
@@ -37,11 +44,21 @@ const productQuery = `
 `
 
 class Product{
+    /**
+     * 
+     * @returns all the products in the database
+     */
     static async getProducts(){
         const result = await db.query(productQuery + `;`)
         const res = result.rows
         return res;
     }
+
+    /**
+     * 
+     * @param {*} id 
+     * @returns Details of the product with the id
+     */
 
     static async getProductById(id){
         const query = productQuery + ` AND l.id=${id};`
