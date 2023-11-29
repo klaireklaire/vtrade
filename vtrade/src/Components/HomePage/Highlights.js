@@ -1,10 +1,10 @@
 import React from "react";
-
 import moment from "moment/moment";
 import { useState, useEffect } from "react";
 import PersonIcon from "@mui/icons-material/Person";
 import apiClient from "../../Services/apiClient";
 import ImageSlider from "./ImageSlider";
+import { useNavigate } from "react-router-dom";
 
 export default function HighLights({
   user,
@@ -16,6 +16,8 @@ export default function HighLights({
   const [highlights, setHighlights] = useState(null);
   const [allImages, setAllImages] = useState(null);
   const [userId, setUserId] = useState({});
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const getProducts = async () => {
@@ -36,6 +38,7 @@ export default function HighLights({
   }, []);
 
   useEffect(() => {
+    console.log(highlights);
     if (highlights) {
       const allImages = highlights.map((item) => {
         const productImages = [];
@@ -55,6 +58,10 @@ export default function HighLights({
     }
   }, [highlights]);
 
+  const handleItemClick = (item) => {
+    navigate(`/${item.category}`, { state: { id: item.id } });
+  };
+
   return (
     <div>
       <div className="mt-12 mb-6">
@@ -67,7 +74,8 @@ export default function HighLights({
           ? highlights.map((item, i) => (
               <div
                 key={i}
-                className="flex flex-col justify-start border-gray-200 border p-2 mx-2"
+                className="flex flex-col justify-start border-gray-200 border p-2 mx-2 cursor-pointer"
+                onClick={() => handleItemClick(item)} //
               >
                 <div className="w-72 h-16 flex items-start ">
                   <div
