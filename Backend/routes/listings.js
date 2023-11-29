@@ -34,6 +34,44 @@ router.get("/user/:userId", async (req, res, next) => {
   }
 });
 
+router.get("/product", async (req, res, next) => {
+  try {
+      const listings = await Listing.getProducts()
+      return res.status(200).json({ listings })
+  } catch (err){
+      next(err)
+  }
+})
+
+router.get("/product/user/:userid", async (req, res, next) => {
+  try{
+      const { userid } = req.params
+      const listings = await Listing.getProductsByUser(userid)
+      return res.status(200).json({ listings })
+  } catch(err){
+      next(err)
+  }
+})
+
+router.get("/service", async (req, res, next) => {
+  try {
+    const listings = await Listing.getServices()
+    return res.status(200).json({ listings })
+  } catch (err){
+    next(err)
+  }
+})
+
+router.get("/service/user/:userId", async (req, res, next) => {
+  try {
+    const { userId } = req.params
+    const listings = await Listing.getServicesByUser(userId)
+    return res.status(200).json({ listings })
+  } catch (err){
+    next(err)
+  }
+})
+
 router.get("/filter", async (req, res, next) => {
   try {
     const { min } = req.body

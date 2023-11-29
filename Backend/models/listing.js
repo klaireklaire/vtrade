@@ -1,8 +1,6 @@
 const db = require("../db");
 const { BadRequestError, UnauthorizedError } = require("../utils/errors");
 const Appimage = require("./appimage")
-const { s3 } = require("../config");
-
 
 const listingQuery = `
               SELECT
@@ -42,6 +40,39 @@ const listingQuery = `
               users u on u.id = l.user_id
 `
 
+const listingQueryNoUser = `
+              SELECT
+              l.id,
+              l.user_id,
+              l.listingtype,
+              l.title,
+              l.location,
+              l.description,
+              l.form,
+              l.price,
+              l.minprice,
+              l.maxprice,
+              l.status,
+              l.payment,
+              l.createdat AS listing_createdat,
+              pd.category,
+              pd.type,
+              pd.condition,
+              li.image1,
+              li.image2,
+              li.image3,
+              li.image4,
+              li.image5,
+              li.image6,
+              li.image7
+              FROM
+              listings l
+              LEFT JOIN
+              productdetails pd ON l.id = pd.listing_id
+              LEFT JOIN
+              listingimages li ON l.id = li.listing_id
+              `
+
 class Listing {
   static async getListings(){
     const query = listingQuery + ';'
@@ -62,6 +93,35 @@ class Listing {
     return result.rows;
 
   }
+
+  /**
+     * 
+     * @returns all the products in the database
+     */
+  static async getProducts(){
+    const result = await db.query(listingQuery + `WHERE listingtype=0;`)
+    const res = result.rows
+    return res;
+}
+
+static async getProductsByUser(userId){
+    const query = listingQuery + `WHERE listingtype=0 AND user_id=${userId};`
+    const result = await db.query(query)
+    return result.rows
+}
+
+static async getServices(){
+  const result = await db.query(listingQuery + `WHERE listingtype=1;`)
+  const res = result.rows
+  return res;
+}
+
+static async getServicesByUser(userId){
+  const query = listingQuery + `WHERE listingtype=1 AND user_id=${userId};`
+  console.log(query)
+  const result = await db.query(query)
+  return result.rows
+}
 
   static async deleteListing(id){
     const query = ` 

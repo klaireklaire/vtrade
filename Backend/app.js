@@ -8,8 +8,6 @@ const { NotFoundError } = require("./utils/errors");
 const app = express();
 const userRoutes = require("./routes/users")
 const listingRoutes = require("./routes/listings")
-const productRoutes = require("./routes/products")
-const serviceRoutes = require("./routes/services")
 const reviewRoutes = require("./routes/reviews")
 const ratingRoutes = require("./routes/ratings")
 const transactionRoutes = require("./routes/transactions")
@@ -22,8 +20,6 @@ app.use(security.extractUserFromJwt);
 
 app.use("/user", userRoutes)
 app.use("/listing", listingRoutes)
-app.use("/product", productRoutes)
-app.use("/service", serviceRoutes)
 app.use("/review", reviewRoutes)
 app.use("/rating", ratingRoutes)
 app.use("/transaction", transactionRoutes)
