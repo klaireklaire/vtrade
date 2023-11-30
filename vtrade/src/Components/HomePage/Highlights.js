@@ -59,7 +59,7 @@ export default function HighLights({
   }, [highlights]);
 
   const handleItemClick = (item) => {
-    navigate(`/${item.category}`, { state: { id: item.id } });
+    navigate(`/Product/${item.category}`, { state: { id: item.id } });
   };
 
   return (
@@ -75,12 +75,12 @@ export default function HighLights({
               <div
                 key={i}
                 className="flex flex-col justify-start border-gray-200 border p-2 mx-2 cursor-pointer"
-                onClick={() => handleItemClick(item)} //
               >
                 <div className="w-72 h-16 flex items-start ">
                   <div
                     className="bg-gray-300 rounded-full w-10 h-10 overflow-hidden"
                     aria-label="profile-image"
+                    onClick={() => handleItemClick(item)}
                   >
                     {item.profileimage ? (
                       <img
@@ -92,7 +92,10 @@ export default function HighLights({
                       <PersonIcon className="text-white" />
                     )}
                   </div>
-                  <div className="ml-3 flex flex-col">
+                  <div
+                    className="ml-3 flex flex-col"
+                    onClick={() => handleItemClick(item)}
+                  >
                     <div className="text-light-black font-Mulish text-sm font-semibold leading-5 tracking-tighter">
                       {/* need to extract the first and last name from userId */}
                       {item.firstname + " " + item.lastname}
@@ -107,12 +110,19 @@ export default function HighLights({
                   Array.isArray(allImages) &&
                   allImages.length > i &&
                   allImages[i] ? (
-                    <ImageSlider images={allImages[i].images} />
+                    <ImageSlider
+                      images={allImages[i].images}
+                      handleItemClick={handleItemClick}
+                      item={item}
+                    />
                   ) : (
                     Loader
                   )}
                 </div>
-                <div className="px-2 py-4 text-start">
+                <div
+                  className="px-2 py-4 text-start"
+                  onClick={() => handleItemClick(item)}
+                >
                   <p className="text-gray-800 font-Mulish text-base font-semibold leading-6 tracking-[0.2px]">
                     {item.title}
                   </p>

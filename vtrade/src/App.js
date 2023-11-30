@@ -108,7 +108,7 @@ function App() {
           />
           <Route path="/passwordconfirm" element={<ForgotPasswordConfirm />} />
           <Route
-            path="/:category"
+            path="/Product/:category"
             element={
               <ProductPage
                 user={user}
