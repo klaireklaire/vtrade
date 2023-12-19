@@ -6,54 +6,8 @@ import PersonIcon from "@mui/icons-material/Person";
 import apiClient from "../../Services/apiClient";
 import ImageSlider from "./ImageSlider";
 
-export default function HighLights({
-  user,
-  setUser,
-  isLoading,
-  setIsLoading,
-  Loader,
-}) {
-  const [highlights, setHighlights] = useState(null);
-  const [allImages, setAllImages] = useState(null);
+export default function HighLights({ user, setUser, highlights, allImages }) {
   const [userId, setUserId] = useState({});
-
-  useEffect(() => {
-    const getProducts = async () => {
-      try {
-        setIsLoading(true);
-        const { data, error } = await apiClient.getListings();
-        if (data) {
-          setHighlights(data.listings);
-        }
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    getProducts();
-  }, []);
-
-  useEffect(() => {
-    if (highlights) {
-      const allImages = highlights.map((item) => {
-        const productImages = [];
-        for (let i = 1; i <= 7; i++) {
-          const imageKey = `image${i}`;
-          const imageUrl = item[imageKey];
-
-          if (imageUrl) {
-            productImages.push(imageUrl);
-          }
-        }
-
-        return { productId: item.id, images: productImages };
-      });
-
-      setAllImages(allImages);
-    }
-  }, [highlights]);
 
   return (
     <div>
@@ -100,9 +54,7 @@ export default function HighLights({
                   allImages.length > i &&
                   allImages[i] ? (
                     <ImageSlider images={allImages[i].images} />
-                  ) : (
-                    Loader
-                  )}
+                  ) : null}
                 </div>
                 <div className="px-2 py-4 text-start">
                   <p className="text-gray-800 font-Mulish text-base font-semibold leading-6 tracking-[0.2px]">
@@ -120,7 +72,7 @@ export default function HighLights({
                 </div>
               </div>
             ))
-          : Loader}
+          : null}
       </div>
     </div>
   );
