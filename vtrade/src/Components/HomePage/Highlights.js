@@ -11,45 +11,6 @@ export default function HighLights({ user, setUser, highlights, allImages }) {
 
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const getProducts = async () => {
-      try {
-        setIsLoading(true);
-        const { data, error } = await apiClient.getListings();
-        if (data) {
-          setHighlights(data.listings);
-        }
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    getProducts();
-  }, []);
-
-  useEffect(() => {
-    console.log(highlights);
-    if (highlights) {
-      const allImages = highlights.map((item) => {
-        const productImages = [];
-        for (let i = 1; i <= 7; i++) {
-          const imageKey = `image${i}`;
-          const imageUrl = item[imageKey];
-
-          if (imageUrl) {
-            productImages.push(imageUrl);
-          }
-        }
-
-        return { productId: item.id, images: productImages };
-      });
-
-      setAllImages(allImages);
-    }
-  }, [highlights]);
-
   const handleItemClick = (item) => {
     navigate(`/Product/${item.category}`, { state: { id: item.id } });
   };
@@ -107,9 +68,7 @@ export default function HighLights({ user, setUser, highlights, allImages }) {
                       handleItemClick={handleItemClick}
                       item={item}
                     />
-                  ) : (
-                    Loader
-                  )}
+                  ) : null}
                 </div>
                 <div
                   className="px-2 py-4 text-start"
