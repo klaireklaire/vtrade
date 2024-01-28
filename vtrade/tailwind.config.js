@@ -13,6 +13,7 @@ module.exports = {
       basePlus: ["18px", "26px"],
       md: ["20px", "28px"],
       lg: ["24px", "32px"],
+      llg: ["28px", "36px"],
       xl: ["32px", "40px"],
     },
     extend: {

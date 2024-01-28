@@ -9,7 +9,7 @@ export default function Description({ description, handleOnInputChange }) {
       <textarea
         name="description"
         required
-        className="font-mulish text-light-black font-normal mt-2 w-[600px] h-52 resize-none border-2 border-solid border-gray-600 bg-white p-3 rounded-md focus:ring focus:ring-blue-400"
+        className="font-mulish text-gray-700 font-normal mt-2 w-[600px] h-52 resize-none border-2 border-solid border-gray-700 bg-white px-3 py-2 rounded-md"
         placeholder="Describe what you are selling and include any details a buyer might be interested in. People love items with stories!"
         value={description}
         onChange={handleOnInputChange}
