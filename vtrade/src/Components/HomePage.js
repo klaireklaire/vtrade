@@ -1,7 +1,5 @@
 import * as React from "react";
 import { useState, useEffect } from "react";
-import offers from "../mock_data/offers";
-import posts from "../mock_data/recent_posts.json";
 import { useNavigate } from "react-router-dom";
 import CategoryScroll from "./HomePage/CategoryScroll.js";
 import HighLights from "./HomePage/Highlights";
@@ -9,26 +7,90 @@ import RecentPosts from "./HomePage/RecentPosts";
 import RecentEvents from "./HomePage/RecentEvents";
 import apiClient from "../Services/apiClient";
 
-export default function HomePage({
-  user,
-  setUser,
-  isLoading,
-  setIsLoading,
-  Loader,
-}) {
+export default function HomePage({ user, setUser, Loader }) {
+  const [isLoading, setIsLoading] = useState(true);
+  const [highlights, setHighlights] = useState(null);
+  const [allImages, setAllImages] = useState(null);
+  const [recentPosts, setRecentPosts] = useState(null);
+
+  const handleLoadingComplete = () => {
+    setIsLoading(false);
+    console.log("set isLoading to false");
+  };
+
+  useEffect(() => {
+    const getProducts = async () => {
+      try {
+        const { data, error } = await apiClient.getListings();
+        if (data) {
+          setHighlights(data.listings);
+          console.log("highlights", highlights);
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+    if (highlights === null) getProducts();
+  }, []);
+
+  useEffect(() => {
+    if (highlights) {
+      const allImages = highlights.map((item) => {
+        const productImages = [];
+        for (let i = 1; i <= 7; i++) {
+          const imageKey = `image${i}`;
+          const imageUrl = item[imageKey];
+
+          if (imageUrl) {
+            productImages.push(imageUrl);
+          }
+        }
+
+        return { productId: item.id, images: productImages };
+      });
+
+      setAllImages(allImages);
+    }
+  }, [highlights]);
+
+  useEffect(() => {
+    const getRecentPosts = async () => {
+      try {
+        const response = await apiClient.getListings();
+        const { data, error } = response;
+
+        if (data) {
+          //need to update this
+          setRecentPosts(data.listings);
+          console.log("recent posts:", highlights);
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    getRecentPosts();
+  }, []);
+
+  useEffect(() => {
+    if (highlights !== null && recentPosts !== null) {
+      console.log("Both components loaded. Calling handleLoadingComplete.");
+      handleLoadingComplete();
+    }
+  }, [highlights, recentPosts]);
+
   return (
     <div>
       {isLoading ? (
-        Loader
+        <Loader />
       ) : (
         <div className="pt-12 pl-14">
           <CategoryScroll />
           <HighLights
             user={user}
             setUser={setUser}
-            isLoading={isLoading}
-            setIsLoading={setIsLoading}
-            Loader={Loader}
+            highlights={highlights}
+            allImages={allImages}
           />
           <div>
             <div className="flex flex-row justify-start">
@@ -36,9 +98,7 @@ export default function HomePage({
                 <RecentPosts
                   user={user}
                   setUser={setUser}
-                  isLoading={isLoading}
-                  setIsLoading={setIsLoading}
-                  Loader={Loader}
+                  recentPosts={recentPosts}
                 />
               </div>
               {/* 
