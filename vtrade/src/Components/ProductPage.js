@@ -18,7 +18,6 @@ import {
 } from "../Constants";
 
 export default function ProductPage({ user, setUser, children }) {
-  const [isLoading, setIsLoading] = useState(true);
   const [currIdx, setCurrIdx] = useState(0);
   const [leftMostIdx, setLeftMostIdx] = useState(null);
   const [rightMostIdx, setRightMostIdx] = useState(null);
@@ -36,8 +35,6 @@ export default function ProductPage({ user, setUser, children }) {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        setIsLoading(true);
-
         // Fetch item data
         const { data, error } = await apiClient.getProduct(itemId);
 
@@ -59,17 +56,14 @@ export default function ProductPage({ user, setUser, children }) {
         }
       } catch (error) {
         console.error("Error fetching data:", error);
-      } finally {
-        setIsLoading(false);
-
-        // Set the initial page configuration
-        setInitialPage();
       }
     };
 
     // Fetch data only if images, item, and moreDescription are not initialized
-    if (images === null || item === null || moreDescription === null)
+    if (images === null || item === null || moreDescription === null) {
       fetchData();
+      setInitialPage();
+    }
   }, [images]);
 
   // Helper function to set the initial page configuration
@@ -83,7 +77,6 @@ export default function ProductPage({ user, setUser, children }) {
         setRightMostIdx(images.length);
       }
     }
-
     // Check if the descriptionRef has content that exceeds 140px height
     if (descriptionRef.current) {
       if (descriptionRef.current.scrollHeight > 140) setMoreDescription(true);
@@ -112,7 +105,7 @@ export default function ProductPage({ user, setUser, children }) {
 
   // Return loading state if necessary data is not yet available
   if (item === null || images === null || seller === null) {
-    return children;
+    return <Loader />;
   }
 
   // Toggle full description visibility
@@ -152,9 +145,7 @@ export default function ProductPage({ user, setUser, children }) {
     }
   };
 
-  return isLoading ? (
-    <Loader />
-  ) : (
+  return (
     <div>
       <div className="flex flex-col mb-10">
         <div className="flex flex-row mt-6 ml-40">
