@@ -65,10 +65,10 @@ export default function PostOffer(props) {
         type: "sell",
         images,
       });
-
       //success, navigate back to home
       if (data) {
-        navigate("/");
+        const item = data.listing;
+        navigate(`/Product/${item.category}`, { state: { id: item.id } });
       } else {
         console.error("API Error:", error);
       }

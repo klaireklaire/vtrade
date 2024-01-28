@@ -5,6 +5,7 @@ import PersonIcon from "@mui/icons-material/Person";
 import moment from "moment/moment";
 import { useLocation } from "react-router-dom";
 import apiClient from "../Services/apiClient";
+import Loader from "./Loader";
 import {
   arrowUpSvg,
   arrowDownSvg,
@@ -16,13 +17,8 @@ import {
   calendarSvg,
 } from "../Constants";
 
-export default function ProductPage({
-  user,
-  setUser,
-  isLoading,
-  setIsLoading,
-  children,
-}) {
+export default function ProductPage({ user, setUser, children }) {
+  const [isLoading, setIsLoading] = useState(true);
   const [currIdx, setCurrIdx] = useState(0);
   const [leftMostIdx, setLeftMostIdx] = useState(null);
   const [rightMostIdx, setRightMostIdx] = useState(null);
@@ -156,7 +152,9 @@ export default function ProductPage({
     }
   };
 
-  return (
+  return isLoading ? (
+    <Loader />
+  ) : (
     <div>
       <div className="flex flex-col mb-10">
         <div className="flex flex-row mt-6 ml-40">

@@ -102,6 +102,14 @@ class ApiClient {
       method: `GET`,
     });
   }
+
+  async getItem(data) {
+    return await this.request({
+      endpoint: `listing/item`,
+      method: `GET`,
+      data: data,
+    });
+  }
 }
 
 export default new ApiClient("http://localhost:3001");
