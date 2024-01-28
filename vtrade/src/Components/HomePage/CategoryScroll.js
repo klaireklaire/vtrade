@@ -18,7 +18,7 @@ export default function CategoryScroll() {
       <div className="flex flex-row overflow-x-auto scrollbar-none pt-8 items-center">
         {MENU_ITEMS.map((menuItems) => (
           <button
-            class="w-[272px] h-[8rem] mr-6 border-2 border-slate-800 max-w-xs overflow-hidden rounded-3xl bg-white hover:bg-slate-100 duration-300 flex items-center justify-center inline-block px-3 text-lg text-slate-800 font-mulish font-bold"
+            className="w-[272px] h-[8rem] mr-6 border-2 border-slate-800 max-w-xs overflow-hidden rounded-3xl bg-white hover:bg-slate-100 duration-300 flex items-center justify-center inline-block px-3 text-lg text-slate-800 font-mulish font-bold"
             href={`/${menuItems.id}`}
             onClick={() => handelMenuItemClick(menuItems.id)}
           >

@@ -6,15 +6,7 @@ import apiClient from "../../Services/apiClient";
 import ImageSlider from "./ImageSlider";
 import { useNavigate } from "react-router-dom";
 
-export default function HighLights({
-  user,
-  setUser,
-  isLoading,
-  setIsLoading,
-  Loader,
-}) {
-  const [highlights, setHighlights] = useState(null);
-  const [allImages, setAllImages] = useState(null);
+export default function HighLights({ user, setUser, highlights, allImages }) {
   const [userId, setUserId] = useState({});
 
   const navigate = useNavigate();
@@ -138,7 +130,7 @@ export default function HighLights({
                 </div>
               </div>
             ))
-          : Loader}
+          : null}
       </div>
     </div>
   );
