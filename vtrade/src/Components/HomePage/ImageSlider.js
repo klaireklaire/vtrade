@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-export default function ImageSlider({ images }) {
+export default function ImageSlider({ images, handleItemClick, item }) {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   useEffect(() => {
@@ -20,6 +20,10 @@ export default function ImageSlider({ images }) {
     );
   };
 
+  const onItemClicked = (item) => {
+    handleItemClick(item);
+  };
+
   return (
     <div className="relative">
       <div className="mb-44 flex flex-row">
@@ -30,6 +34,7 @@ export default function ImageSlider({ images }) {
                 className="h-56 w-full object-contain absolute transition-transform"
                 src={images[currentImageIndex]}
                 alt={`Listing photo ${currentImageIndex + 1}`}
+                onClick={() => onItemClicked(item)}
               />
               {images.length > 1 && (
                 <>

@@ -88,6 +88,20 @@ class ApiClient {
       contentType: "multipart/form-data",
     });
   }
+
+  async getProduct(id) {
+    return await this.request({
+      endpoint: `listing/item/${id}`,
+      method: `GET`,
+    });
+  }
+
+  async getUser(id) {
+    return await this.request({
+      endpoint: `user/${id}`,
+      method: `GET`,
+    });
+  }
 }
 
 export default new ApiClient("http://localhost:3001");

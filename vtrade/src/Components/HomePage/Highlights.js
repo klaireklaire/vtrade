@@ -1,13 +1,58 @@
 import React from "react";
-
 import moment from "moment/moment";
 import { useState, useEffect } from "react";
 import PersonIcon from "@mui/icons-material/Person";
 import apiClient from "../../Services/apiClient";
 import ImageSlider from "./ImageSlider";
+import { useNavigate } from "react-router-dom";
 
 export default function HighLights({ user, setUser, highlights, allImages }) {
   const [userId, setUserId] = useState({});
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const getProducts = async () => {
+      try {
+        setIsLoading(true);
+        const { data, error } = await apiClient.getListings();
+        if (data) {
+          setHighlights(data.listings);
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    getProducts();
+  }, []);
+
+  useEffect(() => {
+    console.log(highlights);
+    if (highlights) {
+      const allImages = highlights.map((item) => {
+        const productImages = [];
+        for (let i = 1; i <= 7; i++) {
+          const imageKey = `image${i}`;
+          const imageUrl = item[imageKey];
+
+          if (imageUrl) {
+            productImages.push(imageUrl);
+          }
+        }
+
+        return { productId: item.id, images: productImages };
+      });
+
+      setAllImages(allImages);
+    }
+  }, [highlights]);
+
+  const handleItemClick = (item) => {
+    navigate(`/Product/${item.category}`, { state: { id: item.id } });
+  };
 
   return (
     <div>
@@ -21,12 +66,13 @@ export default function HighLights({ user, setUser, highlights, allImages }) {
           ? highlights.map((item, i) => (
               <div
                 key={i}
-                className="flex flex-col justify-start border-gray-200 border p-2 mx-2"
+                className="flex flex-col justify-start border-gray-200 border p-2 mx-2 cursor-pointer"
               >
                 <div className="w-72 h-16 flex items-start ">
                   <div
                     className="bg-gray-300 rounded-full w-10 h-10 overflow-hidden"
                     aria-label="profile-image"
+                    onClick={() => handleItemClick(item)}
                   >
                     {item.profileimage ? (
                       <img
@@ -38,7 +84,10 @@ export default function HighLights({ user, setUser, highlights, allImages }) {
                       <PersonIcon className="text-white" />
                     )}
                   </div>
-                  <div className="ml-3 flex flex-col">
+                  <div
+                    className="ml-3 flex flex-col"
+                    onClick={() => handleItemClick(item)}
+                  >
                     <div className="text-light-black font-Mulish text-sm font-semibold leading-5 tracking-tighter">
                       {/* need to extract the first and last name from userId */}
                       {item.firstname + " " + item.lastname}
@@ -53,10 +102,19 @@ export default function HighLights({ user, setUser, highlights, allImages }) {
                   Array.isArray(allImages) &&
                   allImages.length > i &&
                   allImages[i] ? (
-                    <ImageSlider images={allImages[i].images} />
-                  ) : null}
+                    <ImageSlider
+                      images={allImages[i].images}
+                      handleItemClick={handleItemClick}
+                      item={item}
+                    />
+                  ) : (
+                    Loader
+                  )}
                 </div>
-                <div className="px-2 py-4 text-start">
+                <div
+                  className="px-2 py-4 text-start"
+                  onClick={() => handleItemClick(item)}
+                >
                   <p className="text-gray-800 font-Mulish text-base font-semibold leading-6 tracking-[0.2px]">
                     {item.title}
                   </p>

@@ -12,7 +12,7 @@ import apiClient from "./Services/apiClient";
 import PostOffer from "./Components/PostOffer";
 import PostDetails from "./Components/PostDetails";
 import HomePage from "./Components/HomePage";
-import ProductCard from "./Components/ProductCard";
+import ProductPage from "./Components/ProductPage";
 import Loader from "./Components/Loader";
 import Breadcrumbs from "./Components/Breadcrumbs";
 
@@ -107,7 +107,20 @@ function App() {
             }
           />
           <Route path="/passwordconfirm" element={<ForgotPasswordConfirm />} />
-          <Route path="/post/:id" element={<ProductCard />} />
+          <Route
+            path="/Product/:category"
+            element={
+              <ProductPage
+                user={user}
+                setUser={setUser}
+                isLoading={isLoading}
+                setIsLoading={setIsLoading}
+              >
+                <Loader />
+              </ProductPage>
+            }
+          />
+
           <Route path="/*" element={<NotFound />} />
           <Route
             path="/post/offer"
