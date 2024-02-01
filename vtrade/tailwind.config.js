@@ -17,6 +17,15 @@ module.exports = {
       xl: ["32px", "40px"],
     },
     extend: {
+      animation: {
+        squish: "squish 300ms ease-in-out 1", // Use the 'squish' keyframes for the 'squish' animation
+      },
+      keyframes: {
+        squish: {
+          "50%": { scale: [1.4, 0.6] },
+        },
+      },
+
       colors: {
         "light-black": "#373F41",
       },
