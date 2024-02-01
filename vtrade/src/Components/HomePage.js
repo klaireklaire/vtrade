@@ -81,25 +81,25 @@ export default function HomePage({ user, setUser, Loader }) {
       {isLoading ? (
         <Loader />
       ) : (
-        <div className=" pt-12 px-14">
+        <div>
           <Carousel />
-
-          <HighLights
-            user={user}
-            setUser={setUser}
-            highlights={highlights}
-            allImages={allImages}
-          />
-          <div>
-            <div className="flex flex-row justify-start">
-              <div className="flex-1 mr-6">
-                <RecentPosts
-                  user={user}
-                  setUser={setUser}
-                  recentPosts={recentPosts}
-                />
-              </div>
-              {/* 
+          <div className=" pt-16 px-14">
+            <HighLights
+              user={user}
+              setUser={setUser}
+              highlights={highlights}
+              allImages={allImages}
+            />
+            <div>
+              <div className="flex flex-row justify-start">
+                <div className="flex-1 mr-6">
+                  <RecentPosts
+                    user={user}
+                    setUser={setUser}
+                    recentPosts={recentPosts}
+                  />
+                </div>
+                {/* 
               <div className="flex-1">
                 <RecentEvents
                   user={user}
@@ -109,6 +109,7 @@ export default function HomePage({ user, setUser, Loader }) {
                   Loader={Loader}
                 />
               </div> */}
+              </div>
             </div>
           </div>
         </div>
