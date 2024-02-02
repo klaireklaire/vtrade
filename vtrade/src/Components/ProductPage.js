@@ -5,6 +5,7 @@ import PersonIcon from "@mui/icons-material/Person";
 import moment from "moment/moment";
 import { useLocation } from "react-router-dom";
 import apiClient from "../Services/apiClient";
+import Loader from "./Loader";
 import {
   arrowUpSvg,
   arrowDownSvg,
@@ -23,6 +24,7 @@ export default function ProductPage({
   setIsLoading,
   children,
 }) {
+  const [loading, setLoading] = useState(true);
   const [currIdx, setCurrIdx] = useState(0);
   const [leftMostIdx, setLeftMostIdx] = useState(null);
   const [rightMostIdx, setRightMostIdx] = useState(null);
@@ -40,8 +42,6 @@ export default function ProductPage({
   useEffect(() => {
     const fetchData = async () => {
       try {
-        setIsLoading(true);
-
         // Fetch item data
         const { data, error } = await apiClient.getProduct(itemId);
 
@@ -57,17 +57,13 @@ export default function ProductPage({
           const imageValues = imageProperties
             .map((key) => data.listing[key])
             .filter((imageUrl) => imageUrl !== null);
+
           setImages(imageValues);
         } else {
           console.log("Data or listing not found:", error);
         }
       } catch (error) {
         console.error("Error fetching data:", error);
-      } finally {
-        setIsLoading(false);
-
-        // Set the initial page configuration
-        setInitialPage();
       }
     };
 
@@ -97,11 +93,13 @@ export default function ProductPage({
 
   useEffect(() => {
     // Fetch user data when the item changes
+
     const getUser = async () => {
       try {
         const { data, error } = await apiClient.getUser(item.user_id);
 
         if (data) {
+          setInitialPage();
           setSeller(data.user);
         } else {
           console.error("Error fetching data:", error);
@@ -110,14 +108,12 @@ export default function ProductPage({
         console.error("Error setting data:", error);
       }
     };
-
-    getUser();
+    if (item !== null) getUser();
   }, [item]);
 
-  // Return loading state if necessary data is not yet available
-  if (item === null || images === null || seller === null) {
-    return children;
-  }
+  useEffect(() => {
+    if (item && images && seller) setLoading(false);
+  }, [item, images, seller]);
 
   // Toggle full description visibility
   const toggleDescription = () => {
@@ -158,221 +154,225 @@ export default function ProductPage({
 
   return (
     <div>
-      <div className="flex flex-col mb-10">
-        <div className="flex flex-row mt-6 ml-40">
-          {images.length > 0 ? (
-            <div className=" flex flex-row">
-              <div className="flex flex-col items-center h-[550px]">
-                <div
-                  className={`${
-                    images.length < 3 || rightMostIdx <= 3
-                      ? "pointer-events-none opacity-0"
-                      : "pointer-events-auto opacity-100"
-                  }`}
-                  onClick={() => shiftIdx(false)}
-                >
-                  {arrowUpSvg}
-                </div>
-                <div className="max-h-lg">
-                  {images.map((image, index) => {
-                    if (index >= leftMostIdx && index < rightMostIdx) {
-                      return (
-                        <div key={index} className="">
-                          <img
-                            src={image}
-                            alt={`Image ${index + 1}`}
-                            onClick={() => updateSelectedImageIndex(index)}
-                            className="my-2 w-44 h-36 overflow-hidden cursor-pointer"
-                          />
-                        </div>
-                      );
-                    } else {
-                      return null;
-                    }
-                  })}
-                </div>
+      {loading ? (
+        <Loader />
+      ) : (
+        <div className="flex flex-col mb-10">
+          <div className="flex flex-row mt-6 ml-40">
+            {images && images.length > 0 ? (
+              <div className=" flex flex-row">
+                <div className="flex flex-col items-center h-[550px]">
+                  <div
+                    className={`${
+                      images.length < 3 || rightMostIdx <= 3
+                        ? "pointer-events-none opacity-0"
+                        : "pointer-events-auto opacity-100"
+                    }`}
+                    onClick={() => shiftIdx(false)}
+                  >
+                    {arrowUpSvg}
+                  </div>
+                  <div className="max-h-lg">
+                    {images.map((image, index) => {
+                      if (index >= leftMostIdx && index < rightMostIdx) {
+                        return (
+                          <div key={index} className="">
+                            <img
+                              src={image}
+                              alt={`Image ${index + 1}`}
+                              onClick={() => updateSelectedImageIndex(index)}
+                              className="my-2 w-44 h-36 overflow-hidden cursor-pointer"
+                            />
+                          </div>
+                        );
+                      } else {
+                        return null;
+                      }
+                    })}
+                  </div>
 
-                <div
-                  className={`${
-                    images.length < 4 || leftMostIdx >= 4
-                      ? "pointer-events-none opacity-0"
-                      : "pointer-events-auto opacity-100"
-                  }`}
-                  onClick={() => shiftIdx(true)}
-                >
-                  {arrowDownSvg}
+                  <div
+                    className={`${
+                      images.length < 4 || leftMostIdx >= 4
+                        ? "pointer-events-none opacity-0"
+                        : "pointer-events-auto opacity-100"
+                    }`}
+                    onClick={() => shiftIdx(true)}
+                  >
+                    {arrowDownSvg}
+                  </div>
                 </div>
-              </div>
-              <div>
-                <div className="relative">
-                  <img
-                    className="ml-8 max-w-lg max-h-lg mx-auto object-contain"
-                    src={images[currIdx]}
-                    alt={`Image ${currIdx}`}
-                    style={{ width: "512px", height: "512px" }}
-                  />
-                  <div className="absolute top-0 right-0 flex flex-row items-end p-4">
-                    <div
-                      className="cursor-pointer mr-2"
-                      // change this onClick
-                      onClick={() => console.log("Share button clicked")}
-                    >
-                      {shareSvg}
-                    </div>
-                    <div
-                      className="cursor-pointer"
-                      // change this onClick
-                      onClick={() => setLiked(!liked)}
-                    >
-                      {liked ? filledHeartSvg : unfilledHeartSvg}
+                <div>
+                  <div className="relative">
+                    <img
+                      className="ml-8 max-w-lg max-h-lg mx-auto object-contain"
+                      src={images[currIdx]}
+                      alt={`Image ${currIdx}`}
+                      style={{ width: "512px", height: "512px" }}
+                    />
+                    <div className="absolute top-0 right-0 flex flex-row items-end p-4">
+                      <div
+                        className="cursor-pointer mr-2"
+                        // change this onClick
+                        onClick={() => console.log("Share button clicked")}
+                      >
+                        {shareSvg}
+                      </div>
+                      <div
+                        className="cursor-pointer"
+                        // change this onClick
+                        onClick={() => setLiked(!liked)}
+                      >
+                        {liked ? filledHeartSvg : unfilledHeartSvg}
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
-          ) : null}
-          <div className="flex flex-col ml-5">
-            <div class="text-black font-mulish text-lg font-semibold tracking-tighter">
-              {item.title}
-            </div>
-            <div className="mt-2 flex item-start">
-              <div
-                className="bg-gray-300 rounded-full w-10 h-10 overflow-hidden"
-                aria-label="profile-image"
-              >
-                {item.profileimage ? (
-                  <img
-                    src={item.profileimage}
-                    alt="Profile"
-                    className="object-cover w-full h-full"
-                  />
-                ) : (
-                  <PersonIcon className="text-white" />
-                )}
+            ) : null}
+            <div className="flex flex-col ml-5">
+              <div class="text-black font-mulish text-lg font-semibold tracking-tighter">
+                {item.title}
               </div>
-              <div className="ml-3 flex flex-col">
-                <div className="text-light-black font-Mulish text-sm font-semibold leading-5 tracking-tighter">
-                  {item.firstname + " " + item.lastname}
-                </div>
-                <div className="text-black text-xs text-center mt-0">
-                  {moment(item.listing_createdat).fromNow()}
-                </div>
-              </div>
-            </div>
-            <div className="text-black font-mulish text-xl font-semibold tracking-[0.1px] mt-6">
-              {item.price > 0 ? currencyFormat.format(item.price) : "Free"}
-            </div>
-            <div className="mt-4 text-black font-mulish text-basePlus font-bold tracking-[0.1px]">
-              Details
-            </div>
-            <div className="mt-2 flex flex-col">
-              <div className="flex flex-row justify-between items-start">
-                <div className="flex-1 mr-14">
-                  <p className="mb-1 text-gray-700 font-mulish text-xsm font-normal tracking-[0.2px]">
-                    Condition
-                  </p>
-                  <p className="capitalize text-light-black font-mulish text-sm font-normal tracking-[0.1px] whitespace-nowrap">
-                    {item.condition}
-                  </p>
-                </div>
-                <div className="flex-1 mr-14">
-                  <p className="mb-1 text-gray-700 font-mulish text-xsm font-normal tracking-[0.2px] whitespace-nowrap">
-                    Payment Method
-                  </p>
-                  <p className="capitalize text-light-black font-mulish text-sm font-normal tracking-[0.1px]">
-                    {item.payment}
-                  </p>
-                </div>
-                <div className="flex-1">
-                  <p className="mb-1 text-gray-700 font-mulish text-xsm font-normal tracking-[0.2px]">
-                    Location
-                  </p>
-                  <p className="capitalize text-light-black font-mulish text-sm font-normal tracking-[0.1px]">
-                    {item.location}
-                  </p>
-                </div>
-              </div>
-            </div>
-            <div className="mt-4 text-black font-mulish text-basePlus font-bold tracking-[0.1px]">
-              Description
-            </div>
-            <div className="relative max-w-[500px]">
-              <div
-                ref={descriptionRef}
-                className={`mt-1 overflow-hidden text-light-black font-mulish text-sm font-normal leading-5 tracking-[0.2px] ${
-                  showFullDescription ? "h-full" : "h-[140px]"
-                } `}
-              >
-                {item.description}
-              </div>
-              {moreDescription && (
-                <button
-                  className="absolute bottom-0 left-0 bg-transparent border-none text-blue-500 cursor-pointer"
-                  style={{ top: "103%" }}
-                  onClick={toggleDescription}
+              <div className="mt-2 flex item-start">
+                <div
+                  className="bg-gray-300 rounded-full w-10 h-10 overflow-hidden"
+                  aria-label="profile-image"
                 >
-                  {showFullDescription ? "View Less" : "View More"}
-                </button>
-              )}
-            </div>
-            <div className={`${moreDescription ? "mt-12" : "mt-2"}`}>
-              <button className="w-32 font-mulish text-center cursor-pointer py-3 px-4 text-white bg-black font-bold text-sm tracking-wide">
-                Buy
-              </button>
-            </div>
-          </div>
-        </div>
-        <div className="mt-8 mb-4">
-          <div className="border-t border-dotted border-gray-500 w-full" />
-          <div className="flex flex-col ml-40 mt-4">
-            <p className="font-mulish font-bold tracking-[0.1px] text-xl text-black">
-              Meet the Seller
-            </p>
-            <div className="flex flex-row items-center ">
-              <div
-                className="bg-gray-300 mt-7 mr-5 rounded-full w-20 h-20 overflow-hidden"
-                aria-label="profile-image"
-              >
-                {item.profileimage ? (
-                  <img
-                    src={item.profileimage}
-                    alt="Profile"
-                    className="object-cover w-full h-full"
-                  />
-                ) : (
-                  <PersonIcon className="text-white" />
+                  {item.profileimage ? (
+                    <img
+                      src={item.profileimage}
+                      alt="Profile"
+                      className="object-cover w-full h-full"
+                    />
+                  ) : (
+                    <PersonIcon className="text-white" />
+                  )}
+                </div>
+                <div className="ml-3 flex flex-col">
+                  <div className="text-light-black font-Mulish text-sm font-semibold leading-5 tracking-tighter">
+                    {item.firstname + " " + item.lastname}
+                  </div>
+                  <div className="text-black text-xs text-center mt-0">
+                    {moment(item.listing_createdat).fromNow()}
+                  </div>
+                </div>
+              </div>
+              <div className="text-black font-mulish text-xl font-semibold tracking-[0.1px] mt-6">
+                {item.price > 0 ? currencyFormat.format(item.price) : "Free"}
+              </div>
+              <div className="mt-4 text-black font-mulish text-basePlus font-bold tracking-[0.1px]">
+                Details
+              </div>
+              <div className="mt-2 flex flex-col">
+                <div className="flex flex-row justify-between items-start">
+                  <div className="flex-1 mr-14">
+                    <p className="mb-1 text-gray-700 font-mulish text-xsm font-normal tracking-[0.2px]">
+                      Condition
+                    </p>
+                    <p className="capitalize text-light-black font-mulish text-sm font-normal tracking-[0.1px] whitespace-nowrap">
+                      {item.condition}
+                    </p>
+                  </div>
+                  <div className="flex-1 mr-14">
+                    <p className="mb-1 text-gray-700 font-mulish text-xsm font-normal tracking-[0.2px] whitespace-nowrap">
+                      Payment Method
+                    </p>
+                    <p className="capitalize text-light-black font-mulish text-sm font-normal tracking-[0.1px]">
+                      {item.payment}
+                    </p>
+                  </div>
+                  <div className="flex-1">
+                    <p className="mb-1 text-gray-700 font-mulish text-xsm font-normal tracking-[0.2px]">
+                      Location
+                    </p>
+                    <p className="capitalize text-light-black font-mulish text-sm font-normal tracking-[0.1px]">
+                      {item.location}
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div className="mt-4 text-black font-mulish text-basePlus font-bold tracking-[0.1px]">
+                Description
+              </div>
+              <div className="relative max-w-[500px]">
+                <div
+                  ref={descriptionRef}
+                  className={`mt-1 overflow-hidden text-light-black font-mulish text-sm font-normal leading-5 tracking-[0.2px] ${
+                    showFullDescription ? "h-full" : "h-[140px]"
+                  } `}
+                >
+                  {item.description}
+                </div>
+                {moreDescription && (
+                  <button
+                    className="absolute bottom-0 left-0 bg-transparent border-none text-blue-500 cursor-pointer"
+                    style={{ top: "103%" }}
+                    onClick={toggleDescription}
+                  >
+                    {showFullDescription ? "View Less" : "View More"}
+                  </button>
                 )}
               </div>
-              <div className="flex flex-col pt-4 mt-1">
-                <p className="mb-2 font-mulish text-black text-sm font-normal tracking-[0.2px]">
-                  {seller.email}
-                </p>
-                <div className="flex flex-row mb-2 items-center">
-                  {calendarSvg}
-                  <p className="ml-1 font-mulish text-black text-sm font-normal tracking-[0.2px]">
-                    joined since {new Date(seller.createdat).getFullYear()}
-                  </p>
-                </div>
-                <div className="flex flex-row items-center">
-                  {starSvg}
-                  <p className="ml-1 font-mulish text-black text-sm font-normal tracking-[0.2px]">
-                    {" "}
-                    rated {seller.rating.toFixed(1)} out of 5.0
-                  </p>
-                </div>
-              </div>
-              <div className="flex flex-col items-center mt-7 ml-6">
-                <button className="w-32 mb-2 font-mulish text-center cursor-pointer py-3 px-4 text-black border border-black bg-gray-100 font-bold text-sm tracking-wide">
-                  Chat
-                </button>
-                <button className="w-32 font-mulish text-center cursor-pointer py-3 px-4 text-black border border-black bg-gray-100 font-bold text-sm tracking-wide">
-                  View Profile
+              <div className={`${moreDescription ? "mt-12" : "mt-2"}`}>
+                <button className="w-32 font-mulish text-center cursor-pointer py-3 px-4 text-white bg-black font-bold text-sm tracking-wide">
+                  Buy
                 </button>
               </div>
             </div>
           </div>
+          <div className="mt-8 mb-4">
+            <div className="border-t border-dotted border-gray-500 w-full" />
+            <div className="flex flex-col ml-40 mt-4">
+              <p className="font-mulish font-bold tracking-[0.1px] text-xl text-black">
+                Meet the Seller
+              </p>
+              <div className="flex flex-row items-center ">
+                <div
+                  className="bg-gray-300 mt-7 mr-5 rounded-full w-20 h-20 overflow-hidden"
+                  aria-label="profile-image"
+                >
+                  {item.profileimage ? (
+                    <img
+                      src={item.profileimage}
+                      alt="Profile"
+                      className="object-cover w-full h-full"
+                    />
+                  ) : (
+                    <PersonIcon className="text-white" />
+                  )}
+                </div>
+                <div className="flex flex-col pt-4 mt-1">
+                  <p className="mb-2 font-mulish text-black text-sm font-normal tracking-[0.2px]">
+                    {seller.email}
+                  </p>
+                  <div className="flex flex-row mb-2 items-center">
+                    {calendarSvg}
+                    <p className="ml-1 font-mulish text-black text-sm font-normal tracking-[0.2px]">
+                      joined since {new Date(seller.createdat).getFullYear()}
+                    </p>
+                  </div>
+                  <div className="flex flex-row items-center">
+                    {starSvg}
+                    <p className="ml-1 font-mulish text-black text-sm font-normal tracking-[0.2px]">
+                      {" "}
+                      rated {seller.rating.toFixed(1)} out of 5.0
+                    </p>
+                  </div>
+                </div>
+                <div className="flex flex-col items-center mt-7 ml-6">
+                  <button className="w-32 mb-2 font-mulish text-center cursor-pointer py-3 px-4 text-black border border-black bg-gray-100 font-bold text-sm tracking-wide">
+                    Chat
+                  </button>
+                  <button className="w-32 font-mulish text-center cursor-pointer py-3 px-4 text-black border border-black bg-gray-100 font-bold text-sm tracking-wide">
+                    View Profile
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }
