@@ -339,3 +339,30 @@ VALUES(
     'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSmDAIVHC9IPAkCx4bqLVWMfyv12Vp6Xn-exw&usqp=CAU',
     'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQxL5yQNZdumuXH_c7l9TKyWK5SvA8yDl-Mrw&usqp=CAU'
 );
+
+INSERT INTO requests(requester_id, owner_id, listing_id, price)
+VALUES(
+    1,
+    2,
+    2,
+    40.00
+),
+(
+    2,
+    1,
+    1,
+    50.00
+),
+(
+    3,
+    4,
+    4,
+    25.00
+),
+(
+    4,
+    3,
+    3,
+    100.00
+);
+

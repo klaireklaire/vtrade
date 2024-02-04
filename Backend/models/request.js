@@ -7,15 +7,25 @@ class Request {
                 SELECT * FROM requests
                 WHERE id=${requestId};
         `)
-        return result.rows
+        return result.rows[0]
 
     }
 
     static async getRequestsByUser(requesterId){
-
+        const result = await db.query(`
+            SELECT * FROM requests
+            WHERE requester_id=${requesterId}
+        `
+        )
+        return result.rows
     }
 
     static async getRequestsToOwner(ownerId){
+        const result = await db.query(`
+            SELECT
+        `)
+
+        return result.rows
 
     }
 
