@@ -83,7 +83,7 @@ export default function HomePage({ user, setUser, Loader }) {
       ) : (
         <div>
           <Carousel />
-          <div className=" pt-16 px-14">
+          <div className=" px-14">
             <HighLights
               user={user}
               setUser={setUser}
