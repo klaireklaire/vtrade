@@ -41,6 +41,19 @@ CREATE TABLE productdetails(
     condition       TEXT NOT NULL
 );
 
+CREATE TABLE requests(
+    id        SERIAL PRIMARY KEY,
+    requester_id    INTEGER NOT NULL,
+    owner_id    INTEGER NOT NULL,
+    FOREIGN KEY (requested_id) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY (requester_id) REFERENCES users(id) ON DELETE CASCADE,
+    listing_id  INTEGER NOT NULL,
+    FOREIGN KEY (listing_id) REFERENCES listings(id) ON DELETE CASCADE,
+    price       FLOAT NOT NULL,      
+    createdat   TIMESTAMP NOT NULL DEFAULT NOW(),
+    updatedat   TIMESTAMP NOT NULL DEFAULT NOW()  
+);
+
 CREATE TABLE transactionhistory(
     id         SERIAL PRIMARY KEY,
     user_id     INTEGER NOT NULL,
@@ -51,7 +64,7 @@ CREATE TABLE transactionhistory(
     FOREIGN KEY (seller_id) REFERENCES users(id) ON DELETE CASCADE,
     listing_id  INTEGER NOT NULL,
     FOREIGN KEY (listing_id) REFERENCES listings(id) ON DELETE CASCADE,
-    createdat     TIMESTAMP NOT NULL DEFAULT NOW(),
+    createdat   TIMESTAMP NOT NULL DEFAULT NOW(),
     updatedat   TIMESTAMP NOT NULL DEFAULT NOW()
 );
 
