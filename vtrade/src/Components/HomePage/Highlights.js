@@ -17,7 +17,7 @@ export default function HighLights({ user, setUser, highlights, allImages }) {
 
   return (
     <div>
-      <div className="mt-12 mb-6">
+      <div className="mt-16 mb-6">
         <p className="text-xl font-bold tracking-tight font-mulish">
           Highlights
         </p>

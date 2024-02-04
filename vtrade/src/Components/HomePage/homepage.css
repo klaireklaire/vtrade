@@ -1,0 +1,11 @@
+
+.animate-squish {
+  animation: squish 300ms ease-in-out;
+  animation-iteration-count: 1; /* Set to 1 to play the animation only once */
+}
+@keyframes squish {
+  50% {
+    transform: scale(1.4, 0.6);
+  }
+}
+

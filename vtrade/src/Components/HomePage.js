@@ -5,6 +5,7 @@ import CategoryScroll from "./HomePage/CategoryScroll.js";
 import HighLights from "./HomePage/Highlights";
 import RecentPosts from "./HomePage/RecentPosts";
 import RecentEvents from "./HomePage/RecentEvents";
+import Carousel from "./HomePage/Carousel.js";
 import apiClient from "../Services/apiClient";
 
 export default function HomePage({ user, setUser, Loader }) {
@@ -15,7 +16,6 @@ export default function HomePage({ user, setUser, Loader }) {
 
   const handleLoadingComplete = () => {
     setIsLoading(false);
-    console.log("set isLoading to false");
   };
 
   useEffect(() => {
@@ -24,7 +24,6 @@ export default function HomePage({ user, setUser, Loader }) {
         const { data, error } = await apiClient.getListings();
         if (data) {
           setHighlights(data.listings);
-          console.log("highlights", highlights);
         }
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -62,7 +61,6 @@ export default function HomePage({ user, setUser, Loader }) {
         if (data) {
           //need to update this
           setRecentPosts(data.listings);
-          console.log("recent posts:", highlights);
         }
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -74,7 +72,6 @@ export default function HomePage({ user, setUser, Loader }) {
 
   useEffect(() => {
     if (highlights !== null && recentPosts !== null) {
-      console.log("Both components loaded. Calling handleLoadingComplete.");
       handleLoadingComplete();
     }
   }, [highlights, recentPosts]);
@@ -84,24 +81,25 @@ export default function HomePage({ user, setUser, Loader }) {
       {isLoading ? (
         <Loader />
       ) : (
-        <div className="pt-12 pl-14">
-          <CategoryScroll />
-          <HighLights
-            user={user}
-            setUser={setUser}
-            highlights={highlights}
-            allImages={allImages}
-          />
-          <div>
-            <div className="flex flex-row justify-start">
-              <div className="flex-1 mr-6">
-                <RecentPosts
-                  user={user}
-                  setUser={setUser}
-                  recentPosts={recentPosts}
-                />
-              </div>
-              {/* 
+        <div>
+          <Carousel />
+          <div className=" px-14">
+            <HighLights
+              user={user}
+              setUser={setUser}
+              highlights={highlights}
+              allImages={allImages}
+            />
+            <div>
+              <div className="flex flex-row justify-start">
+                <div className="flex-1 mr-6">
+                  <RecentPosts
+                    user={user}
+                    setUser={setUser}
+                    recentPosts={recentPosts}
+                  />
+                </div>
+                {/* 
               <div className="flex-1">
                 <RecentEvents
                   user={user}
@@ -111,6 +109,7 @@ export default function HomePage({ user, setUser, Loader }) {
                   Loader={Loader}
                 />
               </div> */}
+              </div>
             </div>
           </div>
         </div>
