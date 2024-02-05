@@ -16,7 +16,7 @@ export default function RecentPosts({ user, setUser, recentPosts }) {
         <p className="text-xl font-bold tracking-tight font-mulish mb-3">
           Recent Posts
         </p>
-        <div className="grid grid-cols-2 gap-y-1 gap-x-4">
+        <div className="flex flex-col">
           {recentPosts && Array.isArray(recentPosts) && recentPosts.length > 0
             ? recentPosts.map((item, i) => (
                 <div

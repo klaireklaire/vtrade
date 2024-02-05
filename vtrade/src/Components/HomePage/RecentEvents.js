@@ -40,6 +40,9 @@ export default function RecentPosts({
       <p className="text-xl font-bold tracking-tight font-mulish">
         Recent Events
       </p>
+      <p className="font-mulish text-base font-bold">
+        Look Forward to This Feature!
+      </p>
     </div>
   );
 }
