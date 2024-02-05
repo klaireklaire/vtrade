@@ -5,7 +5,7 @@ import PersonIcon from "@mui/icons-material/Person";
 import apiClient from "../../Services/apiClient";
 import ImageSlider from "./ImageSlider";
 import { useNavigate } from "react-router-dom";
-import "./homepage.css";
+import "../../index.css";
 
 export default function RequestHighlights({
   user,
@@ -28,7 +28,7 @@ export default function RequestHighlights({
           Highlights in Requested Items
         </p>
       </div>
-      <div className="flex flex-row overflow-x-auto h-[398px] overflow-y-hidden no-scrollbar">
+      <div className="flex flex-row overflow-x-auto h-[398px] overflow-y-hidden hide-scroll-bar">
         {requestHighlights &&
         Array.isArray(requestHighlights) &&
         requestHighlights.length > 0
@@ -39,7 +39,7 @@ export default function RequestHighlights({
               >
                 <div className="w-64 h-16 flex items-start no-scrollbar ">
                   <div
-                    className="bg-gray-300 rounded-full w-10 h-10 overflow-hidden no-scrollbar"
+                    className="bg-gray-300 rounded-full w-10 h-10 overflow-hidden hide-scroll-bar"
                     aria-label="profile-image"
                     onClick={() => handleItemClick(item)}
                   >
@@ -85,7 +85,7 @@ export default function RequestHighlights({
                   <p className="text-gray-800 font-Mulish text-base font-semibold leading-6 tracking-[0.2px]">
                     {item.title}
                   </p>
-                  <div className="mt-3">
+                  <div className="mt-2">
                     {item.price !== null ? (
                       <p className="text-gray-500 font-Mulish text-base font-normal leading-6 tracking-[0.1px]">
                         ${item.price}

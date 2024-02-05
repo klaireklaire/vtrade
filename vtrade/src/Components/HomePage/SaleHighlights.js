@@ -5,7 +5,7 @@ import PersonIcon from "@mui/icons-material/Person";
 import apiClient from "../../Services/apiClient";
 import ImageSlider from "./ImageSlider";
 import { useNavigate } from "react-router-dom";
-import "./homepage.css";
+import "../../index.css";
 
 export default function SaleHighlights({
   user,
@@ -28,7 +28,7 @@ export default function SaleHighlights({
           Highlights in Sale
         </p>
       </div>
-      <div className="flex flex-row overflow-x-auto h-[398px] overflow-y-hidden no-scrollbar">
+      <div className="flex flex-row overflow-x-auto h-[398px] overflow-y-hidden hide-scroll-bar">
         {saleHighlights &&
         Array.isArray(saleHighlights) &&
         saleHighlights.length > 0
@@ -39,7 +39,7 @@ export default function SaleHighlights({
               >
                 <div className="w-64 h-16 flex items-start no-scrollbar ">
                   <div
-                    className="bg-gray-300 rounded-full w-10 h-10 overflow-hidden no-scrollbar"
+                    className="bg-gray-300 rounded-full w-10 h-10 overflow-hidden hide-scroll-bar"
                     aria-label="profile-image"
                     onClick={() => handleItemClick(item)}
                   >
