@@ -26,11 +26,11 @@ export default function Navbar(props) {
 
   const navigate = useNavigate();
   return (
-    <div className="flex justify-between items-centers opacity-6 h-20 bg-[#edebeb] p-5 drop-shadow-md ring-2 ring-gray-400">
+    <div className="z-10 relative flex justify-between items-centers opacity-6 h-20 bg-[#edebeb] p-5 drop-shadow-md ring-2 ring-gray-400">
       <div className="flex items-center place-items-center">
         <div className="py-6">
           <button
-            className="bg-transparent font-mulish border-none text-[#333] tracking-[0.2px] uppercase text-center text-lg font-bold cursor-pointer text-gray-700 ml-14 w-24"
+            className="bg-transparent font-mulish border-none tracking-[0.2px] uppercase text-center text-lg font-bold cursor-pointer text-gray-700 ml-14 w-24"
             onClick={() => {
               navigate("/");
             }}

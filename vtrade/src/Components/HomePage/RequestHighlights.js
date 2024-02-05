@@ -5,8 +5,14 @@ import PersonIcon from "@mui/icons-material/Person";
 import apiClient from "../../Services/apiClient";
 import ImageSlider from "./ImageSlider";
 import { useNavigate } from "react-router-dom";
+import "./homepage.css";
 
-export default function HighLights({ user, setUser, highlights, allImages }) {
+export default function RequestHighlights({
+  user,
+  setUser,
+  requestHighlights,
+  requestImages,
+}) {
   const [userId, setUserId] = useState({});
 
   const navigate = useNavigate();
@@ -17,21 +23,23 @@ export default function HighLights({ user, setUser, highlights, allImages }) {
 
   return (
     <div>
-      <div className="mt-16 mb-6">
+      <div className="mt-10 mb-6">
         <p className="text-xl font-bold tracking-tight font-mulish">
-          Highlights
+          Highlights in Requested Items
         </p>
       </div>
-      <div className="mb-8 flex flex-row overflow-x-auto h-96">
-        {highlights && Array.isArray(highlights) && highlights.length > 0
-          ? highlights.map((item, i) => (
+      <div className="flex flex-row overflow-x-auto h-[398px] overflow-y-hidden no-scrollbar">
+        {requestHighlights &&
+        Array.isArray(requestHighlights) &&
+        requestHighlights.length > 0
+          ? requestHighlights.map((item, i) => (
               <div
                 key={i}
-                className="flex flex-col justify-start border-gray-200 border p-2 mx-2 cursor-pointer"
+                className="flex flex-col justify-start border-gray-200 border-2 p-2 mr-7 cursor-pointer"
               >
-                <div className="w-72 h-16 flex items-start ">
+                <div className="w-64 h-16 flex items-start no-scrollbar ">
                   <div
-                    className="bg-gray-300 rounded-full w-10 h-10 overflow-hidden"
+                    className="bg-gray-300 rounded-full w-10 h-10 overflow-hidden no-scrollbar"
                     aria-label="profile-image"
                     onClick={() => handleItemClick(item)}
                   >
@@ -53,18 +61,18 @@ export default function HighLights({ user, setUser, highlights, allImages }) {
                       {/* need to extract the first and last name from userId */}
                       {item.firstname + " " + item.lastname}
                     </div>
-                    <div className="text-black text-xs text-center mt-1">
+                    <div className="text-black text-xs text-center">
                       {moment(item.listing_createdat).fromNow()}
                     </div>
                   </div>
                 </div>
-                <div className="">
-                  {allImages &&
-                  Array.isArray(allImages) &&
-                  allImages.length > i &&
-                  allImages[i] ? (
+                <div className="mt-5">
+                  {requestImages &&
+                  Array.isArray(requestImages) &&
+                  requestImages.length > i &&
+                  requestImages[i] ? (
                     <ImageSlider
-                      images={allImages[i].images}
+                      images={requestImages[i].images}
                       handleItemClick={handleItemClick}
                       item={item}
                     />
@@ -77,15 +85,17 @@ export default function HighLights({ user, setUser, highlights, allImages }) {
                   <p className="text-gray-800 font-Mulish text-base font-semibold leading-6 tracking-[0.2px]">
                     {item.title}
                   </p>
-                  {item.price !== null ? (
-                    <p className="text-gray-500 font-Mulish text-base font-normal leading-6 tracking-[0.1px]">
-                      ${item.price}
-                    </p>
-                  ) : (
-                    <p className="text-gray-500 font-Mulish text-base font-normal leading-6 tracking-[0.1px]">
-                      ${item.minprice} ~ ${item.maxprice}
-                    </p>
-                  )}
+                  <div className="mt-3">
+                    {item.price !== null ? (
+                      <p className="text-gray-500 font-Mulish text-base font-normal leading-6 tracking-[0.1px]">
+                        ${item.price}
+                      </p>
+                    ) : (
+                      <p className="text-gray-500 font-Mulish text-base font-normal leading-6 tracking-[0.1px]">
+                        ${item.minprice} ~ ${item.maxprice}
+                      </p>
+                    )}
+                  </div>
                 </div>
               </div>
             ))

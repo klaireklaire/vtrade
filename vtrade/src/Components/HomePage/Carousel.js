@@ -62,7 +62,7 @@ export default function Carousel({}) {
   }, []); // Empty dependency array ensures this effect runs only on mount and unmount
 
   return (
-    <div className="relative">
+    <div className="relative ">
       <div className="w-full h-full overflow-hidden flex">
         {slides.map((image, index) => (
           <img
