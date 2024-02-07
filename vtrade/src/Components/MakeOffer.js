@@ -105,7 +105,7 @@ export default function ConfirmPurchase({ seller, setOfferMsg }) {
     return (
       <div className="w-[460px] h-64 flex flex-col items-center justify-center  bg-gray-100 p-8 border-black border rounded">
         <h3 className="text-black font-mulish text-basePlus font-medium leading-6">
-          Your offer has been made
+          Your offer has been placed
         </h3>
         <div className="mb-3">{checkMark}</div>
         <div
