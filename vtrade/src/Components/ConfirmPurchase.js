@@ -20,29 +20,38 @@ export default function ConfirmPurchase({ seller, setBuyMsg }) {
     );
   };
 
+  const formatPhoneNumber = (phoneNumber) => {
+    // Convert phoneNumber to string
+    const phoneNumberString = phoneNumber.toString();
+
+    // Apply formatting (e.g., 123-456-7890)
+    return phoneNumberString.replace(/(\d{3})(\d{3})(\d{4})/, "$1-$2-$3");
+  };
+
   return (
     <div>
       <Background />
       <div className="opacity-100 fixed top-1/2 left-1/2 transform -translate-y-1/2 -translate-x-1/2">
         <button
           onClick={handleClose}
-          className="absolute text-base top-1.5 right-2 text-black"
+          className="absolute text-base font-mulish top-1.5 right-2 text-black"
         >
           X
         </button>
         <div className="h-80 w-[460px] flex flex-col items-center justify-center  bg-gray-100 p-8 border-black border rounded">
-          <h3 className="text-black font-publicSans text-basePlus font-bold ">
+          <h3 className="text-black font-mulish text-basePlus leading-6 font-medium mb-3 ">
             Your purchase has been made
           </h3>
-          <p className="text-center text-black font-publicSans text-sm font-normal mb-3">
-            Send a message to <span className="font-bold">{seller.email} </span>
+          <p className="text-center text-black font-mulish text-sm leading-5 font-normal mb-3">
+            Send a message to <span className="font-bold">{seller.email} </span>{" "}
+            or contact {seller.firstname} via phone:
+            <span className="font-bold">
+              {" "}
+              {formatPhoneNumber(seller.phone)}{" "}
+            </span>
             to discuss payment and pickup details.
           </p>
 
-          <p className="text-center text-black font-publicSans text-sm font-normal mb-3">
-            Contact {seller.firstname} via phone:
-            <span className="font-bold"> {seller.phone}</span>
-          </p>
           <div className="mb-3">{checkMark}</div>
           <div className="flex justify-center items-center ">
             <div
@@ -52,13 +61,13 @@ export default function ConfirmPurchase({ seller, setBuyMsg }) {
               {dashboard}
               <button
                 onClick={navigateHome}
-                className=" text-black font-publicSans text-xsm font-bold uppercase "
+                className=" text-black font-mulish text-xsm font-bold  "
               >
-                Go to dashboard
+                Go To Dashboard
               </button>
             </div>
             <div className="border-2 border-black flex py-3 px-6 justify-center items-center gap-2 bg-black">
-              <button className="text-white font-publicSans text-xsm font-bold uppercase">
+              <button className="text-white font-mulish text-xsm font-bold ">
                 Send Email
               </button>
               {rightArrow}

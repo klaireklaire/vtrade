@@ -104,8 +104,8 @@ export default function ConfirmPurchase({ seller, setOfferMsg }) {
   const ConfirmDisplay = () => {
     return (
       <div className="w-[460px] h-64 flex flex-col items-center justify-center  bg-gray-100 p-8 border-black border rounded">
-        <h3 className="text-black font-publicSans text-basePlus font-bold ">
-          Your purchase has been made
+        <h3 className="text-black font-mulish text-basePlus font-medium leading-6">
+          Your offer has been made
         </h3>
         <div className="mb-3">{checkMark}</div>
         <div
@@ -115,9 +115,9 @@ export default function ConfirmPurchase({ seller, setOfferMsg }) {
           {dashboard}
           <button
             onClick={navigateHome}
-            className=" text-black font-publicSans text-sm font-bold uppercase "
+            className=" text-black font-mulish text-sm font-bold  "
           >
-            Go to dashboard
+            Go To Dashboard
           </button>
         </div>
       </div>
@@ -130,7 +130,7 @@ export default function ConfirmPurchase({ seller, setOfferMsg }) {
       <div className="opacity-100 fixed top-1/2 left-1/2 transform -translate-y-1/2 -translate-x-1/2">
         <button
           onClick={handleClose}
-          className={`absolute text-base ${
+          className={`absolute text-base font-mulish ${
             confirm ? "top-1.5 right-2" : "top-8 right-8"
           }  text-black`}
         >
@@ -141,10 +141,10 @@ export default function ConfirmPurchase({ seller, setOfferMsg }) {
         ) : (
           <div className="h-[530px] w-[430px] flex flex-col items-start  bg-gray-100 p-8 gap-6 border-black border rounded">
             <div className="flex flex-col gap-3">
-              <h3 className="text-black font-publicSans text-basePlus font-medium ">
+              <h3 className="text-black font-mulish text-basePlus font-medium leading-6">
                 Make an Offer
               </h3>
-              <p className=" text-black font-publicSans text-sm font-normal">
+              <p className=" text-black font-mulish text-sm font-normal leading-5">
                 The seller will be notified of your offer and will have 48 hours
                 to respond. If the seller accepts, you will gain access to their
                 contact information to discuss payment and pickup details.
@@ -157,7 +157,7 @@ export default function ConfirmPurchase({ seller, setOfferMsg }) {
                 name="price"
                 value={stringPrice}
                 onChange={handleOnPriceChange}
-                className="flex py-3 items-center bg-white px-4 border border-gray-700 w-full rounded-sm"
+                className="flex py-3 items-center bg-white px-4 border border-gray-700 w-full rounded-sm text-sm"
                 placeholder="Offered Price"
               />
               <input
@@ -166,7 +166,7 @@ export default function ConfirmPurchase({ seller, setOfferMsg }) {
                 name="email"
                 value={email}
                 onChange={handleOnInputChange}
-                className="flex py-3 items-center bg-white px-4 border border-gray-700 w-full rounded-sm"
+                className="flex py-3 items-center bg-white px-4 border border-gray-700 w-full rounded-sm text-sm"
                 placeholder="Your Email Address"
               />
               <input
@@ -175,7 +175,7 @@ export default function ConfirmPurchase({ seller, setOfferMsg }) {
                 name="number"
                 value={stringNumber}
                 onChange={handleOnNumberChange}
-                className="flex py-3 items-center bg-white px-4 border border-gray-700 w-full rounded-sm"
+                className="flex py-3 items-center bg-white px-4 border border-gray-700 w-full rounded-sm text-sm"
                 placeholder="Your Phone Number"
               />
               <textarea
@@ -184,7 +184,7 @@ export default function ConfirmPurchase({ seller, setOfferMsg }) {
                 name="description"
                 value={message}
                 onChange={handleOnInputChange}
-                className="flex py-3 items-start h-20 bg-white resize-none px-4 border border-gray-700 w-full rounded-sm"
+                className="flex py-3 items-start h-20 bg-white resize-none px-4 border border-gray-700 w-full rounded-sm text-sm"
                 placeholder="Message (optional)"
                 rows={3}
               />
@@ -196,7 +196,7 @@ export default function ConfirmPurchase({ seller, setOfferMsg }) {
               >
                 <button
                   onCLick={confirmEmail}
-                  className="text-white font-publicSans text-sm font-bold uppercase"
+                  className="text-white font-mulish text-sm font-bold "
                 >
                   Send Offer
                 </button>
