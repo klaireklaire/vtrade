@@ -4,7 +4,7 @@ module.exports = {
   theme: {
     fontFamily: {
       mulish: '"Mulish"',
-      lato: '"Lato',
+      lato: '"Lato"',
     },
     fontSize: {
       xsm: ["12px", "16px"],

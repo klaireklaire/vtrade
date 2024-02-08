@@ -6,6 +6,8 @@ import moment from "moment/moment";
 import { useLocation } from "react-router-dom";
 import apiClient from "../Services/apiClient";
 import Loader from "./Loader";
+import ConfirmPurchase from "./ConfirmPurchase";
+import MakeOffer from "./MakeOffer";
 import {
   arrowUpSvg,
   arrowDownSvg,
@@ -34,6 +36,8 @@ export default function ProductPage({
   const [seller, setSeller] = useState(null);
   const [showFullDescription, setShowFullDescription] = useState(false);
   const [moreDescription, setMoreDescription] = useState(null);
+  const [buyMsg, setBuyMsg] = useState(false);
+  const [offerMsg, setOfferMsg] = useState(false);
   const descriptionRef = useRef(null);
   const location = useLocation();
   const itemId = location.state?.id;
@@ -315,8 +319,21 @@ export default function ProductPage({
                 )}
               </div>
               <div className={`${moreDescription ? "mt-12" : "mt-2"}`}>
-                <button className="w-32 font-mulish text-center cursor-pointer py-3 px-4 text-white bg-black font-bold text-sm tracking-wide">
+                <button
+                  onClick={() => {
+                    setBuyMsg(true);
+                  }}
+                  className="w-32 font-mulish text-center cursor-pointer py-3 px-4 text-white bg-black font-bold text-sm tracking-wide"
+                >
                   Buy
+                </button>
+                <button
+                  onClick={() => {
+                    setOfferMsg(true);
+                  }}
+                  className="w-32 ml-5 font-mulish text-center cursor-pointer py-3 px-4 text-black bg-gray-100 font-bold text-sm tracking-wide border border-black"
+                >
+                  Make Offer
                 </button>
               </div>
             </div>
@@ -371,6 +388,12 @@ export default function ProductPage({
               </div>
             </div>
           </div>
+          {buyMsg ? (
+            <ConfirmPurchase seller={seller} setBuyMsg={setBuyMsg} />
+          ) : null}
+          {offerMsg ? (
+            <MakeOffer seller={seller} setOfferMsg={setOfferMsg} />
+          ) : null}
         </div>
       )}
     </div>
