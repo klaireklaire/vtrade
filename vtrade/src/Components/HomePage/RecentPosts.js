@@ -10,6 +10,10 @@ export default function RecentPosts({ user, setUser, recentPosts }) {
 
   const navigate = useNavigate();
 
+  const handleItemClick = (item) => {
+    navigate(`/Product/${item.category}`, { state: { id: item.id } });
+  };
+
   return (
     <div>
       <div>
@@ -21,7 +25,8 @@ export default function RecentPosts({ user, setUser, recentPosts }) {
             ? recentPosts.map((item, i) => (
                 <div
                   key={i}
-                  className={`flex flex-col border-black border-solid border max-h-[210px] w-full my-2`}
+                  className="flex flex-col border-black border-solid border max-h-[210px] w-full my-2 cursor-pointer"
+                  onClick={() => handleItemClick(item)}
                 >
                   <div className="flex flex-row justify-between">
                     <div className="mt-2 mb-3 ml-4 flex flex-col items-start">
