@@ -2,71 +2,127 @@ from django.db import models
 from django.db.models import Avg
 from django.contrib.auth.models import User
 from django.contrib.auth.models import AbstractUser
+from django.utils.translation import gettext as _
+from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import connection
 from datetime import datetime
 
+
+class CustomUser(AbstractUser):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    email = models.EmailField(_("Email address"), unique=True, null=False)
+    bio = models.TextField(blank=True, null=True)
+    # come back to, what years do we want to allow users
+    classyear = models.IntegerField(
+        _("Class year"),
+        validators=[
+            MinValueValidator(datetime.datetime.now().year),
+            MaxValueValidator(datetime.datetime.now().year + 4),
+        ],
+        blank=False,
+        null=False,
+    )
+    profileimage = models.URLField(_("Profile image URL"))
+    createdate = models.DateTimeField(_("Created at"), auto_now_add=True)
+    updatedate = models.DateTimeField(_("Updated at"), auto_now=True)
+
+    def __str__(self):
+        return str(self.id)
+
+    class Meta:
+        verbose_name = "Custom User"
+        verbose_name_plural = "Custom Users"
+
+    # def make_public_user(self):
+    #     return {
+    #         'id': self.id,
+    #         'firstname': self.first_name,
+    #         'lastname': self.last_name,
+    #         'email': self.email,
+    #         'createdat': self.date_joined,
+    #         'updatedat': self.date_updated,
+    #         'bio': self.bio,
+    #         'classyear': self.classyear,
+    #         'profileimage': self.profileimage.url if self.profileimage else None
+    #     }
+
+
 class AppImage(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    image = models.URLField(_("Image URL"))
+    createdate = models.DateTimeField(_("Created at"), auto_now_add=True)
+    updatedate = models.DateTimeField(_("Updated at"), auto_now=True)
 
-    @classmethod
-    def post_profile_image(cls, user_id, image):
-        unix_timestamp = int(datetime.now().timestamp())
-        file_path = f"profileimages/{image.name}-{user_id}-{unix_timestamp}"
-        
-        # Save the image to the local storage (assuming 'media' is configured in your Django settings)
-        image_field = cls._save_image(file_path, image.data)
+    def __str__(self):
+        return f"Image {self.id}"
 
-        # Update the user's profile image field in the database
-        cls.objects.filter(id=user_id).update(profileimage=image_field, updatedat=datetime.now())
+    # @classmethod
+    # def post_profile_image(cls, user_id, image):
+    #     unix_timestamp = int(datetime.now().timestamp())
+    #     file_path = f"profileimages/{image.name}-{user_id}-{unix_timestamp}"
 
-        # Retrieve and return the updated user object
-        updated_user = cls.objects.get(id=user_id)
-        return updated_user
+    #     # Save the image to the local storage (assuming 'media' is configured in your Django settings)
+    #     image_field = cls._save_image(file_path, image.data)
 
-    @classmethod
-    def post_listing_images(cls, listing_id, images):
-        image_fields = []
+    #     # Update the user's profile image field in the database
+    #     cls.objects.filter(id=user_id).update(
+    #         profileimage=image_field, updatedat=datetime.now()
+    #     )
 
-        for i, image in enumerate(images):
-            file_path = f"productimages/{image.name}-{listing_id}-{i + 1}"
-            
-            # Save each image to the local storage
-            image_field = cls._save_image(file_path, image.data)
-            image_fields.append(image_field)
+    #     # Retrieve and return the updated user object
+    #     updated_user = cls.objects.get(id=user_id)
+    #     return updated_user
 
-        # Create a new listing images record in the database
-        listing_images = cls.objects.create(listing_id=listing_id, **dict(zip([f"image{i+1}" for i in range(len(image_fields))], image_fields)))
+    # @classmethod
+    # def post_listing_images(cls, listing_id, images):
+    #     image_fields = []
 
-        # Retrieve and return the created listing images
-        return listing_images
+    #     for i, image in enumerate(images):
+    #         file_path = f"productimages/{image.name}-{listing_id}-{i + 1}"
 
-    @staticmethod
-    def _save_image(file_path, image_data):
-        # Save the image to the local storage (assuming 'media' is configured in your Django settings)
-        with open(f"media/{file_path}", "wb") as file:
-            file.write(image_data)
+    #         # Save each image to the local storage
+    #         image_field = cls._save_image(file_path, image.data)
+    #         image_fields.append(image_field)
 
-        # Return the image field for database storage
-        return file_path
+    #     # Create a new listing images record in the database
+    #     listing_images = cls.objects.create(
+    #         listing_id=listing_id,
+    #         **dict(
+    #             zip([f"image{i+1}" for i in range(len(image_fields))], image_fields)
+    #         ),
+    #     )
 
-    @classmethod
-    def update_listing_images(cls, listing_id, images):
-        # Implement the logic for updating listing images in the local storage and database
-        pass
+    #     # Retrieve and return the created listing images
+    #     return listing_images
 
-    @classmethod
-    def delete_listing_images(cls, listing_id, images):
-        # Implement the logic for deleting listing images from local storage and database
-        pass
+    # @staticmethod
+    # def _save_image(file_path, image_data):
+    #     # Save the image to the local storage (assuming 'media' is configured in your Django settings)
+    #     with open(f"media/{file_path}", "wb") as file:
+    #         file.write(image_data)
 
-    @classmethod
-    def delete_profile_image(cls, user_id):
-        # Implement the logic for deleting the profile image from local storage and updating the database
-        pass
+    #     # Return the image field for database storage
+    #     return file_path
+
+    # @classmethod
+    # def update_listing_images(cls, listing_id, images):
+    #     # Implement the logic for updating listing images in the local storage and database
+    #     pass
+
+    # @classmethod
+    # def delete_listing_images(cls, listing_id, images):
+    #     # Implement the logic for deleting listing images from local storage and database
+    #     pass
+
+    # @classmethod
+    # def delete_profile_image(cls, user_id):
+    #     # Implement the logic for deleting the profile image from local storage and updating the database
+    #     pass
 
 
 class Listing(models.Model):
-
-    user_id = models.IntegerField()
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    user_id = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     listingtype = models.IntegerField()
     title = models.CharField(max_length=255)
     location = models.CharField(max_length=255)
@@ -130,7 +186,10 @@ class Listing(models.Model):
 
     @classmethod
     def filter_price(cls, min_price, max_price):
-        return cls.objects.filter((Q(price__gt=min_price) & Q(price__lt=max_price)) | (Q(minprice__gt=min_price) & Q(maxprice__lt=max_price)))
+        return cls.objects.filter(
+            (Q(price__gt=min_price) & Q(price__lt=max_price))
+            | (Q(minprice__gt=min_price) & Q(maxprice__lt=max_price))
+        )
 
     @classmethod
     def filter_status(cls, status):
@@ -160,32 +219,16 @@ class Listing(models.Model):
     def __str__(self):
         return self.title
 
-# users might not work correctly: To convert the provided JavaScript class into a Django model, you can follow the steps below. However, please note that Django models are typically associated with database tables, and they don't include methods like the ones provided in your JavaScript class. Django has a separate layer for handling authentication and user-related functionality, so some of the methods in your class might be handled differently in a Django context.
-class CustomUser(AbstractUser):
-    bio = models.TextField(blank=True, null=True)
-    classyear = models.IntegerField(null=True)
-    profileimage = models.ImageField(upload_to='profile_images/', blank=True, null=True)
-    # Add other fields as needed
-
-    def make_public_user(self):
-        return {
-            'id': self.id,
-            'firstname': self.first_name,
-            'lastname': self.last_name,
-            'email': self.email,
-            'createdat': self.date_joined,
-            'updatedat': self.date_updated,
-            'bio': self.bio,
-            'classyear': self.classyear,
-            'profileimage': self.profileimage.url if self.profileimage else None
-        }
-
 
 class Transaction(models.Model):
     price = models.DecimalField(max_digits=10, decimal_places=2)
     listing_id = models.IntegerField()
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_transactions')
-    seller = models.ForeignKey(User, on_delete=models.CASCADE, related_name='seller_transactions')
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name="user_transactions"
+    )
+    seller = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name="seller_transactions"
+    )
     time = models.DateTimeField(auto_now_add=True)
 
     @classmethod
@@ -214,13 +257,13 @@ class Service(models.Model):
     status = models.CharField(max_length=255)
     payment = models.CharField(max_length=255)
 
-    image1 = models.ImageField(upload_to='service_images/', blank=True, null=True)
-    image2 = models.ImageField(upload_to='service_images/', blank=True, null=True)
-    image3 = models.ImageField(upload_to='service_images/', blank=True, null=True)
-    image4 = models.ImageField(upload_to='service_images/', blank=True, null=True)
-    image5 = models.ImageField(upload_to='service_images/', blank=True, null=True)
-    image6 = models.ImageField(upload_to='service_images/', blank=True, null=True)
-    image7 = models.ImageField(upload_to='service_images/', blank=True, null=True)
+    image1 = models.ImageField(upload_to="service_images/", blank=True, null=True)
+    image2 = models.ImageField(upload_to="service_images/", blank=True, null=True)
+    image3 = models.ImageField(upload_to="service_images/", blank=True, null=True)
+    image4 = models.ImageField(upload_to="service_images/", blank=True, null=True)
+    image5 = models.ImageField(upload_to="service_images/", blank=True, null=True)
+    image6 = models.ImageField(upload_to="service_images/", blank=True, null=True)
+    image7 = models.ImageField(upload_to="service_images/", blank=True, null=True)
 
     createdat = models.DateTimeField(auto_now_add=True)
     updatedat = models.DateTimeField(auto_now=True)
@@ -273,6 +316,7 @@ class Review(models.Model):
     def delete_review(cls, review_id):
         cls.objects.filter(pk=review_id).delete()
 
+
 class Product(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     listingtype = models.IntegerField()
@@ -317,11 +361,11 @@ class Rating(models.Model):
 
     @classmethod
     def get_user_rating(cls, user_id):
-        return cls.objects.filter(seller_id=user_id).aggregate(Avg('rating'))
+        return cls.objects.filter(seller_id=user_id).aggregate(Avg("rating"))
 
     @classmethod
     def get_listing_rating(cls, listing_id):
-        return cls.objects.filter(listing_id=listing_id).aggregate(Avg('rating'))
+        return cls.objects.filter(listing_id=listing_id).aggregate(Avg("rating"))
 
     @classmethod
     def get_rating(cls, rating_id):
@@ -330,21 +374,19 @@ class Rating(models.Model):
     @classmethod
     def post_rating(cls, rating):
         return cls.objects.create(
-            rating=rating['rating'],
-            listing_id=rating['listing_id'],
-            seller_id=rating['seller_id'],
-            user_id=rating['user_id']
+            rating=rating["rating"],
+            listing_id=rating["listing_id"],
+            seller_id=rating["seller_id"],
+            user_id=rating["user_id"],
         )
 
     @classmethod
     def edit_rating(cls, update, rating_id):
         rating_instance = cls.objects.get(id=rating_id)
-        rating_instance.rating = update['rating']
+        rating_instance.rating = update["rating"]
         rating_instance.save()
         return rating_instance
 
     @classmethod
     def delete_rating(cls, rating_id):
         cls.objects.filter(id=rating_id).delete()
-
-
