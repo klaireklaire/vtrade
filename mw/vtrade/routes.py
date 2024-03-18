@@ -1,9 +1,11 @@
 import hashlib
 from django.http import JsonResponse
-from .models import CustomUser
+from django.db.models import Q
+from decimal import Decimal
+from .models import CustomUser, Listing, AppImage
 
 
-# adding user
+# User routes
 def add_user(user_input):
     first_name, last_name, class_year, email, username, password = user_input
     hashed_password = hashlib.sha256(password.replace(" ", "").encode()).hexdigest()
@@ -54,7 +56,7 @@ def parse_user_input(user_input):
     return parsed_data
 
 
-def get_user(id):
+def login_user(id):
     try:
         user = CustomUser.objects.get(id=id)
     except CustomUser.DoesNotExist:
@@ -63,7 +65,7 @@ def get_user(id):
     return user
 
 
-def delete_user(id):
+def remove_user(id):
     try:
         user = CustomUser.objects.get(id=id)
     except CustomUser.DoesNotExist:
@@ -72,3 +74,108 @@ def delete_user(id):
     user.delete()
 
     return JsonResponse({"message": "User deleted successfully"})
+
+
+# Listing Routes
+
+
+def post_listing(user_input):
+
+    if len(user_input) not in (17, 18):
+        return JsonResponse({"error": "Invalid input format"}, status=400)
+
+    image_urls = user_input[:7]
+    title = user_input[7]
+    category = user_input[8]
+    condition = user_input[9]
+    payment_method = user_input[10]
+    description = user_input[11]
+    location = user_input[12]
+    form = user_input[13]
+    listing_type = user_input[14]
+    status = user_input[15]
+
+    if len(user_input) == 17:
+        price = Decimal(user_input[16])
+        min_price = None
+        max_price = None
+    else:
+        min_price = Decimal(user_input[16])
+        max_price = Decimal(user_input[17])
+        price = None
+        image_instances = []
+
+    # Iterate over the image URLs
+    for url in image_urls:
+        image_instance = AppImage.objects.create(image_url=url)
+        image_instances.append(image_instance)
+
+    listing = Listing.objects.create(
+        title=title,
+        category=category,
+        condition=condition,
+        price=price,
+        minprice=min_price,
+        maxprice=max_price,
+        paymentmethod=payment_method,
+        description=description,
+        location=location,
+        form=form,
+        listingtype=listing_type,
+        status=status,
+    )
+
+    listing.images.add(*image_instances)
+
+    return JsonResponse({"success": "Listing created successfully"})
+
+
+def filter_price(user_input):
+    price = user_input[0]
+
+    min_price = user_input[1]
+    max_price = user_input[2]
+
+    # Construct the filter query
+    if price:
+        # Filter by price if price is not None
+        listings = Listing.objects.filter(price__lte=price)
+    else:
+        # Filter by minprice and maxprice if price is None
+        listings = Listing.objects.filter(
+            minprice__lte=min_price, maxprice__gte=max_price
+        )
+
+    return listings
+
+
+def filter_category(user_input):
+    category = user_input
+    try:
+        listing = Listing.objects.get(category=category)
+    except Listing.DoesNotExist:
+        return JsonResponse({"error": "User not found"}, status=404)
+
+    return listing
+
+
+def get_product_info(user_input):
+    id = user_input
+    try:
+        listing = Listing.objects.get(id=id)
+    except Listing.DoesNotExist:
+        return JsonResponse({"error": "User not found"}, status=404)
+
+    return listing
+
+
+def buy_product(id):
+    try:
+        listing = Listing.objects.get(id=id)
+    except Listing.DoesNotExist:
+        return JsonResponse({"error": "User not found"}, status=404)
+
+    listing.status = False
+    listing.save()
+
+    return listing

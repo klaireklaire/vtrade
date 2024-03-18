@@ -5,13 +5,16 @@ from . import routes
 
 
 def get_user(request):
-    user_input = request.GET.get("input")
+    user_input = request.GET.get("user_input", "").split("+")
+    if not user_input:
+        return JsonResponse({"error": "Input parameter is missing"}, status=400)
+
     response = routes.get_user(user_input)
     return JsonResponse(response)
 
 
 def add_user(request):
-    user_input = request.GET.get("input")
+    user_input = request.GET.get("user_input", "")
     if not user_input:
         return JsonResponse({"error": "Input parameter is missing"}, status=400)
 
@@ -21,7 +24,7 @@ def add_user(request):
 
 
 def update_user(request):
-    user_input = request.GET.get("input")
+    user_input = request.GET.get("user_input", "")
     if not user_input:
         return JsonResponse({"error": "Input parameter is missing"}, status=400)
 
@@ -30,8 +33,8 @@ def update_user(request):
     return JsonResponse(response)
 
 
-def delete_user(request):
-    user_input = request.GET.get("input")
+def remove_user(request):
+    user_input = request.GET.get("user_input", "")
     if not user_input:
         return JsonResponse({"error": "Input parameter is missing"}, status=400)
 
@@ -41,4 +44,58 @@ def delete_user(request):
 
 
 def post_listing(request):
-    print("test")
+    user_input = request.GET.get("user_input", "").split("+")
+    if not user_input:
+        return JsonResponse({"error": "Input parameter is missing"}, status=400)
+
+    response = routes.post_listing(user_input)
+
+    return JsonResponse(response)
+
+
+def filter_price(request):
+    user_input = request.GET.get("user_input", "").split("+")
+    if not user_input:
+        return JsonResponse({"error": "Input parameter is missing"}, status=400)
+
+    response = routes.filter_price(user_input)
+
+    return JsonResponse(response)
+
+
+def filter_category(request):
+    user_input = request.GET.get("user_input", "").split("+")
+    if not user_input:
+        return JsonResponse({"error": "Input parameter is missing"}, status=400)
+
+    response = routes.filter_category(user_input)
+
+    return JsonResponse(response)
+
+
+def remove_listing(request):
+    return
+
+
+def update_listing(request):
+    return
+
+
+def get_product_info(request):
+    user_input = request.GET.get("user_input", "").split("+")
+    if not user_input:
+        return JsonResponse({"error": "Input parameter is missing"}, status=400)
+
+    response = routes.get_product_info(user_input)
+
+    return JsonResponse(response)
+
+
+def buy_product(request):
+    user_input = request.GET.get("user_input", "").split("+")
+    if not user_input:
+        return JsonResponse({"error": "Input parameter is missing"}, status=400)
+
+    response = routes.buy_product(user_input)
+
+    return JsonResponse(response)
