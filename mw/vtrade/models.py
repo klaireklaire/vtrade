@@ -99,6 +99,12 @@ class Listing(models.Model):
         _("Condition"), max_length=255, blank=False, null=False
     )
     images = models.ManyToManyField(AppImage)
+    clicked = models.IntegerField(
+        _("Number of interaction"),
+        validators=[MinValueValidator(0)],
+        blank=True,
+        null=False,
+    )
 
     def __str__(self):
         return self.title

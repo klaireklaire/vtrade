@@ -1,5 +1,3 @@
-from django.shortcuts import render
-from django.contrib.auth import get_user_model
 from django.http import JsonResponse
 from . import routes
 
@@ -43,6 +41,26 @@ def remove_user(request):
     return JsonResponse(response)
 
 
+def forgot_password(request):
+    user_input = request.GET.get("user_input", "")
+    if not user_input:
+        return JsonResponse({"error": "Input parameter is missing"}, status=400)
+
+    response = routes.forgot_password(user_input)
+
+    return JsonResponse(response)
+
+
+def reset_password(request):
+    user_input = request.GET.get("user_input", "")
+    if not user_input:
+        return JsonResponse({"error": "Input parameter is missing"}, status=400)
+
+    response = routes.reset_password(user_input)
+
+    return JsonResponse(response)
+
+
 def post_listing(request):
     user_input = request.GET.get("user_input", "").split("+")
     if not user_input:
@@ -63,13 +81,28 @@ def filter_price(request):
     return JsonResponse(response)
 
 
-def filter_category(request):
+def get_items(request):
     user_input = request.GET.get("user_input", "").split("+")
     if not user_input:
         return JsonResponse({"error": "Input parameter is missing"}, status=400)
 
-    response = routes.filter_category(user_input)
+    response = routes.get_items(user_input)
 
+    return JsonResponse(response)
+
+
+def display_top_sale():
+    response = routes.display_top_sale()
+    return JsonResponse(response)
+
+
+def display_top_request():
+    response = routes.display_top_request()
+    return JsonResponse(response)
+
+
+def display_recent_post():
+    response = routes.display_recent_post()
     return JsonResponse(response)
 
 

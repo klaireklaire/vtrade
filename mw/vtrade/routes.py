@@ -56,7 +56,8 @@ def parse_user_input(user_input):
     return parsed_data
 
 
-def login_user(id):
+def login_user(user_input):
+    id = user_input[0]
     try:
         user = CustomUser.objects.get(id=id)
     except CustomUser.DoesNotExist:
@@ -65,7 +66,8 @@ def login_user(id):
     return user
 
 
-def remove_user(id):
+def remove_user(user_input):
+    id = user_input[0]
     try:
         user = CustomUser.objects.get(id=id)
     except CustomUser.DoesNotExist:
@@ -74,6 +76,28 @@ def remove_user(id):
     user.delete()
 
     return JsonResponse({"message": "User deleted successfully"})
+
+
+def forgot_password(user_input):
+    email = user_input
+    try:
+        user = CustomUser.objects.get(email=email)
+    except CustomUser.DoesNotExist:
+        return JsonResponse({"error": "User not found"}, status=404)
+    return
+
+
+def reset_password(user_input):
+    email, password = user_input
+    try:
+        user = CustomUser.objects.get(email=email)
+    except CustomUser.DoesNotExist:
+        return JsonResponse({"error": "User not found"}, status=404)
+
+    user.password = password
+    user.save()
+
+    return JsonResponse({"message": "User password updated successfully"})
 
 
 # Listing Routes
@@ -123,6 +147,7 @@ def post_listing(user_input):
         form=form,
         listingtype=listing_type,
         status=status,
+        clicked=0,
     )
 
     listing.images.add(*image_instances)
@@ -149,7 +174,22 @@ def filter_price(user_input):
     return listings
 
 
-def filter_category(user_input):
+def display_top_sale():
+    top_sale = Listing.objects.filter(form="provide").order_by("-clicked")[:10]
+    return top_sale
+
+
+def display_top_request():
+    top_request = Listing.objects.filter(form="request").order_by("-clicked")[:10]
+    return top_request
+
+
+def display_recent_post():
+    recent_post = Listing.objects.order_by("-createdate")[:5]
+    return recent_post
+
+
+def get_items(user_input):
     category = user_input
     try:
         listing = Listing.objects.get(category=category)
@@ -165,11 +205,18 @@ def get_product_info(user_input):
         listing = Listing.objects.get(id=id)
     except Listing.DoesNotExist:
         return JsonResponse({"error": "User not found"}, status=404)
-
+    track_clicks(listing)
     return listing
 
 
-def buy_product(id):
+def track_clicks(listing):
+    listing.clicked = listing.clicked + 1
+    listing.save()
+    return
+
+
+def buy_product(user_input):
+    id = user_input[0]
     try:
         listing = Listing.objects.get(id=id)
     except Listing.DoesNotExist:
