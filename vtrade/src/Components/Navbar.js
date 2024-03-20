@@ -8,7 +8,6 @@ import PersonIcon from "@mui/icons-material/Person";
 
 export default function Navbar(props) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  console.log(props);
 
   // Function to handle menu item click
   const handleMenuItemClick = (id) => {
@@ -96,21 +95,23 @@ export default function Navbar(props) {
           </button>
           <DropdownMenu isOpen={isMenuOpen} props={props} />
         </div>
-        <div
-          className="flex items-center justify-center bg-gray-300 cursor-pointer border border-black mr-5 rounded-full w-12 h-12 overflow-hidden"
-          aria-label="profile-image"
-          onClick={handleProfileClick}
-        >
-          {props.user && props.user.profileimage ? (
-            <img
-              src={props.user.profileimage}
-              alt="Profile"
-              className="object-cover w-full h-full"
-            />
-          ) : (
-            <PersonIcon className="text-white" />
-          )}
-        </div>
+        {props.user ? (
+          <div
+            className="flex items-center justify-center bg-gray-300 cursor-pointer border border-black rounded-full w-12 h-12 overflow-hidden"
+            aria-label="profile-image"
+            onClick={handleProfileClick}
+          >
+            {props.user && props.user.profileimage ? (
+              <img
+                src={props.user.profileimage}
+                alt="Profile"
+                className="object-cover w-full h-full"
+              />
+            ) : (
+              <PersonIcon className="text-white" />
+            )}
+          </div>
+        ) : null}
       </div>
     </div>
   );

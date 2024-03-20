@@ -75,7 +75,7 @@ function App() {
             element={<NewPost user={user} setUser={setUser} />}
           />
           <Route
-            path="/dashboard"
+            path="/Dashboard"
             element={
               <Dashboard
                 user={user}
