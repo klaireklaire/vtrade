@@ -14,7 +14,7 @@ import {
   settingsWhite,
 } from "../../Constants";
 
-export default function Sidebar(props) {
+export default function Sidebar({ onActiveItemChange, onLogout }) {
   const [activeItem, setActiveItem] = useState("dashboard");
 
   const MenuItem = ({ label, active, onClick, isFirst, icon, iconActive }) => (
@@ -35,6 +35,10 @@ export default function Sidebar(props) {
 
   const handleClick = (menuItem) => {
     setActiveItem(menuItem);
+    onActiveItemChange(menuItem);
+    if (menuItem === "logout") {
+      onLogout(); // Call the logout function passed from the parent component
+    }
   };
 
   return (

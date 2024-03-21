@@ -534,3 +534,71 @@ export const settingsWhite = (
     />
   </svg>
 );
+
+export const rightArrowPag = (
+  <svg
+    width="41"
+    height="40"
+    viewBox="0 0 41 40"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <rect
+      x="0.780396"
+      y="0.75"
+      width="38.5"
+      height="38.5"
+      rx="19.25"
+      stroke="black"
+      stroke-width="1.5"
+    />
+    <path
+      d="M11.7804 20H28.2804"
+      stroke="black"
+      stroke-width="1.5"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    />
+    <path
+      d="M21.5304 13.25L28.2804 20L21.5304 26.75"
+      stroke="black"
+      stroke-width="1.5"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    />
+  </svg>
+);
+
+export const leftArrowPag = (
+  <svg
+    width="41"
+    height="40"
+    viewBox="0 0 41 40"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <rect
+      x="0.780396"
+      y="0.75"
+      width="38.5"
+      height="38.5"
+      rx="19.25"
+      stroke="black"
+      stroke-width="1.5"
+    />
+    <path
+      d="M28.2804 20H11.7804"
+      stroke="black"
+      stroke-width="1.5"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    />
+    <path
+      d="M18.5304 13.25L11.7804 20L18.5304 26.75"
+      stroke="black"
+      stroke-width="1.5"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    />
+  </svg>
+);

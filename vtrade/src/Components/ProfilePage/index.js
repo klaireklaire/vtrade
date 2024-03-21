@@ -1,6 +1,6 @@
 import EditAccount from "./EditAccount";
-import Listing from "./Listing";
 import Sidebar from "./Sidebar";
 import MyProfile from "./MyProfile";
+import Listing from "./Listing";
 
-export { EditAccount, Listing, Sidebar, MyProfile };
+export { EditAccount, Sidebar, MyProfile, Listing };

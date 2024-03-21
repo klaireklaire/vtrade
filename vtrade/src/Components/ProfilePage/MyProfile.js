@@ -44,9 +44,7 @@ export default function MyProfile(props) {
             className="absolute top-2 -left-5 transform -translate-x-1 -translate-y-1/4 rounded-full border-black border"
             style={{ width: "200px", height: "200px" }}
           />
-          <button className="absolute top-0 right-0 mt-2 mr-2 px-4 py-2 bg-gray-200 border w-32 border-black text-black font-mulish font-bold text-sm">
-            Edit Profile
-          </button>
+
           <div className="flex flex-col space-y-3 w-full">
             <div>
               <p className="font-mulish font-bold text-xl">
