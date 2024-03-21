@@ -55,7 +55,11 @@ export default function PaginationButtons({
               </span>
             ) : null
           }
-          renderOnZeroPageCount={null}
+          renderOnZeroPageCount={
+            <span className="mr-4 flex items-center justify-center">
+              {leftArrowPag}
+            </span>
+          }
           containerClassName="flex items-center justify center mt-8 mb-4"
           pageClassName="block border border-solid rounded-full w-10 h-10 mr-4 hover:bg-black hover:text-white flex items-center justify-center"
           activeClassName="bg-black text-white"

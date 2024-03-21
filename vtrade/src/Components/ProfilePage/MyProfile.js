@@ -15,8 +15,6 @@ export default function MyProfile(props) {
       try {
         const { data, error } = await apiClient.getUser(props.user.id);
 
-        console.log("here");
-        console.log(data);
         if (data) {
           setUser(data.user);
         } else {

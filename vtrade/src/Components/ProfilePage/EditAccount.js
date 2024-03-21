@@ -13,7 +13,7 @@ export default function EditAccount(props) {
   return (
     <div className="flex flex-col items-center">
       {/* Form for username, name, etc. */}
-      <form className="bg-white border border-gray-300 pt-5 pb-8 mb-4 w-[800px]">
+      <form className="bg-white border border-gray-300 pt-5 pb-8 mb-4 w-full">
         <h2 className="text-small font-mulish uppercase ml-7 font-bold mb-4">
           Account Settings
         </h2>
@@ -183,9 +183,9 @@ export default function EditAccount(props) {
       </form>
 
       {/* Form for password update */}
-      <form className="bg-white border border-gray-300 pt-5 pb-8 mb-4 w-[800px]">
+      <form className="bg-white border border-gray-300 pt-5 pb-8 mb-4 w-[868px]">
         <h2 className="text-small font-mulish uppercase ml-7 font-bold mb-4">
-          Account Settings
+          Change Password
         </h2>
         <div className="border border-gray-200"></div>
         <div className="px-7 mt-4">

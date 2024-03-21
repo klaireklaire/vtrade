@@ -5,7 +5,7 @@ export default function FetchData() {
   const [currentPage, setCurrentPage] = useState(0);
   const [loading, setLoading] = useState(true);
   const [pages, setPages] = useState([]);
-  const totalPages = 6;
+  const [totalPages, setTotalPages] = useState(0);
 
   //   useEffect(() => {
   //     const fetchData = async () => {
@@ -19,8 +19,8 @@ export default function FetchData() {
       try {
         const { data, error } = await apiClient.getListings();
         const result = data.listings.slice(0, 6);
-        console.log(result);
         setPages(result);
+        setTotalPages(5); //calculate how many this would be
         setLoading(false);
       } catch (error) {
         console.error("Error fetching data:", error);

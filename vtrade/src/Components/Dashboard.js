@@ -1,10 +1,16 @@
 import * as React from "react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { EditAccount, Sidebar, MyProfile, Listing } from "./ProfilePage";
+import {
+  EditAccount,
+  Sidebar,
+  MyProfile,
+  Listing,
+  BidsSales,
+} from "./ProfilePage";
 
 export default function Dashboard(props) {
-  const [activeItem, setActiveItem] = useState("");
+  const [activeItem, setActiveItem] = useState("dashboard");
   const navigate = useNavigate();
 
   const handleActiveItemChange = (item) => {
@@ -18,7 +24,7 @@ export default function Dashboard(props) {
 
   return props.user ? (
     <div className="mb-8">
-      <div className="flex flex-row flex-start justify-start ml-28 items-start space-x-5 mt-4">
+      <div className="flex flex-row flex-start justify-start ml-28 pr-4 items-start space-x-5 mt-4">
         {/* profile side */}
         <div className="flex flex-col space-y-4">
           {/* profile */}
@@ -31,6 +37,7 @@ export default function Dashboard(props) {
         </div>
         {/* listing side */}
         <div className="flex flex-col space-y-5">
+          {activeItem === "dashboard" && <BidsSales />}
           {activeItem === "settings" && <EditAccount user={props.user} />}
           {activeItem === "wishlist" && <Listing />}
         </div>

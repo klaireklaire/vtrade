@@ -19,7 +19,7 @@ export default function Listing() {
       {loading ? (
         <Loader />
       ) : (
-        <div className="flex flex-col justify-center items-center border-2 p-8 mb-10 mr-10">
+        <div className="flex flex-col justify-center items-center border-2 p-8 mb-10 w-[868px]">
           <div className="grid grid-cols-3 gap-4">
             {pages.map((page, i) => {
               return (
