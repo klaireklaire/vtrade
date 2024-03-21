@@ -17,7 +17,7 @@ def add_user(user_input):
         email=email,
         username=username,
         password=hashed_password,
-        classyear=class_year,
+        class_year=class_year,
     )
 
     instance = CustomUser.objects.create(new_user)
