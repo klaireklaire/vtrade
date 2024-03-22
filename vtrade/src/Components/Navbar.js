@@ -4,6 +4,7 @@ import { Navigate, useNavigate } from "react-router-dom";
 import apiClient from "../Services/apiClient";
 import { MENU_ITEMS } from "../Constants";
 import DropdownMenu from "./DropDownMenu";
+import PersonIcon from "@mui/icons-material/Person";
 
 export default function Navbar(props) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -12,6 +13,10 @@ export default function Navbar(props) {
   const handleMenuItemClick = (id) => {
     console.log(`Clicked on ${id}`);
     navigate(id);
+  };
+
+  const handleProfileClick = () => {
+    navigate("/dashboard");
   };
 
   const toggleMenu = () => {
@@ -90,6 +95,23 @@ export default function Navbar(props) {
           </button>
           <DropdownMenu isOpen={isMenuOpen} props={props} />
         </div>
+        {props.user ? (
+          <div
+            className="flex items-center justify-center bg-gray-300 cursor-pointer border border-black rounded-full w-12 h-12 overflow-hidden"
+            aria-label="profile-image"
+            onClick={handleProfileClick}
+          >
+            {props.user && props.user.profileimage ? (
+              <img
+                src={props.user.profileimage}
+                alt="Profile"
+                className="object-cover w-full h-full"
+              />
+            ) : (
+              <PersonIcon className="text-white" />
+            )}
+          </div>
+        ) : null}
       </div>
     </div>
   );

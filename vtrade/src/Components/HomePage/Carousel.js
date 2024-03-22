@@ -94,7 +94,7 @@ export default function Carousel({}) {
             key={index}
             onClick={() => handleButtonClick(index)}
             className={`rounded-full w-4 h-4 hover:animate-squish ${
-              index === imageIndex ? `bg-gray-400` : " bg-black"
+              index === imageIndex ? `bg-gray-300` : " bg-black"
             }`}
           ></button>
         ))}

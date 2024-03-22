@@ -14,12 +14,14 @@ import PostDetails from "./Components/PostDetails";
 import HomePage from "./Components/HomePage";
 import ProductPage from "./Components/ProductPage";
 import Loader from "./Components/Loader";
+import Dashboard from "./Components/Dashboard";
 import Breadcrumbs from "./Components/Breadcrumbs";
 
 function App() {
   const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+
   useEffect(() => {
     const fetchUser = async () => {
       setIsLoading(true);
@@ -71,6 +73,18 @@ function App() {
           <Route
             path="/post"
             element={<NewPost user={user} setUser={setUser} />}
+          />
+          <Route
+            path="/Dashboard"
+            element={
+              <Dashboard
+                user={user}
+                setUser={setUser}
+                isLoading={isLoading}
+                setIsLoading={setIsLoading}
+                Loader={Loader}
+              />
+            }
           />
           <Route
             path="/login"

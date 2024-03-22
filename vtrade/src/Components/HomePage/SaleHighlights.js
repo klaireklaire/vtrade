@@ -25,7 +25,7 @@ export default function SaleHighlights({
     <div>
       <div className="mt-16 mb-6">
         <p className="text-xl font-bold tracking-tight font-mulish">
-          Highlights in Sale
+          Most Viewed Sales
         </p>
       </div>
       <div className="flex flex-row overflow-x-auto h-[398px] overflow-y-hidden hide-scroll-bar">
@@ -35,7 +35,7 @@ export default function SaleHighlights({
           ? saleHighlights.map((item, i) => (
               <div
                 key={i}
-                className="flex flex-col justify-start border-gray-200 border-2 p-2 mr-7 cursor-pointer"
+                className="flex flex-col justify-start  border-gray-100 border rounded-xl p-2 mr-3 cursor-pointer"
               >
                 <div className="w-64 h-16 flex items-start no-scrollbar ">
                   <div
